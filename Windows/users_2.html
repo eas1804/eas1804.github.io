@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows. Пользователи 2</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Windows.  Пользователи 2</h2>
+<ol>
+<li><h3>Не требовать ввода пароля пользователя после загрузки Windows</h3>
+<p><code>control userpasswords2</code></p>
+<p> Если переклчателя нет, то:</p>
+<p><code>Компьютер\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device </code></p>
+<p>Значение 0</p>
+<p> или можно создать reg файл
+<p><code>Windows Registry Editor Version 5.00</code></p>
+<br>
+<p><code>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device]</code></p>
+<p><code>"DevicePasswordLessBuildVersion"=dword:00000000</code></p>
+
+<li><h3>Не отображать имя пользователя на экране приветствия</h3>
+<p><code>set WIN_USER=Name_of_user</code></p>
+<p><code>reg add «HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList» /v %WIN_USER% /t reg_dword /d</code></p>
+
+<li><h3>Запуск программы от имени другого пользователя</h3>
+<p><code>runas /user:administrator "C:\Windows\cmd.exe"</code></p>
+<p>с сохранением пароля:</p>
+<p><code>runas /savecred:/user:admin@mydomain "C:\Windows\cmd.exe"</code></p>
+<p><code>runas /savecred /user:admin@domen "CMD /C start /B "C:\TeamViewer\TeamViewerPortable.exe"</code></p>
+
+<li><h3>Запуск программы при входе пользователя в систему</h3>
+<p><code>gpedit.msc-Конфигурация пользователя — Административные шаблоны —</code></p>
+<p><code>Система — Вход в систему -Выполнять эту программу при входе пользователя в систему- Включено — Показать — ввести значение </code></p>
+<p>например </p>
+<p><code>net use z: \\192.168.0.2\sha</code></p>
+
+<li><h3>Разрешить корректировку времени не администратору</h3>
+<p><code>gpedit.msc- Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времени</code></p>
+
+
+</body>
+</html>
+
+

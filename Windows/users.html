@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows. Пользователи</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Создать, установить, задать</h2>
+<h3>Создать пользователя</h3>
+<p><code>net user NEW_USER add</code></p>
+
+<h3>Установка пароля пользователя Администратор</h3>
+<p><code>net user Администратор NEW_PASSWORD</code></p>
+
+<h3>Добавить пользователя в группу Администраторы</h3>
+<p><code>net localgroup Администраторы USER_NAME add</code></p>
+<p>также, может быть «administrators», вместо «Администраторы»</p>
+
+<h3>включить встроенную учетную запись администратора</h3>
+<p><code>net user Администратор /active:yes</code></p>
+<p>/active:{yes | no} </p>
+
+<h3>Срок действия пароля — не заканчивается.</h3>
+<p><code>wmic path Win32_UserAccount where Name="userName" set PasswordExpires=false</code></p>
+<p>Не забыть кавычки для имени пользователя</p>
+
+<h3>Запретить менять пользователю пароль</h3>
+<p><code>net user администратор passwordchg:no</code></p>
+
+<h2> Информация </h2>
+<h3>Просмотр списка пользователей</h3>
+<p><code>net user</code></p>
+<h3>выводит имя пользователя</h3>
+<p><code>echo %username%</code></p>
+<h3>Вывести информацию по текущему пользователю</h3>
+<p><code>net user USER_NAME</code></p>
+<h3>В какие группы входит пользователь</h3>
+<p><code>net user USER_NAME |findstr Членство</code></p>
+
+<h2>Удаление</h2>
+<h2>Удалить ползователя</h2>
+<p><code>net user NAME_OF_USER /delete</code></p>
+<h3>Удалить пользователя из группы</h3>
+<p><code>net localgroup Администраторы USER_NAME delete</code></p>
+<p>также, может быть «administrators», вместо «Администраторы»</p>
+</body>
+</html>
+
+
+
