@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows. After install</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Windows. After install</h2>
+<h3>Отключить cortana</h3>
+<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
+
+<h3>Электропитание — максимальная производительность</h3>
+<p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
+
+</body>
+</html>

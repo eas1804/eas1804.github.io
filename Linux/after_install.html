@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Linux. After install</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> After install</h2>
+<p><code>apt install tmux mc wget curl vim  -y </code></p>
+<p><code>echo "export PATH=$PATH:/usr/sbin" >> /root/.bashrc</code></p>
+<p><code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code></p>
+<p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
+
+<h3>History </h3>
+<p><code>export HISTSIZE=10000</code></p>
+<p><code>export HISTTIMEFORMAT="%h %d %H:%M:%S "</code></p>
+<p><code>PROMPT_COMMAND='history -a'</code></p>
+<p><code>export HISTIGNORE="ls:ll:history:w:htop:pwd"</code></p>
+
+<h3>Vim</h3>
+<p><code>echo "syntax on" >> ~/.vimrc</code></p>
+<p><code>echo "set incsearch" >> ~/.vimrc</code></p>
+<p><code>echo "set smartcase" >> ~/.vimrc</code></p>
+<p><code>echo "set nocompatible" >> ~/.vimrc</code></p>
+<p><code>echo "set history=1000" >> ~/.vimrc</code></p>
+<p><code>echo "set ignorecase" >> ~/.vimrc</code></p>
+<p><code>echo "set hlsearch" >> ~/.vimrc</code></p>
+<p><code>echo "set showmatch" >> ~/.vimrc</code></p>
+<p><code>echo "highlight Comment ctermfg=LightCyan" >> ~/.vimrc</code></p>
+<p><code>echo "set wrap" >> ~/.vimrc</code></p>
+<p><code>echo "colorscheme elflord" >> ~/.vimrc</code></p>
+<br>
+<p><code>source ~/.bashrc</code></p>
+
+<h3>ssh key </h3>
+<p><code>ssh-keygen -t ed25519 -C "My Debian"</code></p>
+<p><code>cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys</code></p>
+<p><code>cat /root/.ssh/id_ed25519</code></p>
+
+<h3>Install</h3>
+<p><code>apt install cockpit sysstat  dstat  htop iftop ifstat gdisk -y</code></p>
+<p><code>cockpit  ip:9090</code></p>
+
+<h3>sudo</h3>
+<p><code>apt install sudo  -y</code></p>
+<p><code>sudo sed -i '/^# User privilege specification$/a exch_adm ALL=(ALL) NOPASSWD: ALL' /etc/sudoers</code></p>
+
+
+
+
+
+
+
+
+</body>
+  </html>
