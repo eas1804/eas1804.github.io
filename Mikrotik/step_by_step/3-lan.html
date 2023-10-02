@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. LAN</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Шаг 3. LAN</h2>
+<p>3.1. Создаем bridge для LAN с именем bridge_lan</P>
+
+<p><code>/interface bridge {</p></code>
+<p><code>add name=<b>bridge_lan </B></p></code>
+<p><code>set bridge_lan auto-mac=no admin-mac=[get bridge_lan mac-address] </p></code>
+<p><code>}</p></code>
+ 
+ <p>3.2. Добовляем потры в bridge_lan</p>
+<p><code>/interface bridge port</p></code>
+<p><code>add bridge=bridge_lan interface=ether2</p></code>
+<p><code>add bridge=bridge_lan interface=ether3</p></code>
+<p><code>add bridge=bridge_lan interface=ether4</p></code>
+<p><code>add bridge=bridge_lan interface=ether5</p></code>
+<p><code>add bridge=bridge_lan interface=wlan1</p></code>
+<p><code>add bridge=bridge_lan interface=wlan2</p></code>
+
+
+<p>3.3 задаем IP адрес для bridge_lan</P>
+<p><code>/ip address</p></code>
+		<p><code>add address=<b>192.168.72.1/24</b> interface=bridge_lan network=<b>192.168.72.0</b> comment=LAN  </p></code>
+
+
+
+</body>
+  </html>

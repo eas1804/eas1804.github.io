@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. Start</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Шаг 1. Пердварительные натсройки</h2>
+<p>сбрасываем настройки маршрутизатора без создания дефолтной конфигурации </p>
+
+<code>/system reset-configuration no-defaults=yes skip-backup=yes</code>
+<p>Если нужно сохранить пользоватлей - дописываем </p>
+<code>keep-users=yes</code>
+<p> Задаем пользователя, пароль. Отключаем ненужные сервисы </a>
+<p><code>/use add name=<b>USER</b> password=<b>PASSWORD!!!</B> group=full </code></p>
+<p><code>/user disable admin </code></p>
+<p><code>/ip service disable api,api-ssl,ftp,telnet,www-ssl</code></p>
+<p>Задать имя комании</p>
+<p><code>/system identity set name=<b>Company</B></code></p>
+
+
+
+</body>
+  </html>

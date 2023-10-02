@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. Firewall</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Firewall</h2>
+<p><code>/ip firewall address-list</p></code>
+<p><code>add address=mlp.pp.ua list= allowed_to_router comment="Upfk"</p></code>
+<p><code>add address=diol.mlp.pp.ua list= allowed_to_router comment="Diol"</p></code>
+<p><code>add address=unac.mlp.pp.ua list= allowed_to_router comment="Unac"</p></code>
+<p><code>add address=home.mlp.pp.ua list= allowed_to_router comment="Home"</p></code>
+<p><code>add address=lesnoy.mlp.pp.ua list= allowed_to_router comment="Lesnoy"</p></code>
+<p><code>add address=obolon.mlp.pp.ua list= allowed_to_router comment="Obolon"</p></code>
+<p><code>add address=bku.mlp.pp.ua list= allowed_to_router comment="BKU"</p></code>
+<p><code>add address=192.168.0.0/16 list=allowed_to_router comment=LAN_C_cass</p></code>
+<p><code>add address=172.16.0.0/12 list=allowed_to_router comment=LAN_B_class</p></code>
+<p><code>add address=10.0.0.0/8 list=allowed_to_router comment=LAN_A_cass</p></code>
+
+<p>Внимательно вписываем сеть!!!</p>
+<p><code>add address=<b>192.168.72.0/24 </B>list=Lan_Home comment=Lan_Home</p></code>
+
+<hr>
+<p><code>/ip firewall filter</p></code>
+<p><code>add action=accept chain=input connection-state=established,related comment="established, related connections"</p></code>
+<p><code>add action=drop chain=input   connection-state=invalid  comment="Drop invalid"</p></code>
+<p><code>add action=accept chain=input dst-port=8291,22,80 protocol=tcp src-address-list=allowed_to_router comment="Acsess from My IP (allowed_to_router)”</p></code>
+<p><code>add action=accept chain=input comment="icmp on" protocol=icmp src-address-list=allowed_to_router</p></code>
+<p><code>add action=drop chain=input comment="other DROP!!!!"</p></code>
+<hr>
+<p><code>add action=fasttrack-connection chain=forward connection-state=established,related comment=FastTrack_established-related</p></code>
+<p><code>add action=accept chain=forward connection-state=established,related comment="established, related connections"</p></code>
+<p><code>add action=drop chain=forward connection-state=invalid  comment="Drop invalid"</p></code>
+<p><code>add action=drop chain=forward connection-nat-state=!dstnat connection-state=new in-interface-list=WAN comment="Drop incoming packets that are not NATted"</p></code>
+<p><code>add action=drop chain=forward in-interface=bridge_lan src-address-list=!Lan_Home comment="Drop packets from LAN that do not have LAN IP"</p></code>
+<p><code>add action=accept chain=forward src-address-list=Lan_Home comment="Acsess form LAN"</p></code>
+<p><code>add chain=forward action=drop comment="Other drop"</p></code>
+
+
+
+</body>
+  </html>

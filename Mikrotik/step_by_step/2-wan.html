@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. WAN</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Шаг 2. WAN</h2>
+<p> ether1 - смотрит в нитернет</p>
+<h3>Настройка Dynamic IP</h3>
+<p><code>/ip dhcp-client add  comment=WAN_DHCP dhcp-options=hostname,clientid disabled=no interface=ether1 use-peer-ntp=no</p></code>
+<P>use-peer-ntp=no - не использовать сервер времени провайдера</P>
+
+<h3>Настройка Static IP</h3>
+<p>Например IP 213.160.132.222/30, gate 213.160.132.221 заменить на свое)</p>
+<p>255.255.255.0		/24
+<br>255.255.255.128		/25
+<br>255.255.255.192		/26
+<br>255.255.255.224		/27
+<br>255.255.255.240		/28
+<br>255.255.255.248		/29
+<br>255.255.255.252		/30
+
+<p><code>/ip address add address 213.160.132.222/30 interface ether1 comment=IP_adress_ISP</p></code>
+<p><code>/ip route add gateway=213.160.132.221 comment=Gate</p></code>
+<p>После этого должен заработать ping 8.8.8.8</p>
+
+<h3>DNS</h3>
+<p><code>/ip dns set servers=8.8.8.8,208.67.222.222</p></code>
+
+<p>После этого должен заработать ping i.ua</P>
+<h3>Подмена mac-адреса</h3>
+<p><code>/interface ethernet set ether1 mac-address=00:11:22:33:44:55</p></code>
+<p>где 00:11:22:33:44:55 — mac зарезервированный у провайдера.</p>
+</body>
+  </html>

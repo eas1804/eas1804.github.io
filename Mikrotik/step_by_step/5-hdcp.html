@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. DHCP</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>DHCP</h2>
+<p>Внимательно с IP!!!!</p>
+<h3>Создаем диапазон адресов</h3>
+<p><code>/ip pool</p></code>
+<p><code>add name=dhcp_pool_lan ranges=<b>192.168.72.20-192.168.72.254</b></p></code>
+<h3>Создаем сервер DHCP</h3>
+<p><code>/ip dhcp-server</p></code>
+<p><code>add address-pool=dhcp_pool_lan disabled=no interface=bridge_lan lease-time=1d10m name=dhcp_srv_lan</p></code>
+<h3>Задаем сеть</h3>
+<p><code>/ip dhcp-server network</p></code>
+<p><code>add address=<b>192.168.72.0/24</b> dns-server=8.8.8.8 gateway=<b>192.168.72.1<b></p></code>
+
+
+
+</body>
+  </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. NAT</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>NAT</h2>
+<p>Добавляем интерфейсы в интерфейслисты</p>
+<p><code>/interface list </p></code>
+<p><code>add comment=defconf name=WAN </p></code>
+<p><code>add comment=defconf name=LAN </p></code>
+<p><code>/interface list member </p></code>
+<p><code>add interface=ether1 list=WAN </p></code>
+<p><code>add interface=bridge_lan list=LAN </p></code>
+
+<h3>srcNat</h3>
+<p> Включаем masquerade </p>
+<p><code>/ip firewall nat add chain=srcnat action=<b>masquerade</b> out-interface-list=WAN</p></code>
+
+<h3>DstNAT</h3>
+<p>Проброс портов</p>
+
+<P>OpenVPN</p>
+<p><code>/ip firewall nat add action=netmap chain=dstnat comment=OpenVPN dst-port=1194 in-interface=ether1 protocol=udp to-addresses=192.168.1.205 to-ports=1194</p></code>
+<p>1c from My IP</p>
+<p><code>/ip firewall nat add action=netmap chain=dstnat comment=1c dst-port=3390 in-interface=ether1 protocol=tcp src-address-list=allowed_to_router to-addresses=192.168.1.201 to-ports=3389 </p></code>
+
+</body>
+  </html>
