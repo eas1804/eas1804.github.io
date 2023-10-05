@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WIndows. network.Netdrive</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3>Netdrive</h3>
+<ol>
+<li><h3>Открытие общего доступа к папке Read only</h3>
+<p><code>net share obmen=d:\public</code></p>
+
+<li><h3>Открытие общего доступа к папке полными правами</h3>
+<p>Открытие общего доступа к папке c полными правами для всех пользователей сети:</p>
+<p><code>net share obmen=c:\users\vasya\ /grant:everyone,full</code></p>
+
+<li><h3>Открытие общего доступа к папке c полными правами для Vasya и readonly  для Petya</h3>
+<p><code>net share obmen=c:\users\vasya\ /grant:Vasya,full</code></p>
+<p><code>net share obmen=c:\users\vasya\ /GRANT:Vasya,FULL /GRANT:Petya,READ</code></p>
+<p>Если есть пробелы — использовать кавычки</p>
+<p><code>net share "M2_Veeam Backup"="D:\M2_Veeam Backup" /grant:backup_m2,full</code></p>
+
+<li><h3>Закрыть общий доступ</h3>
+<p><code>net share obmen /DELETE</code></p>
+<li><h3>Подключение сетевого диска </h3>
+<p><code>net use z: \\ubuntu\backup</code></p>
+
+<li><h3>добавить аутентификацию пользователя с логином и паролем</h3>
+<p><code>net use z:\\ubuntu\backup /user:Vasya P@$$W0rd</code></p>
+
+<li><h3>Отключение сетевого диска</h3>
+<p><code>net use z: /delete</code></p>
+</ol>
+
+
+
+
+
+
+</body>
+  </html>

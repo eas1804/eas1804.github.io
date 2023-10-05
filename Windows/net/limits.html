@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WIndows. network. Limits</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<ol>
+<li><h3>Как зайти на сетевую шару  где нет  авторизаци</h3>
+<p><code>reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v AllowInsecureGuestAuth /t REG_DWORD /d 1</code></p>
+<p><code>net stop LanmanWorkstation && net start LanmanWorkstation</code></p>
+
+<li><h3>Ошибка RDP подключения: CredSSP encryption oracle remediation</h3>
+<p><code>REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d 2</code></p>
+
+</ol>
+
+</body>
+  </html>
