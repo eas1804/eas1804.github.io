@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik scripts</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>MikroTik scripts</h2>
+<ol>
+<li><p>reboot</p>
+<p><code>/system reboot</code></p>
+<li><p>Send my IP</p>
+<p><code>/ip dhcp-client print file=disk1/ipconfig.txt</code></p>
+<p><code>/tool e-mail send server="smtp.gmail.com" port=25 user="backup@gmail.com" password=Win2021 start-tls=yes to="report@gmail.com" from="backup@gmail.com" subject="ip Home" body="Home ip" file=disk1/ipconfig.txt;</code></p>
+<li><p> Удаленное включение компьютера</p>
+<p><code>/tool/wol interface=bridge1 mac=64:00:6A:56:DA:53</code></p>
+<li><p>Wifi on/off</p>
+<p><code>/interface wireless disable wlan1</code></p>
+<p><code>/interface wireless enable wlan1</code></p>
+<li><p>Очистить логи</p>
+<p><code>/system logging action set memory memory-lines=1</code></p>
+<p><code>/system logging action set memory memory-lines=1000</code></p>
+
+<li><p>Restore backup</p>
+<p>Делаем бэкап, пауза 10 минут (600 сек) и загружаем бэкап обратно. 
+<p>Логика такая. 
+<p>Запустили скрипт, он сделал бэкап. 
+<p>Дальше вы делаете какие-то настройки. 
+<p>Если вас не отключило, останавливаете скрипт. 
+<p>Если отключило, ждете, когда скрипт откатит конфиг.
+<p><code>/system backup save password="secret" name=disconnect</code></p>
+<p><code>delay 600</code></p>
+<p><code>/system backup load name=disconnect.backup password="secret"</code></p>
+<p>Остановить скрипт</p>
+<p><code>/system script job remove [find script=Name_of_script]</code></p>
+
+</ol>
+
+
+
+
+</body>
+  </html>
