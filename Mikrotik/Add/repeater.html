@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik в режиме репитера</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>MikroTik в режиме репитера</h2>
+<ol>
+
+<li> <p>сбрасываем настройки маршрутизатора</P>
+<p><code>/system reset-configuration no-defaults=yes skip-backup=yes</code></p>
+
+<li> <p>Используем команду автоматической настройки, которая настроит беспроводной интерфейс для подключения к точке доступа </p>
+
+<p>В параметрах указываем свой беспроводной интерфейс и название сети Wi-Fi  и пароль точки, к которой подключаемся</p>
+
+<p><code>/interface wireless setup-repeater number=wlan1 ssid=имя_wifi passphrase=password</code></p>
+
+<li> <p>Добавляем необходимые интерфейсы в мост </p>
+
+<p><code>/interface bridge port add bridge=bridge1 interface=all</code></p>
+
+<li> <p>Если в сети работает DHCP, испольщзуем dhcp-client </p>
+
+<p><code>/ip dhcp-client add interface=bridge1</code></p>
+
+<p>или создаем IP-адрес на интерфейсе моста согласно вашей сетевой адресации.</p>
+<p><code>/ip address add address=192.168.88.2/24 interface=bridge1 network=192.168.88.0</code></p>
+
+
+<p>Link
+https://habr.com/ru/articles/505416/
+
+</ol>
+
+
+
+</body>
+  </html>

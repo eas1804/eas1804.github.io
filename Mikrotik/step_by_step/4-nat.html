@@ -18,9 +18,11 @@
 <p><code>add interface=ether1 list=WAN </p></code>
 <p><code>add interface=bridge_lan list=LAN </p></code>
 
-<h3>srcNat</h3>
-<p> Включаем masquerade </p>
+<h3>SrcNat</h3>
+<p> Включаем masquerade, если у нас динамический IP WAN </p>
 <p><code>/ip firewall nat add chain=srcnat action=<b>masquerade</b> out-interface-list=WAN</p></code>
+<p>Если есть возможность и вы владеете статическим IP адресом, желательно отказаться от  masquerade  в пользу src-nat.  </p>
+<p><code>/ip firewall nat add chain=srcnat action=<b>src-nat</b>    out-interface-list=WAN to-addresses=<b>178.15.69.16</b> comment=StaticIP </p></code>
 
 <h3>DstNAT</h3>
 <p>Проброс портов</p>
