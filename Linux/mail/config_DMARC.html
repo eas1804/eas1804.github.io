@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DMARC</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>DMARC</h2>
+
+<p>DMARC - политика обработки почтовых сообщений на основе SPF и DKIM
+<p>Работает это так: письмо проверяется по SPF и DKIM. 
+Если оно не проходит по одному из критериев проверки, применяется политика DMARC
+<p><code>_dmarc.mlp.pp.ua. 3600 IN TXT "v=DMARC1; p=quarantine; sp=none; pct=100; fo=0; rua=mailto:postmaster@mlp.pp.ua"</code></p>
+
+<p>p — политика на домен. 
+<ul>
+Принимаются следующие варианты: 
+<li>none — ничего не делать; 
+<li>quarantine — отправить письмо в СПАМ; 
+<li>reject — отвергнуть письмо
+</ul>
+<p> sp — политика на субдомены домена. Имеет такие же значения, что и p
+<p>	pct — какой процент сообщений пойдет под правила.
+
+
+<p>	fo — в каких случаях отправлять отчет. 
+<ul>
+<li>0 — всегда если не пройден ни один критерий проверки; 
+<li>1 — если не пройден хотя бы один критерий; 
+<li>d — не пройдена проверка DKIM; 
+<li>s — не пройден SPF.
+</ul>
+<p>rua — почтовый адрес для отчетов
+
+<ol>
+
+
+
+</body>
+  </html>
+
+
+
+<h3></h3>
