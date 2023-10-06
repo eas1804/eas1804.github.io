@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iptables. input</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Input</h2>
+<ol>
+<li><h3>Basic</h3>
+<p><code>iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP</code></p>
+<p><code>iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP</code></p>
+<p><code>iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP</code></p>
+<p><code>iptables -A INPUT -m state --state INVALID -j DROP</code></p>
+<p><code>iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
+<p><code>iptables -A INPUT -i lo -j ACCEPT -m comment --comment "Enable Loopback"</code></p>
+
+<li><h3> SSH (-m tcp --dport 22)</h3>
+<p><code>iptables -A INPUT -p tcp -s 10.0.0.0/8 -m tcp --dport 22 -j ACCEPT -m comment --comment "LAN Calss A"</code></p>
+<p><code>iptables -A INPUT -p tcp -s 172.16.0.0/12 -m tcp --dport 22 -j ACCEPT -m comment --comment "LAN Calss B"</code></p>
+<p><code>iptables -A INPUT -p tcp -s 192.168.0.0/16 -m tcp --dport 22 -j ACCEPT -m comment --comment "LAN Calss C"</code></p>
+
+<p>Разрешить SSH c IP x.x.x.x ( -s lesnoy.mlp.pp.ua)
+<p><code>iptables -A INPUT -p tcp -s x.x.x.x -m tcp --dport 22 -j ACCEPT -m comment --comment "My Office"</code></p>
+<p><code>iptables -A INPUT -p tcp -s lesnoy.mlp.pp.ua -m tcp --dport 22 -j ACCEPT -m comment --comment "Lesnoy"</code></p>
+
+<li><h3>Разрешаем ICMP</h3>
+<p><code>iptables -A INPUT -p icmp  -j ACCEPT</code></p>
+<p><code>iptables -A INPUT -p icmp -s x.x.x.x -j ACCEPT -m comment --comment "My Office"</code></p>
+
+
+<li><h3>Web </h3>
+<p> Октрыть порт 80/tcp (-m tcp --dport 80)
+<p><code>iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT -m comment --comment "For HTTP"</code></p>
+<li><h3>Разрешить порт udp 1194 (-m udp --dport 1194)</h3>
+<p><code>iptables -A INPUT -p udp -m udp --dport 1194 -j ACCEPT -m comment --comment "For OpenVPN"</code></p>
+
+<li><h3>Открыть несколько портов (-m multiport)</h3>
+<p><code>iptables -A INPUT -p tcp -s 192.168.0.0/16 -m tcp -m multiport --ports 22,8006 -j ACCEPT </code></p>
+<p><code>iptables -A INPUT -p tcp -s lesnoy.mlp.pp.ua  -m tcp -m multiport --ports 22,8006 -j ACCEPT -m comment --comment "lesnoy"</code></p>
+<p><code>iptables -P INPUT DROP</code></p>
+
+<li><h3>Разрешить все c конкретного интерфейса</h3>
+<p><code>iptables -A INPUT -i -eth0 -j ACCEPT -m comment --comment "LAN"</code></p>
+
+<li><h3>Разрешить все c конкретного IP</h3>
+<p><code>iptables -A INPUT -s 192.168.1.1 -j ACCEPT</code></p>
+<p><code>iptables -A INPUT -s lesnoy.mlp.pp.ua -j ACCEPT -m comment --comment "Lesnoy"</code></p>
+
+
+<li><h3>Логировать</h3>
+<p><code>iptables -A INPUT -p tcp -m tcp --dport 3306 -j LOG --log-prefix "IP_mysql_Sli"</code></p>
+<p>Все обращения к порту 3306/tcp заносить в лог /var/log/messages или в /var/log/syslog
+<p><code>cat /var/log/syslog | grep IP_mysql_Sli</code></p>
+
+</body>
+  </html>

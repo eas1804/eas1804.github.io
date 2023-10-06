@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iptables. Forward</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Forward</h2>
+<ol>
+<li><h3>Проброс порта</h3>
+<p><code>IP_WAN=60.10.20.20</code></p>
+<p><code>WAN_ETH=vmbr0</code></p>
+<p><code>IP_LAN_1=10.10.33.2</code></p>
+<p><code>DPORT_EXTERNAL=1194 #из порта WAN</code></p>
+<p><code>DPORT_INTERNAL=1194 #в порт LAN</code></p>
+<p><code>PROTO=udp</code></p>
+<p><code>iptables -t nat -A PREROUTING -p $PROTO -d $IP_WAN --dport $DPORT_EXTERNAL -j DNAT --to-destination $IP_LAN_1:$DPORT_INTERNAL</code></p>
+<p><code>iptables -A FORWARD -i $WAN_ETH -p $PROTO --dport $DPORT_EXTERNAL -j ACCEPT</code></p>
+<p><code>iptables -t nat -L PREROUTING -n --line-numbers</code></p>
+<p><code>iptables -L FORWARD -n -v --line-numbers</code></p>
+
+
+<li><h3>Проброс порта с доверенного IP</h3>
+<p><code>TRUSTED_IP=5.5.5.5</code> #Доверенный Ip или доменное имя</p>
+<p><code>IP_WAN=1.1.1.1</code>  # IP сетевой карты, смотрящей в интернет</p>
+<p><code>WAN_ETH=eth0</code></p>
+<p><code>IP_LAN_1=172.16.16.1</code></p>
+<p><code>DPORT_EXTERNAL=2222</code> #из порта WAN</p>
+<p><code>DPORT_INTERNAL=22</code> #в порт LAN</p>
+<p><code>PROTO=tcp</code></p>
+<p><code>iptables -t nat -A PREROUTING -p $PROTO -d $IP_WAN --dport $DPORT_EXTERNAL -j DNAT --to-destination $IP_LAN_1:$DPORT_INTERNAL</code></p>
+<p><code>iptables -A FORWARD -i $WAN_ETH -p $PROTO --dport $DPORT_INTERNAL -s $TRUSTED_IP -j ACCEPT -m comment --comment "$TRUSTED_IP"</code></p>
+<p><code>iptables  -t nat  -L PREROUTING -n --line-numbers</code></p>
+<p><code>iptables -L FORWARD -n -v --line-numbers</code></p>
+
+<li><h3>Запрет передачи из сети 10.66.66.0/24 в 10.10.10.2</h3>
+<p><code>iptables -A FORWARD -s 10.66.66.0/24 -d 10.10.10.2 -j DROP</code></p>
+
+</body>
+  </html>

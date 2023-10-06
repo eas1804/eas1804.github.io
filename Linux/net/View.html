@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Отобразить все правила</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Отобразить все правила</h2>
+<p>Все правила храниться здесь: <code>cat /etc/iptables/rules.v4</code></p>
+<p><code>iptables -S</code></p>
+<p><code>iptables -L {INPUT|FORWARD|OUTPUT} -nv</code></p>
+<p><code>iptables -t nat -L {PREROUTING|POSTROUTING} -nv --line-numbers</code></p>
+
+</body>
+  </html>

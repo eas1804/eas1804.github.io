@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Сохранить/Восстановить правила</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Сохранить</h2>
+<p><code>iptables-save > /etc/iptables/rules.v4</code></p>
+<h3>Debian 12</h3>
+<p><code>iptables-save > /etc/iptables.up.rules</code></p>
+или
+<p><code>apt install iptables-persistent</code></p>
+<p><code>service netfilter-persistent save</code></p>
+<h3>CentOS</h3>
+<p><code>service iptables save</code></p>
+<h2>Восстановить правила:</h2>
+<p><code>iptables-restore < /etc/iptables/rules.v4</code></p>
+
+
+
+</body>
+  </html>
