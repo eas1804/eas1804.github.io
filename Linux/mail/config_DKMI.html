@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DKMI</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>DKMI</h2>
+<p>DKIM, или DomainKeys Identified Mail — это стандартный протокол аутентификации электронной почты, 
+который использует криптографию для проверки подлинности ваших сообщений.
+<p>С помощью dkim вся исходящая почта сервера подписывается электронной цифровой подписью, связанной с именем домена. Открытый ключ шифрования с помощью DNS публикуется в txt записи. Таким образом, удаленный сервер, при получении письма от вас, сравнивает цифровую подпись с опубликованным в DNS открытым ключом вашего домена. Если всё в порядке, то считает, что ваше письмо в самом деле пришло от вас, а не от мошенников. То есть с помощью этой технологии можно однозначно идентифицировать отправителя.
+<p>Найти на сервере каталог dkim
+<p><code>find / -name dkim</code></p>
+<p>Внутри будет файл с приватным и публичным ключом. Нам нужен публичны ключ.
+Примерное содержимое файла:
+<p><code>mail._domainkey IN TXT ( "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAA...................M3gn6P7BAU0fBePlivzRLPv6pmksWcGXqoOTAGQDftPO47CMYXOBhaTaLZluQIDAQAB</code></p>
+<p>Создаем TXT запись mail._domainkey и в качестве значения вставляем</p>
+<p>В записи mail._domainkey - mail - это <b>селектор</B>
+<p><code>v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAA……</code></p>
+<p>На файл с приватным ключом есть ссылка из конфига почтового сервера exmim, postfix и др.
+<p> То есть в DNS азмещаем публичный ключ, а из конфига почтового серывера ссылаемся на приватный
+<p> Ключи можно и самомтсоятельно сгенерировать: 
+ <p><code>apt install opendkim opendkim-tools</code></p>
+  <p>Создаем директорию для хранения ключей:
+ <p><code>mkdir -p /etc/postfix/dkim && cd /etc/postfix/dkim</code></p>
+<p>Генерируем ключи для домена:
+ <p><code>opendkim-genkey -D /etc/postfix/dkim/ -d dtz.in.ua -s mail</code></p>
+где
+<p>dtz.in.ua 	имя почтового домена
+<p>mail 	селектор, я обычно указываю как имя самого сервера
+<p>На выходе получаете пару файлов — закрытый (приватный) и открытый ключ. Закрытый останется на сервере, открытый будет опубликован в DNS.
+<p>Протестировать DKMI можно здесь:
+<a href="https://dkimcore.org/tools/keycheck.html">dkimcore.org</a>
+<ol>
+
+
+</body>
+  </html>

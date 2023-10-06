@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SPF</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>SPF</h2>
+<p>Расшифровывается как Sender Policy Framework или инфраструктура политики отправителя.</P>
+<p>SPF - это специальная TXT-запись в DNS, в которой указано с каких почтовых серверов может быть <b>отправлена почта для домена</B>. 
+<p>С ее помощью можно снизить общее количество СПАМа, уменьшить вероятность того, что домен будет скомпрометирован и защититься от СПАМа, 
+который использует поле обратного адреса. </P>
+<p><code>mlp.pp.ua. IN TXT "v=spf1 +a +mx -all"</code></p>
+<p> То есть разрешить оптравку с тех IP которые имеют A и MX записи в DNS. С остальных IP - запретить
+<p>знак "+" разрешает (может быть упущен при записи)
+<br>знак "-" указывает на запрет
+<br> -all запрещает отправку писем для всех, кто не прошел проверку 
+<br>если записать ~all разрешать отправку или нет будет на выбор почтовой системы
+
+
+<p><code>mlp.pp.ua. IN TXT "v=spf1 ip4:91.93.96.193  ~all"</code></p>
+<p>здесь  прямо указан IP-адрес (91.93.96.193), с которого можно отправлять почту (ip4),
+<p><code>mlp.pp.ua. IN TXT "v=spf1 ip4:91.93.96.193 include:_spf.ukraine.com ~all"</code></p>
+а также все, что включены в запись _spf.ukraine.com
+<p>Также можно добавлять подсети:
+<p><code>mlp.pp.ua. IN TXT "v=spf1 ip4:91.93.96.0/24 ~all"</code></p>
+
+
+
+
+<h3></h3>
+<ol>
+
+
+
+</body>
+  </html>
