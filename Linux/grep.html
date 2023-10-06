@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>grep</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>grep</h2>
+<ol>
+<li><h3>Поиск текста в файлах</h3>
+<p><code>grep -i -r "искомый текст" /каталог/</code></p>
+<p><code>grep -i -r "SSLCertificateFile" /etc/apache2/</code></p>
+<p>Выводит на экран только имена файлов, содержащих искомый текст (-l)</p>
+<li><h3>Исключить из поиска каталоги (—exclude-dir=):</h3>
+<p><code>grep -i -r текст / —exclude-dir=mail —exclude-dir=sys —exclude-dir=log</code></p>
+
+
+<li><h3>Не выводить # (комментарии)</h3>
+<p><code>grep -v "^#"  client.ovpn</code></p>
+<p>-v — не выводить  
+<br>^ — начало строки</p>
+<li><h3>Не выводить пустые строки</h3>
+<p><code>grep -v "$"  client.ovpn</code></p>
+<p>$ — конец строки</p>
+<li><h3>Не выводить комментарии и пустые строки</h3>
+<p><code>grep -v "^#" client.ovpn | grep -v "^$"</code></p>
+
+<li><h3>Почистить конфиг от комментариев</h3>
+<p>Нужно команду присвоить переменной, через $</p>
+<p><code>echo "$(grep -v "^#" client.ovpn | grep -v "^$")" >client.ovpn</code></p>
+<p><code>grep -o '^[^#]*' file.txt > cleaned.txt</code></p>
+<li><h3>Экранирование</h3>
+<code>\</code></p>
+<p>То есть, следующий символ не интерпретировать, как служебный</p>
+<p><code>grep -r "\ 80" ./</code></p>
+</ol>
+
+
+</body>
+  </html>
+
