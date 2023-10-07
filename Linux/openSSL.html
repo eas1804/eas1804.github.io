@@ -21,9 +21,12 @@
 <p><code>cat server.crt | openssl x509 -noout -enddate</code></p>
 <li><h3>Извлечь отпечаток</h3>
 <p><code> openssl  x509 -fingerprint -sha256 -in server.crt -noout</code></p>
-<li><h3>Создать приватный и публичнй ключ, длинной 2048 бит</h3>
+<li><h3>Создать приватный ключ, длинной 2048 бит</h3>
 <p><code>openssl genrsa -out private.key 2048</code></p>
 <p>Извлечь публичный ключ из приватного ключа и сохранит его в файле public.key</p>
 <p><code>openssl rsa -in private.key -pubout -out public.key</code></p>
+
+<li><h3>Создать приватный и публичный ключ</h3>
+<p><code>openssl req -new -x509 -days 3650 -nodes -out /etc/ssl/mail/public.pem -keyout /etc/ssl/mail/private.key -subj "/C=RU/ST=SPb/L=SPb/O=Global Security/OU=IT Department/CN=mail.dtz.in.ua"</code></p>
 </body>
   </html>

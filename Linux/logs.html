@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Logs</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>logs</h2>
+
+<p> Есть служба systemd-journal-gatewayd, с помощью которой можно смотреть логи systemd через браузер. 
+<p><code> apt install systemd-journal-remote</code></p>
+<p><code> systemctl start systemd-journal-gatewayd.service</code></p>
+<p>Порт по умолчанию 19531. 
+<p><code>http://192.168.20.25:19531/browse</code></p>
+<p>только текущей загрузки логи :
+<p><code>http://192.168.20.25:19531/entries?boot </code></p>
+<h3> В консоли</h3>
+<p><code>journalctl | grep postfix</code></p>
+</body>
+  </html>

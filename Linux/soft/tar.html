@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tar</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+<h2>tar</h2>
+<ol>
+	<h3>Упаковать</h3>
+
+<p><code>tar -vczf /Backup/`date "+%d-%m-%g_%H-%M-%S"`-1c.tar.gz /mnt/win2003</code></p>
+или
+<p><code>tar --create \</code></p>
+<p><code>--gzip \</code></p>
+<p><code>--file=/home/exch_adm/backup/site_amida/`date "+%d-%m-%g_%H-%M-%S"`-amiad.tar.gz \</code></p>
+<p><code>--ignore-failed-read \</code></p>
+<p><code>-v \</code></p>
+<p><code>/var/www/html/amida_in_ua</code></p>
+
+<br>с — создать архив
+<br>f — упаковка содержимого в файл
+<br>z или j Для использования сжатия указать tar, каким архиватором следует сжать архив. gzip и bzip2 ключи будут -z и -j
+<br>v — для визуального отображения хода процесса.
+<br>Рекомендую использовать мнемоническое правило: tar czf file.tar.gz folder 
+<br>czf — create zip file (создать zip-файл)
+
+
+	<h4>Исключения при архивированиии</h4>
+<p><code>—exclude=</code></p>
+<p>Если нужно исключить сразу несколько объектов, то опцию следует использовать нужное число раз: <code>—exclude=*.tmp —exclude=dir1/tmp</code>
+<p>Параметр —exclude нужно указывать обязательно после имени файла архива, но перед именем каталога, который требуется заархивировать.
+<p>Если используются символы * или ?, нужно брать их в одинарные апострофы, чтобы они передавались в tar как есть, 
+иначе оболочка пытается подставить вместо них полный список файлов.
+<p><code>tar -vczf /backup/srv/sur/date "+%d-%m-%y_%H-%M-%S"sur.tar.gz —exclude=ВИДЕОМАТЕРИАЛЫ /mnt/win2008/ </code></p>
+<p>--ignore-failed-read— игнорирует файлы, которые невозможно прочитать, например, заблокированные другими процессами или на которые нет прав. 
+<p><code>tar -vczf /backup/srv/sur/date "+%d-%m-%y%H-%M-%S"_sur.tar.gz /mnt/win2008/ --ignore-failed-read</code></p>
+
+	<p>Удалить исходные файлы после добавления в архив</p>
+--remove-files
+<p>создать инкрементный архив</p>
+<br>--listed-incremental=meto_data.snar
+
+<h3>Распаковка архива</h3>
+<p>Действие «распаковка» задается с помощью ключа -x. 
+И тут снова потребуется ключ -f для указания имени файла архива. 
+Также добавим ключ -v для визуального отображения хода процесса.
+
+<p><code>tar -xvf /path/to/archive.tar.bz2</code></p>
+распакует содержимое архива в текущую папку.
+
+<h4>Альтернативное место для распаковки можно указать с помощью ключа -C (заглавная):</h4>
+
+<p><code>tar -xvf archive.tar.bz2 -C /path/to/folder</code></p>
+<p>Рекомендую использовать мнемоническое правило:
+<br>tar xzf file.tar.gz
+<br>xzf — extract zip file (извлечь zip-файл)
+
+
+<h3>	Просмотр</h3>
+
+Для просмотра содержимого архива .tar (в нашем случае его имя — archive.tar) , выполните команду:
+
+<p><code>tar -tf archive.tar</code></p>
+если он содержит большое количество файлов, то вполне разумно употребить команду less, которая позволит выполнить постраничный вывод информации на экран:
+
+<p><code>tar -tf archive.tar | less</code></p>
+Для просмотра содержимого архива .tar.gz, выполните следующую команду:
+
+<p><code>tar -ztf archive.tar.gz</code></p>
+<p><code>tar -ztf archive.tar.gz | less</code></p>
+Для просмотра содержимого архива .tar.bz2, выполните команду:
+
+<p><code>tar -jtf archive.tar.bz2</code></p> или
+<p><code>tar -jtf archive.tar.bz2 | less</code></p>
+Вы также можете использовать утилиту grep вместо less — это позволит вам отыскать тот или иной файл в архиве. Допустим:
+
+<p><code>tar -ztf archive.tar.gz | grep convert.py</code></p>
+
+
+
+<p></p>
+
+
+
+
+
+</body>
+  </html>
