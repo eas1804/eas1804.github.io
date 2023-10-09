@@ -10,20 +10,20 @@
 
 <body>
 <h2>Управление контейнерами</h2>
-<p>Допустим наш контейнер называется - nginx-proxy</P>
 <ol>
+<li><h3>команда удаляет все контейнеры, у которых статус exited. </h3>
+<p><code>$ docker rm $(docker ps -a -q -f status=exited)</code></p>
+<br>Флаг -q возвращает только численные ID, 
+<br>флаг -f фильтрует вывод на основе предоставленных условий. 
+<p>команде docker run можно передать флаг --rm, тогда контейнер будет автоматически удаляться при завершении. 
+
+
 <li><h3>Вход в консоль контейнера - exec</h3>
+<p>Допустим наш контейнер называется - nginx-proxy</P>
 <p><code>docker exec -it nginx-proxy bash</code></p>
 <li><h3>Выполнить команду в контейнере</h3>
 <p><code>docker exec -it nginx-proxy /usr/sbin/nginx -s reload</code></p>
 
-<li><h3>Информация о контейнере</h3>
-<p><code>docker inspect nginx-proxy</code></p>
-
-<p>Контейнеры хранятся в виде папок и файлов в директории <code>/var/lib/docker/volumes</code></p>
-<p></p>
-
-<p><code></code></p>
 
 
 </ol>

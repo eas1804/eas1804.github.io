@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>docker. view</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Просмотр</h2>
+<ol>
+<li><h3>Просмотр работающих контенеров</h3>
+<p><code>docker ps</code></p>
+
+<li><h3>Просмотр всех контенеров (работающих и остановленных)</h3>
+<p><code>docker ps -a</code></p>
+<p><code>docker container ls --format 'table {{.Names}} | {{.Status}}'| nl -v 0</code></p>
+
+<li><h3>Посмотреть остановленные контейнеры</h3>
+<p><code>docker ps -a -f status=exited</code></p>
+
+<li><h3>Посмотреть логи контейнера</h3>
+<p>Допустим наш контейнер называется - nginx-proxy</P>
+<p><code>docker logs nginx-proxy</code> или <code>docker logs --tail 100 nginx-proxy</code></p>
+<li><h3>Информация о контейнере</h3>
+
+<p><code>docker inspect nginx-proxy</code></p>
+<p>Контейнеры хранятся в виде папок и файлов в директории <code>/var/lib/docker/volumes</code></p>
+<li><h3>Посмотреть запущенные процессы в контейнере</h3>
+<p><code>docker top nginx-proxy</code></p>
+
+<li><h3>Статистика потребляемых ресурсов контейнера или группы контейнеров</h3>
+<p><code>docker stats nginx-proxy</code> или 
+<code>docker stats container1 container2 container3</code></p>
+
+<li><h3>Просмотр занимаемого места Docker</h3>
+<p><code>docker system df</code></p>
+
+<li><h3>Просмотр используемых портов</h3>	
+<p><code>docker port nginx-proxy</code></p>
+
+
+
+</body>
+  </html>
