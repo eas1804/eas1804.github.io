@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>docker control</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Управление контейнерами</h2>
+<p>Допустим наш контейнер называется - nginx-proxy</P>
+<ol>
+<li><h3>Вход в консоль контейнера - exec</h3>
+<p><code>docker exec -it nginx-proxy bash</code></p>
+<li><h3>Выполнить команду в контейнере</h3>
+<p><code>docker exec -it nginx-proxy /usr/sbin/nginx -s reload</code></p>
+
+<li><h3>Информация о контейнере</h3>
+<p><code>docker inspect nginx-proxy</code></p>
+
+<p>Контейнеры хранятся в виде папок и файлов в директории <code>/var/lib/docker/volumes</code></p>
+<p></p>
+
+<p><code></code></p>
+
+
+</ol>
+</body>
+  </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>docker-install</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Установка Docker</h2>
+<p><code>curl -o - https://get.docker.com | bash -</code></p>
+<p>на всякий случай</p>
+<p><code>iptables-save > /etc/iptables/docker.ruls</code></p>
+<p>Дать правло пользователю запускать контейнеры</p>
+<p><code>sudo usermod -aG docker youruser</code></p>
+
+<h2>Установка docker-compose </h2>
+<p><code>curl -L https://github.com/docker/compose/releases/download/v$(curl -Ls https://www.servercow.de/docker-compose/latest.php)/docker-compose-$(uname -s)-$(uname -m) > /usr/local/bin/docker-compose</code></p>
+<p><code>chmod +x /usr/local/bin/docker-compose</code></p>
+
+<h2>c-top</h2>
+<p>программа для просмотра используемых ресурсов контейнерами</p>
+<p>в ctop все метрики собраны в одно место для каждого контейнера. </p>
+<h3>Вариант 1. Запуск в docker</h3>
+<p><code>docker run --rm -ti --name=ctop  --volume /var/run/docker.sock:/var/run/docker.sock:ro  quay.io/vektorlab/ctop:latest</code></p>
+
+<h3>Вариант 2. Устанока приложения </h3>
+<p><code>echo "deb http://packages.azlux.fr/debian/ buster main" | tee /etc/apt/sources.list.d/azlux.list</code></p>
+<p><code>wget -qO - https://azlux.fr/repo.gpg.key | apt-key add - </code></p>
+<p><code>apt update </code></p>
+<p><code>apt install docker-ctop</code></p>
+
+
+
+
+</body>
+  </html>
