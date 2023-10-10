@@ -15,6 +15,9 @@
 <p><code> apt install systemd-journal-remote</code></p>
 <p><code> systemctl start systemd-journal-gatewayd.service</code></p>
 <p>Порт по умолчанию 19531. 
+<p><code>iptables -A INPUT -p tcp -m tcp --dport 19531 -j ACCEPT -m comment --comment "WebLog"</code></p>
+<p><code>service netfilter-persistent save</code></p>
+
 <p><code>http://192.168.20.25:19531/browse</code></p>
 <p>только текущей загрузки логи :
 <p><code>http://192.168.20.25:19531/entries?boot </code></p>

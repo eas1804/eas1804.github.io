@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Linux. users</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Users</h2>
+<ol>
+<li><h3>Добавление пользователя</h3>
+<p><code>useradd user_name</code></P>
+
+<li><h3>Изменение пароля</h3>
+<p><code>passwd user_name</code></P>
+
+<li><h3>Удаление пользователя</h3>
+<p><code>userdel user_name</code></P>
+
+<li><h3>Заблокировать пользователя</h3>
+<p><code>passwd -l user_name</code></P>
+
+<li><h3>Разблокировать пользователя:</h3>
+<p><code>passwd -u user_name</code></P>
+
+<li><h3>Посмотреть статус пользователя:</h3>
+<p><code>passwd -S user_name</code> (S- заглавная)</P>
+
+<br>- P или PS: пароль установлен (пользователь разблокирован)
+<br>– L или LK: пользователь заблокирован
+<br>– N или NP: пароль не требуется пользователю
+
+<li><h3>Добавиить возможность переключиться в root</h3>
+<p><code>usermod -aG sudo username</code></P>
+
+<li><h3>Просмотр списка пользователей</h3>
+<p><code>cat /etc/passwd</code></P>
+</body>
+  </html>
