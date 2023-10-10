@@ -11,15 +11,18 @@
 <body>
 <h2>Windows. After install</h2>
 <ol>
-<li><h3>Windows 11. Создать локальную учётную запись</h3>
-<p><code>OOBEBYPASSNRO</code></p>
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
 
 <li><h3>Электропитание — максимальная производительность</h3>
 <p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
 
-
+<li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
+<p> win+r <code>ms-settings:notifications</code></p>
+<p>Отключите опцию "Suggest ways I can finish setting up my device to get the most out of Windows" 
+<br>(Предложить способы завершения настройки устройства для наиболее эффективного использования Windows).
+<p>или через реестр
+<p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v ScoobeSystemSettingEnabled /t REG_DWORD /d 0 /f</code></p>
 </ol>
 </body>
 </html>
