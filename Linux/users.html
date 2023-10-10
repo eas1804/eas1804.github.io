@@ -9,7 +9,7 @@
   </head>
 
 <body>
-<h2>Users</h2>
+<h2>Users and groups</h2>
 <ol>
 <li><h3>Добавление пользователя</h3>
 <p><code>useradd user_name</code></P>
@@ -38,5 +38,22 @@
 
 <li><h3>Просмотр списка пользователей</h3>
 <p><code>cat /etc/passwd</code></P>
+
+<hr>
+<li><h3>Создать группу</h3
+<p><code>groupadd new-group</code></P>
+
+<li><h3>Изменить имя группы test-group на имя named-group</h3
+<p><code>groupmod -n named-group test-group</code></P>
+
+<li><h3>Удаление группы</h3
+<p><code>groupdel test-group</code></P>
+
+<li><h3>Добавить пользователя в новую группу</h3
+<p><code>gpasswd -a new-user test-group</code></P>
+
+<li><h3>Указать группу new-group в качестве основной группы пользователя test-user</h3
+<p><code>usermod -g new-group test-user</code></P>
+
 </body>
   </html>
