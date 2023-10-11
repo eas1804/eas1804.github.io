@@ -20,9 +20,6 @@ li {
   line-height: 1.5;
 }
 
-
-
-
 a {
   color: #007bff;
   text-decoration: none;
@@ -45,4 +42,7 @@ code {
 		
 pre {
 	font-size: 14px;
+	background-color: #ccc; /* Серый цвет фона */
+    padding: 5px; /* Отступы внутри тега <code> */
+    border: 1px solid #000;
 }
