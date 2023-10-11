@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Синхронизация IMAP</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+<h2>Синхронизация IMAP</h2>
+
+<h3>Устанвока</h3>
+
+<pre>
+apt install -y            \
+  libauthen-ntlm-perl     \
+  libcgi-pm-perl          \
+  libcrypt-openssl-rsa-perl   \
+  libdata-uniqid-perl         \
+  libencode-imaputf7-perl     \
+  libfile-copy-recursive-perl \
+  libfile-tail-perl        \
+  libio-socket-inet6-perl  \
+  libio-socket-ssl-perl    \
+  libio-tee-perl           \
+  libhtml-parser-perl      \
+  libjson-webtoken-perl    \
+  libmail-imapclient-perl  \
+  libparse-recdescent-perl \
+  libmodule-scandeps-perl  \
+  libreadonly-perl         \
+  libregexp-common-perl    \
+  libsys-meminfo-perl      \
+  libterm-readkey-perl     \
+  libtest-mockobject-perl  \
+  libtest-pod-perl         \
+  libunicode-string-perl   \
+  liburi-perl              \
+  libwww-perl              \
+  libtest-nowarnings-perl  \
+  libtest-deep-perl        \
+  libtest-warn-perl        \
+  make                     \
+  time                     \
+  cpanminus
+</pre>
+  
+<p>Скачиваем файл утилиты и устанавливаем утилите права на запуск</p>
+
+<p><code>wget -N https://raw.githubusercontent.com/imapsync/imapsync/master/imapsync</code></p>
+<p><code>chmod +x imapsync</code></p>
+<p>Запустим и проверим установлены ли все зависимости
+<p><code>./imapsync –testslive</code></p>
+<p><code>cp imapsync /usr/local/bin/</code></p>
+<p>Синхронизировать почту 
+<pre>imapsync \
+       --host1 server1.oldmail.com --user1 server1@server1.oldmail.com --password1 server1password \
+       --host2 server2.newmail.com --user2 server2@server2.newmail.com --password2 server2password</pre>
+	   	  
+<br>server1.oldmail.com — доменное имя нашего старого почтового сервера
+<br>server1@server1.oldmail.com — почтовый ящик который мы переносим
+<br>server1password — пароль от почтового ящика server1@server1.oldmail.com
+<br>server2.newmail.com -доменное имя нашего нового почтового сервера
+<br>server2@server2.newmail.com — почтовый ящик на который мы переносим все письма с нашего старого ящика
+<br>server2password — пароль от нашего нового почтового ящика
+<p>Для того чтобы не передавать в терминал пароли от почтовых ящиком, вместо —password1 и —password2 можно использовать —passfile1 и —passfile2 в таком случаи вместо пароля необходимо указать путь к файлу в котором будет находится пароль.
+В imapsync доступны дополнительные параметры
+
+<br>—delete1 — удалением всех писем и папок с сервера источника
+<br>—delete2 — удалением писем, которых нет на сервере источнике, с сервера на который переносится почта. Полезно при пересинхронизации почтовых аккаунтов
+<br>—maxsize — пропускать синхронизацию писем которые превышают заданный размер
+<br>—minsize — не синхронизировать письма которая меньше заданного размера
+<br>—folder — синхронизация определенной директории
+<br>—maxage — не синхронизировать письма которые пришли раньше чем указанное количество дней. По такому же принципу работает команда —minage
+
+
+
+</body>
+  </html>

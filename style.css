@@ -34,3 +34,7 @@ code {
     padding: 5px; /* Отступы внутри тега <code> */
     border: 1px solid #000;
 		}
+		
+pre {
+	font-size: 14px;
+}
