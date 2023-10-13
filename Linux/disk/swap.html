@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>swap</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Swap</h2>
+<h3>Отключения swap (подкачки) в Debian</h3>
+<ol>
+<li>Убедитесь, что ваша система использует swap
+<p><code>swapon -s</code></p>
+<li>Отключите swap
+<p><code>swapoff /dev/sda5</code></p>
+<li>Удалите запись о swap из файла /etc/fstab 
+<p><code>nano /etc/fstab</code></p>
+</ol>
+
+<h3> Создать SWAP в виде файла а не раздела </h3>
+<ol>
+<li>Создайте файл для swap
+<p><code>dd if=/dev/zero of=/swapfile bs=1M count=1024</code></p>
+<p>создать файл swap размером 1 ГБ в корневой директории (/),
+<li>Установите права доступа к файлу
+<p><code>chmod 600 /swapfile</code></p>
+<li>Преобразуйте файл в swap пространство 
+<p><code>mkswap /swapfile</code></p>
+<li>Включите swap
+<p><code>swapon /swapfile</code></p>
+<li>Сделайте swap файл постоянным после перезагрузки (nano /etc/fstab)
+<p>Добавить строку
+<p><code>/swapfile none swap sw 0 0</code></p>
+<li>Проверьте, что swap активен
+<p><code>swapon -s</code></p>
+
+
+</body>
+  </html>
