@@ -17,10 +17,8 @@
 <p><code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code></p>
 
 
-<p><code>systemctl enable chrony</code></p>
+<p><code>systemctl start chrony && systemctl enable chrony</code></p>
 <p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
-
-
 
 
 <h3>History </h3>
