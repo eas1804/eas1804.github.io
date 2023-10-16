@@ -22,7 +22,7 @@ cp  /etc/openvpn/ta.key  $KEY_FOLDER/$USER_NAME
 echo "# disable" > /etc/openvpn/ccd/$USER_NAME
 
 # generatee file.ovpn
-IP=$(curl -s 2ip.ru)
+IP=$(curl ifconfig.me)
 result=$(iptables -L INPUT -nv | grep OpenVPN)
 PORT=$(echo "$result" | awk '{print $11}' | cut -d: -f2)
  
