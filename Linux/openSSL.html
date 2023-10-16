@@ -31,9 +31,11 @@
 
 <li><h3>какие алгоритмы шифрования использует почтвый сервер</h3>
 <p><code>openssl s_client -connect mail.dtz.in.ua:25 -starttls smtp</code></p>
-<p><code>openssl s_client -debug -starttls smtp -crlf -connect localhost:25</code></p>
+<p><code>openssl s_client -connect mail.dtz.in.ua:143 -starttls imap</code></p>
 
-<p><code>openssl s_client -debug -starttls smtp -crlf -connect mail.dtz.in.ua:25 | grep Cipher</code></p>
+<p><code>openssl s_client -debug -starttls smtp -crlf -connect localhost:25</code></p>
+<p><code> |grep Cipher</code> <code> | grep Protocol </code> 	 <code> | grep public</code> 
+
 
 </body>
   </html>
