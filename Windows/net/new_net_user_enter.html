@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Войти в сетевую папку под другим пользователем без перезагрузки</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Войти в сетевую папку под другим пользователем без перезагрузки</h2>
+<ol>
+<li>Cмотрим текущие соединения
+<p><code>net use</code></p>
+<li>Удаляем необходимое текущее соединение
+<p><code>net use \\Server\SomeDirectory /delete</code></p>
+Или все имеющиеся соединения
+<p><code>net use * /delete</code></p>
+<li> canvasбрасываем кэш выданных тикетов Kerberos
+<p><code>klist purge</code></p>
+<p>Это связано с тем, что членство в группах AD обновляется при создании билета Kerberos, 
+которое происходит при загрузке системы или при аутентификации пользователя во время входа в систему.
+<li>Перезапускаем explorer:
+<p><code>taskkill /F /IM explorer.exe & start explorer</code></p>
+
+
+
+
+</body>
+  </html>
