@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MySQLSQL</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>MySQL</h2>
+<h3>Установка</h3>
+<p><code>apt install mariadb-server</code></p>
+<h3>Задаем пароль для пользователя sql root:</h3>
+<p><code>mysqladmin -u root password</code></p>
+<h3>Создать базу данных postfix и учетную запись в mariadb</h3>
+<ol>
+<li><p><code>mysql -u root -p</code></p>
+<li><p><code>CREATE DATABASE <b>postfix</b> DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</code></p>
+где postfix — имя базы
+<li><p><code>GRANT ALL ON postfix.* TO 'postfix'@'localhost' IDENTIFIED BY 'postfix123';</code></p>
+где postfix — имя учетной записи; postfix123 — пароль; localhost разрешает подключение только с локального сервера
+<br>Важно знать, что после собаки указывает адрес с которого вы будете подключаться. 
+<br>Если вдруг база данных будет на одном сервере, а веб-сервер на другом, то нужно создавать пользователя
+<br>wpuser1@<адрес с которого обращается веб сервер>
+<h4>Войти с любого IP</h4>
+<p><code>CREATE USER 'shujie'@'%' IDENTIFIED BY 'absd';</code></p>
+Средство для создания пользователя с именем shujie, который может подключаться с любого удаленного хоста, аbsd пароль
+<br>% означает, что пользователь может войти в систему с любого удаленного хоста
+
+<h3>Дадим пользвателю wpuser1 права на чтение и запись к базе wp_mysitedb</h3>
+<li><p><code>GRANT ALL PRIVILEGES ON  wp_mysitedb. * TO 'wpuser1'@'localhost';</code></p>
+
+<h3>Применить натсройки</h3>
+<li><p><code>FLUSH PRIVILEGES;</code></p>
+</ol>
+<h3>Посмотреть список баз</h3>
+<p><code>SHOW DATABASES;</code></p>
+
+</body>
+  </html>
