@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>column</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>column</h2>
+
+<p> Эта  утилита делает одну вещь: выстраивает данные в удобочитаемые таблицы, используя различные разделители. 
+В общем случае разделителем считается пробел, но его через ключ можно переназначить. 
+<p><code>mount | column -t</code></p>
+<p><code>column -s ":" -t /etc/passwd</code></p>
+<p><code>column -s ":" -t /etc/passwd | awk '{print $1}'</code></p>
+
+</body>
+  </html>

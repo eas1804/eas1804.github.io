@@ -17,20 +17,19 @@
 <h3>Создать базу данных postfix и учетную запись в mariadb</h3>
 <ol>
 <li><p><code>mysql -u root -p</code></p>
-<li><p><code>CREATE DATABASE <b>postfix</b> DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</code></p>
-где postfix — имя базы
-<li><p><code>GRANT ALL ON postfix.* TO 'postfix'@'localhost' IDENTIFIED BY 'postfix123';</code></p>
-где postfix — имя учетной записи; postfix123 — пароль; localhost разрешает подключение только с локального сервера
-<br>Важно знать, что после собаки указывает адрес с которого вы будете подключаться. 
+<li><p><code>CREATE DATABASE rainloop_db DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</code></p>
+где rainloop_db — имя базы
+<li><p><code>GRANT ALL ON rainloop_user.* TO 'rainloop_user'@'localhost' IDENTIFIED BY 'Pass128';</code></p>
+где rainloop_user — имя учетной записи; Pass128 — пароль; localhost разрешает подключение только с локального сервера
+<p>Важно знать, что после собаки указывает адрес с которого вы будете подключаться. 
 <br>Если вдруг база данных будет на одном сервере, а веб-сервер на другом, то нужно создавать пользователя
 <br>wpuser1@<адрес с которого обращается веб сервер>
 <h4>Войти с любого IP</h4>
 <p><code>CREATE USER 'shujie'@'%' IDENTIFIED BY 'absd';</code></p>
 Средство для создания пользователя с именем shujie, который может подключаться с любого удаленного хоста, аbsd пароль
 <br>% означает, что пользователь может войти в систему с любого удаленного хоста
-
-<h3>Дадим пользвателю wpuser1 права на чтение и запись к базе wp_mysitedb</h3>
-<li><p><code>GRANT ALL PRIVILEGES ON  wp_mysitedb. * TO 'wpuser1'@'localhost';</code></p>
+<h3>Дадим пользвателю rainloop_user права на чтение и запись к базе rainloop_db</h3>
+<li><p><code>GGRANT ALL PRIVILEGES ON rainloop_db. * TO 'rainloop_user'@'localhost';</code></p>
 
 <h3>Применить натсройки</h3>
 <li><p><code>FLUSH PRIVILEGES;</code></p>
