@@ -10,32 +10,27 @@
 
 <body>
 <h2>Nginx</h2>
-<h3>Перечиать конфиг</h3>
+<ol>
+<li><h3>Перечиать конфиг</h3>
 <p><code>nginx -s reload</code></p>
-<h3>Закрыть доступ паролем </H3>
-<p>Создали пользователя user01
-<p><code>apt install apache2-utils</code></p>
-<p><code>htpasswd -c /etc/nginx/.htpasswd user01</code></p>
+<li><h3> Логи</h3>
+<p>Лог доступа
+<code>access_log  var/log/nginx/имяФайла_access.log;</code></p>
+<p>Лог ошибок
+<code>error_log /var/log/nginx/имяФайла_eroor.log;</code></p>
+<p>Больше логов
+<code>error_log /var/log/nginx/имяФайла.log <b>debug</b>;</code></p>
+<p>отключить логи
+<code>access_log off;</code>
+<code>error_log off;</code></p>
 
-<p>включим аутентификацию в nginx
-<pre>
-server {
-	listen 80 default_server;
-
-	root /var/www/html;
-	index index.html index.htm index.nginx-debian.html index.php;
-	server_name _;
-
-    <B>auth_basic           "Administrator’s Area";
-	auth_basic_user_file /etc/nginx/.htpasswd;</B>
-	</pre>
-<h3> Можно для каждого сайта сделать отдельный конфиг</h3>
-<p><code>vi /etc/nginx/sites-enabled/mail.mlp.in.ua</code></p>
+<li><h3> Отдельный конфиг для каждого сайта</h3>
+<p><code>vi /etc/nginx/sites-enabled/mlp.in.ua</code></p>
 <pre>
 server {
   listen 80;
-  server_name <b>mail.mlp.in.ua;</B>
-  <b>root /var/www/rainloop;</b>
+  server_name <b>www.mlp.in.ua, mlp.pp.ua;</B>
+  <b>root /var/www/mlp.pp.ua;</b>
   index index.php;
   access_log /var/log/nginx/mail.mlp.in.ua_access.log;
   error_log /var/log/nginx/mail.mlp.in.ua_error.log;
@@ -44,7 +39,7 @@ server {
   }
 </pre>
 <p><code>ln -s /etc/nginx/sites-enabled/mail.mlp.in.ua /etc/nginx/sites-enabled/</code></p>
-<h3> Config для php</h3>
+<li><h3> Config для php</h3>
 <p><code>vi /etc/nginx/sites-enabled/default</code></p>
 <pre>
 server {
@@ -68,6 +63,22 @@ server {
         }
 }
 </pre>
+<li><h3>Закрыть доступ паролем </H3>
+<p>Создали пользователя user01
+<p><code>apt install apache2-utils</code></p>
+<p><code>htpasswd -c /etc/nginx/.htpasswd user01</code></p>
 
+<p>включим аутентификацию в nginx
+<pre>
+server {
+	listen 80 default_server;
+
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html index.php;
+	server_name _;
+
+    <B>auth_basic           "Administrator’s Area";
+	auth_basic_user_file /etc/nginx/.htpasswd;</B>
+	</pre>
 </body>
   </html>
