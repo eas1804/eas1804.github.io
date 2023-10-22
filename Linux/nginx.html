@@ -15,7 +15,7 @@
 <p><code>nginx -s reload</code></p>
 <li><h3> Логи</h3>
 <p>Лог доступа
-<code>access_log  var/log/nginx/имяФайла_access.log;</code></p>
+<code>access_log  /var/log/nginx/имяФайла_access.log;</code></p>
 <p>Лог ошибок
 <code>error_log /var/log/nginx/имяФайла_eroor.log;</code></p>
 <p>Больше логов
@@ -31,30 +31,32 @@ server {
   listen 80;
   server_name <b>www.mlp.in.ua, mlp.pp.ua;</B>
   <b>root /var/www/mlp.pp.ua;</b>
-  index index.php;
+  index index.php, index.html;
   access_log /var/log/nginx/mail.mlp.in.ua_access.log;
   error_log /var/log/nginx/mail.mlp.in.ua_error.log;
   location / {
-    try_files $uri $uri/ /index.php?$query_string;
-  }
+        try_files $uri $uri/ =404;
+             }
+    }
 </pre>
+<p><code>chown -R www-data:www-data /var/www/mlp.pp.ua</code></p>
 <p><code>ln -s /etc/nginx/sites-enabled/mail.mlp.in.ua /etc/nginx/sites-enabled/</code></p>
+<p><code>nginx -s reload</code></p>
 <li><h3> Config для php</h3>
 <p><code>vi /etc/nginx/sites-enabled/default</code></p>
 <pre>
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
-<b>        root /var/www/html;</b>
+<b>        root /var/www/mlp.pp.ua;</b>
         index <b>index.php</B> index.html index.htm index.nginx-debian.html;
         server_name _;
 
         location / {
                 try_files $uri $uri/ =404;
         }
-
         location ~ \.php$ {
-            set $root_path /var/www/html;
+            set $root_path /var/www/mlp.pp.ua;
             fastcgi_pass unix:/run/php/php<b><u>8.2</u></b>-fpm.sock;
             fastcgi_index index.php;
             fastcgi_param SCRIPT_FILENAME $root_path$fastcgi_script_name;
@@ -63,11 +65,15 @@ server {
         }
 }
 </pre>
+<li><h3> Php test file</h3>
+<p><code>vi /var/www/html/index.php</code></p>
+<pre>
+&lt;?php phpinfo(); ?>
+</pre>
 <li><h3>Закрыть доступ паролем </H3>
 <p>Создали пользователя user01
 <p><code>apt install apache2-utils</code></p>
 <p><code>htpasswd -c /etc/nginx/.htpasswd user01</code></p>
-
 <p>включим аутентификацию в nginx
 <pre>
 server {
