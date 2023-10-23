@@ -10,6 +10,16 @@
 
 <body>
 <h2> Windows 11</h2>
+<h3>Запретить обновления до Windows 11</h3>
+<ol>
+<li><code>regedit \HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\ </code>
+<li>Создать раздел <code>WindowsUpdate</code>
+<li>Создать Параметр Dword32 <code>TargetReleaseVersion</code> Значение <code>1</code>
+<li>Создать строковый парамер <code>TargetReleaseVersionInfo</code> и указаь номер версии текущей Windows, например <code>21H2</code>
+<p> Текущую версию можно узнать через <code>winver</code>
+<li>Создать строковый парамер <code>ProductVersion</code> со значением <code>Windows10</code>
+<li><code>shotdown -r -f -t 3</code>
+</ol>
 <h3>Установка Windows 11 без подключения к Интернету</h3>
 <ol>
 <li>Shift+F10
