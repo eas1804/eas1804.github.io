@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Домен</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> Восстанавливаем доверительные отношения в домене</h2>
+Перезагрузка не потребуется. Заходим под локальным админом на компьютер, у которого проблема с доверительным отношением.
+
+<p>cmd От Администратора
+
+<p><code>Netdom resetpwd /Server:DomainController /UserD:Administrator /PasswordD:Password</code></p>
+<br>Server — имя любого доменного контроллера
+<br>UserD — имя учетной записи администратора домена
+<br>PasswordD — пароль администратора домена
+<p>Данная утилита входит в состав Windows Server начиная с редакции 2008, на пользовательские ПК ее можно установить из состава пакета RSAT (Средства удаленного администрирования сервера).
+
+<h2>Вводим компьютер в домен</h2>
+<p><code>netdom join vm1 /domain:contoso.com /userd:administrator /password:*</code></p>
+и вводим пароль указанной учетной записи. Перезагружаемся.
+
+</body>
+  </html>
