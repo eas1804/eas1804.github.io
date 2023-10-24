@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Wake on Lan</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Wake on Lan</h2>
+<h3>Отправить магический пакет:</h3>
+<p><code>/usr/bin/wakeonlan -p 8 4c:ed:fb:73:4c:93</code></p>
+<h3>Натсроить WOL</h3>
+<p><code>apt-get install ethtool -y</code></p>
+<p>Включите WOL для сетевого интерфейса
+<p><code>ethtool -s <имя_сетевого_интерфейса> wol g</code></p>
+<p>убедиться, что WOL включен для вашего сетевого интерфейса
+<p><code>ethtool <имя_сетевого_интерфейса></code></p>
+<p>В выводе вы должны увидеть строку "Wake-on: g", что означает, что WOL включен.
+<p>Сохраните настройки сетевого интерфейса в файле  /etc/network/interfaces
+<p><code>nano /etc/network/interfaces</code></p>
+<p><code>post-up /usr/sbin/ethtool -s <имя_сетевого_интерфейса> wol g</code></p>
+
+
+
+
+
+</body>
+  </html>
