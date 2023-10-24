@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Настройка сетевого интерфейса в Debian</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Настройка сетевого интерфейса в Debian</h2>
+<p><code>nano /etc/network/interfaces</code></p>
+<pre>auto lo
+iface lo inet loopback
+</pre>
+<h3> Статический IP</h3>
+<pre>
+auto eth0
+iface eth0 inet static
+address 192.168.1.35
+gateway 192.168.1.1
+netmask 255.255.255.0
+</pre>
+<p>allow-hotplug eth0
+<p>"Горячее подключение" (hotplug) означает, что интерфейс будет автоматически обнаруживаться и активироваться при подключении к компьютеру или при вставке сетевого кабеля. 
+Это отличается от статической настройки интерфейса, которая всегда активна, независимо от наличия физического подключения.
+<h3>Динамический  IP</h3>
+<pre>
+auto eth0
+iface eth0 inet dhcp
+</pre>
+
+<h3>Мост (Bridge -vmbr0)</h3>
+
+<pre>
+auto lo
+iface lo inet loopback
+
+auto eno1
+iface eno1 inet static
+        address 172.16.181.9/24
+
+auto vmbr0
+iface vmbr0 inet static
+        address 172.16.181.8/24
+        gateway 172.16.181.1
+        bridge-ports eno1
+        bridge-stp off
+        bridge-fd 0
+</pre>
+<h3>DNS</h3>
+<p><code>vi /etc/resolv.conf</code></p>
+<pre>
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+</pre>
+
+<h3>Перезапуск службы сети:</h3>
+Эта команда перезапустит службу сети, что приведет к перезагрузке всех сетевых интерфейсов и применению изменений
+<p><code>systemctl restart networking.service</code></p>
+</body>
+  </html>
