@@ -22,7 +22,17 @@
 <p>только текущей загрузки логи :
 <p><code>http://192.168.20.25:19531/entries?boot </code></p>
 <h3> В консоли</h3>
-<p><code>journalctl -xeu openvpn@server.service</code></p>
-<p><code>journalctl | grep postfix</code></p>
+<p>Логи определенного юнита:</p>
+<p><code>journalctl -u nginx</code></p>
+
+<p>Следить (tail -f) за логом определенного юнита:</p>
+<p><code>journalctl -f -u nginx</code></p>
+
+<p> Сколько места занимают логи на диске
+<p><code>journalctl --disk-usage</code></p>
+Ограничить объем хранимых логов (journald сам занимается ротацией) можно по размеру:
+<p><code>journalctl --vacuum-size=1G</code></p>
+Или по времени:
+<p><code>journalctl --vacuum-time=1week</code></p>
 </body>
   </html>

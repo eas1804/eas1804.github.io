@@ -23,7 +23,7 @@
 <p><code>v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAA……</code></p>
 <p>На файл с приватным ключом есть ссылка из конфига почтового сервера exmim, postfix и др.
 <p> То есть в DNS азмещаем публичный ключ, а из конфига почтового серывера ссылаемся на приватный
-<p> Ключи можно и самомтсоятельно сгенерировать: 
+<H3> Ключи можно и самомтсоятельно сгенерировать:</h3> 
  <p><code>apt install opendkim opendkim-tools</code></p>
   <p>Создаем директорию для хранения ключей:
  <p><code>mkdir -p /etc/postfix/dkim && cd /etc/postfix/dkim</code></p>
