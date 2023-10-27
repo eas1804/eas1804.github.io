@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Оставляем 5 самых свежих файлов в каталоге /backup</h3>
+<p> команда сначала использует ls -t для сортировки файлов по времени изменения
+<p> а затем tail -n +6 для вывода всех файлов, начиная с шестого (то есть, кроме пяти самых свежих файлов).
+
+<pre>
+TO=/backup		# В каком каталоге удалять старые файлы
+COUNT=5    		# Сколько свежих файлов оставить 
+ls -t "$TO" | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
+</pre>
+<p></p>
+<h2>Оставляем 5 самых свежих каталогов в каталоге /backup</h3>
+В ls добавляем ключ d и /*/
+<pre>
+TO=/backup		# В каком каталоге удалять старые файлы
+COUNT=5    		# Сколько свежих файлов оставить 
+ls -dt "$TO"/*/ | tail -n +$((COUNT+1)) | xargs -I {} rm -r -- "{}"
+</pre>
+
+
+
+
+
+</body>
+  </html>

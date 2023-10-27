@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+<h3>tar</h3>
+Сделать копию каталога /mnt/base_1c/ в /backup/1c/
+<pre>
+#!/bin/sh
+
+TO=/backup/1c/		# Папка, куда будем складывать архивы. 	/в конце - обязательна
+FROM=/mnt/base_1c/  # Папка, которую будем архивирвоать. 	/в конце - обязательна
+
+tar -vczf $TO`date "+%d-%m-%g_%H-%M-%S"`-1с.tar.gz   $FROM
+exit0
+</pre>
+Если каталогов много, можно использовать функцию
+<pre>
+#!/bin/sh
+
+backup_func (){
+tar -vczf $TO`date "+%d-%m-%g_%H-%M-%S"`-User.tar.gz   $FROM
+}
+</pre>
+<pre>
+# Folder1
+TO=/backup/Ivanoff/			# Папка, куда будем складывать архивы. 	/в конце - обязательна
+FROM=/mnt/Ivanoff/  		# Папка, которую будем архивирвоать. 	/в конце - обязательна
+backup_func
+
+# Folder2
+TO=/backup/Petroff/			# Папка, куда будем складывать архивы. 	/в конце - обязательна
+FROM=/mnt/Petroff/  		# Папка, которую будем архивирвоать. 	/в конце - обязательна
+backup_func
+
+# Folder3
+TO=/backup/Sidoroff/		# Папка, куда будем складывать архивы. 	/в конце - обязательна
+FROM=/mnt/Sidoroff/  		# Папка, которую будем архивирвоать. 	/в конце - обязательна
+backup_func
+
+exit 0
+</pre>
+
+
+
+
+</body>
+  </html>

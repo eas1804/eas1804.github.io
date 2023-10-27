@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3>Smb + rsync</h3>
+Для Smb
+<p><code>apt install cifs-utils -y</code></p>
+<pre>
+#!/bin/sh
+
+ip=192.168.18.33
+smb_u="backup_users"            # Имя Пользоватлея
+smb_p="hs47-H7)yM"              # Пароль
+smb_v=3.0                       # Версия smb источника
+SHARA=/mnt/1c/                  # Точка мониторвания /в конце - обязательна
+
+        ###### Создаем функцию ####################
+backup_func (){
+mount -t cifs //$ip/$SHARA_USER $SHARA -o vers=$smb_v,user=$smb_u,password=$smb_p
+rsync -a -v   $SHARA $TARGET
+cd / && umount $SHARA
+}
+        ################### конец функции ##########
+cd / && umount $SHARA
+
+# 1c
+TARGET=/mnt/disk2/1c/   # Папка, куда будем складывать архивы /в конце - обязательна
+SHARA_USER=FOR_local    # Имя ресурса, который архивируем
+backup_func
+
+exit 0
+</pre>
+
+<p></p>
+
+
+
+<p><code></code></p>
+
+
+
+</body>
+  </html>

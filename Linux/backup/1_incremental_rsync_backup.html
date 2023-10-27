@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rsync</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+<h2>Инкриментный Backup. Rsync</h2>
+
+<pre>
+#!/bin/bash
+############# Задаем переменные ###############
+# Папка, куда будем складывать архивы
+SYST_DIR=/backup/
+
+        ###### Создаем функцию ####################
+backup_func (){
+
+# Создаем папку для инкрементных бэкапов
+mkdir -p ${SYST_DIR}${SRV_NAME}/increment/
+
+# Запускаем непосредственно бэкап с параметрами
+/usr/bin/rsync -avz --progress --delete  ${SRV_DIR} ${SYST_DIR}${SRV_NAME}/current/ --backup --backup-dir=${SYST_DIR}${SRV_NAME}/increment/`date +%Y-%m-%d`/
+
+# Чистим папки с инкрементными архивами старше 30-ти дней
+#/usr/bin/find ${SYST_DIR}${SRV_NAME}/increment/ -maxdepth 1 -type d -mtime +30 -exec rm -rf {} \;
+date
+echo "Finish backup ${SRV_DIR}"
+}
+        ################### конец функции ##########
+
+
+### user1.Vladimir_J
+SRV_DIR=/home/vladimir/SMB/
+SRV_NAME=Vladimir_J
+backup_func
+
+
+### user2. Anna_P
+SRV_DIR=/home/Anna_P/SMB/
+SRV_NAME=Anna_P
+backup_func
+</pre>
+<h3>Ключи</h3>
+<ul>
+<li>-a,  режим архивирования, включает ключи -rlptgoD;
+<li>-v,  выводит имена копируемых файлов;
+<li>-z,  включение режим сжатия; rsync сжимает данные перед отправкой и распаковывает их на конечной стороне после получения. 
+<br>Это может уменьшить объем данных, передаваемых по сети, особенно при копировании больших файлов или больших объемов данных
+<li>-P или -- progress  отображение прогресса при копировании;
+<li>-r,  каталоги копируются рекурсивно;
+<li>--delete — удаления файлов, которых нет в исходной директории
+<br>rsync -a --delete-after /data/ /backup/
+<br>в данном примере выполняется синхронизация каталога источника /data с каталогом /backup. 
+<br>Ключ delete-after по завершении операции удалит все файлы из каталога backup, которых нет в data. 
+<br>Ключ -a позволяет копировать только измененные файлы.
+<li>--backup, это опция позволяет создавать резервные копии файлов, которые были изменены или удалены. 
+<br>При использовании этой опции rsync сохраняет копию каждого файла, который был изменен или удален, в указанном каталоге резервных копий
+<li>
+
+
+
+</body>
+  </html>
