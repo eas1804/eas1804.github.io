@@ -11,6 +11,10 @@
 <body>
 <h2>Windows. After install</h2>
 <ol>
+<li><h3>Задать часовой пояс Украина/Киев</h3>
+<p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
+<p>узнать текущий часовой пояс <code>Get-TimeZone</code>  
+Просмотреть коды часовых поясов <code>tzutil /l </code></p>
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
 
