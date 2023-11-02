@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Расширить том C:</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Расширить том C:</h2>
+<p>Не могу расширить диск в Windows из-за раздела восстановления</p>
+<p>Нужно перенести файлы среды восстановления с раздела WinRE на системный диск C: и полностью удалить раздел восстановления
+<ol>
+<li>назначить букву диска разделу восстановлени
+
+<p><code>Diskpart</code></p>
+Выведите список дисков:
+<p><code>list disk</code></p>
+Выберите ваш диск:
+<p><code>select disk 0</code></p>
+Выведите список разделов.
+<p><code>list vol</code></p>
+Выберите раздел восстановления (в вашем случае может быть другой номер):
+<p><code>select part 4</code></p>
+Назначьте ему букву диска R:
+<p><code>assign letter r:</code> и выход <code>exit</code></p>
+
+<li>Отключите среду восстановления Windows (WinRE) 
+<p><code>reagentc /disable</code></p>
+<li>удалить раздел восстановления 
+<p>Выберите ваш раздел, который вы хотите удалить (смотрите на вывод своих команд, т.к. номера дисков и разделов у вас могут отличаться).
+<p><code>DISKPART</code></p>
+<p><code>rescan</code></p>
+<p><code>list disk</code></p>
+<p><code>select disk 0</code></p>
+<p><code>list part</code></p>
+<p><code>select part <b>4</B></code></p>
+<p><code>delete partition override</code></p>
+Параметр override разрешает утилите diskpart удалить любой раздел независимо от его типа (будь то активный, системный или загрузочный раздел).
+<p><code>Rescan</code> и выход <code>exit</code></p>
+<li>Включите WinRE и обновите конфигурацию 
+<p><code>reagentc /enable</code></p>
+убедитесь, что WIM файл среды восстановления был пересоздан на диске C:
+<p><code>bcdedit /enum all | find "osdevice"</code></p>
+Проверьте конфигурацию WinRE::
+<p><code>reagentc.exe /info</code></p>
+Теперь можно расширить системный диск:
+<p>link: https://winitpro.ru/index.php/2019/07/31/ne-udaetsya-rasshirit-disk-v-windows/
+
+
+</body>
+  </html>

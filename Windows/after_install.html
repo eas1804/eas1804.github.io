@@ -15,8 +15,13 @@
 <p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
 <p>узнать текущий часовой пояс <code>Get-TimeZone</code>  
 Просмотреть коды часовых поясов <code>tzutil /l </code></p>
+<p>Разрешить корректировку времени не администратору
+<p>Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времен
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
+
+<li><h3>Отключить гибернацию</h3>
+<p><code>powercfg -h off</code> или включить <code>powercfg -h on</code></p>
 
 <li><h3>Электропитание — максимальная производительность</h3>
 <p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
@@ -27,6 +32,13 @@
 <br>(Предложить способы завершения настройки устройства для наиболее эффективного использования Windows).
 <p>или через реестр
 <p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v ScoobeSystemSettingEnabled /t REG_DWORD /d 0 /f</code></p>
+<li><h3>BitLocker on/off</h3>
+<p><code>Manage-bde -status</code> <code>Manage-bde -off C</code></p>
+<li><h3>Автозагрузка</h3>
+<p><code>shell:startup</code></p>
+<li><h3>Отображение даты окончания активации</h3>
+<p><code>slmgr.vbs /xpr</code></p>
+
 </ol>
 </body>
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mail test bash</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>mail test from bash</h2>
+<h3>MX</h3>
+<p><code>nslookup -type=<b>mx</b> mlp.pp.ua</code></p>
+<h3>TXT</h3>
+<p><code>nslookup -type=<b>txt</b> mlp.pp.ua</code></p>
+<h3>Срок окончания сертификата</h3>
+<p><code>openssl s_client -servername mail.amida.in.ua -connect mail.dtz.in.ua:993 2>/dev/null | openssl x509 -noout  -dates</code></p>
+
+
+
+</body>
+  </html>
