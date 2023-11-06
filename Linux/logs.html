@@ -10,7 +10,7 @@
 
 <body>
 <h2>logs</h2>
-
+<h3> Через броузер</h3>
 <p> Есть служба systemd-journal-gatewayd, с помощью которой можно смотреть логи systemd через браузер. 
 <p><code> apt install systemd-journal-remote -y</code></p>
 <p><code> systemctl start systemd-journal-gatewayd.service && systemctl enable systemd-journal-gatewayd.service</code></p>
@@ -22,17 +22,30 @@
 <p>только текущей загрузки логи :
 <p><code>http://192.168.20.25:19531/entries?boot </code></p>
 <h3> В консоли</h3>
-<p>Логи определенного юнита:</p>
+<ol>
+<li>Фильтрация событий по важности
+<p><code>journalctl -p 0</code></p>
+<br>0: emergency (неработоспособность системы)
+<br>1: alerts (предупреждения, требующие немедленного вмешательства)
+<br>2: critical (критическое состояние)
+<br>3: errors (ошибки)
+<br>4: warning (предупреждения)
+<br>5: notice (уведомления)
+<br>6: info (информационные сообщения)
+<br>7: debug (отладочные сообщения)
+
+<li>Логи определенного юнита
 <p><code>journalctl -u nginx</code></p>
 
 <p>Следить (tail -f) за логом определенного юнита:</p>
 <p><code>journalctl -f -u nginx</code></p>
 
-<p> Сколько места занимают логи на диске
+<li>Сколько места занимают логи на диске
 <p><code>journalctl --disk-usage</code></p>
 Ограничить объем хранимых логов (journald сам занимается ротацией) можно по размеру:
 <p><code>journalctl --vacuum-size=1G</code></p>
 Или по времени:
 <p><code>journalctl --vacuum-time=1week</code></p>
+<p>Link: https://habr.com/ru/companies/ruvds/articles/533918/
 </body>
   </html>

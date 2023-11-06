@@ -14,27 +14,41 @@
 <li><h3>Проверить дату окончания сертификата для web/mail сервера</h3>
 <p><code>SERVER=mail.dtz.in.ua</code></p>
 <p><code>openssl s_client -servername ${SERVER} -connect ${SERVER}:993 2>/dev/null | openssl x509 -noout -dates</code></p>
+
+<li><h3>Посмотреть информацию о сертификате</h3>
+<p><code>openssl s_client -starttls smtp -connect ${SERVER}:25 | openssl x509 -noout -dates 2>/dev/null | grep notAfter | cut -d'=' -f2</code></p>
+
+<li><h3>какие алгоритмы шифрования использует почтвый сервер</h3>
+<p><code> |grep Cipher</code> <code> | grep Protocol </code> 	 <code> | grep public</code> 
+<p><code>openssl s_client -connect ${SERVER}:<b>25</b> -starttls <b>smtp</b>  </code></p>
+<p><code>openssl s_client -connect ${SERVER}:<b>587</b> -starttls <b>smtp</b> </code></p>
+<p>
+<p><code>openssl s_client -connect ${SERVER}:143 -starttls imap  | grep Cipher</code></p>
+
+<p><code>openssl s_client -debug -starttls smtp -crlf -connect localhost:25</code></p>
+
+
+
+
 <li><h3>Локально посмотреть информацию о сертификате</h3>
 <p><code>openssl  x509 -in server.crt -text -noout</code></p>
 <p>опция noout – не сохранять информацию в файл. А только вывести на стандартный вывод</p>
+
 <li><h3>Проверить дату сертификата </h3>
 <p><code>cat server.crt | openssl x509 -noout -enddate</code></p>
+
 <li><h3>Извлечь отпечаток</h3>
 <p><code> openssl  x509 -fingerprint -sha256 -in server.crt -noout</code></p>
+
 <li><h3>Создать приватный ключ, длинной 2048 бит</h3>
 <p><code>openssl genrsa -out private.key 2048</code></p>
+
 <p>Извлечь публичный ключ из приватного ключа и сохранит его в файле public.key</p>
 <p><code>openssl rsa -in private.key -pubout -out public.key</code></p>
 
 <li><h3>Создать приватный и публичный ключ</h3>
 <p><code>openssl req -new -x509 -days 3650 -nodes -out /etc/ssl/mail/public.pem -keyout /etc/ssl/mail/private.key -subj "/C=RU/ST=SPb/L=SPb/O=Global Security/OU=IT Department/CN=mail.dtz.in.ua"</code></p>
 
-<li><h3>какие алгоритмы шифрования использует почтвый сервер</h3>
-<p><code>openssl s_client -connect mail.dtz.in.ua:25 -starttls smtp</code></p>
-<p><code>openssl s_client -connect mail.dtz.in.ua:143 -starttls imap</code></p>
-
-<p><code>openssl s_client -debug -starttls smtp -crlf -connect localhost:25</code></p>
-<p><code> |grep Cipher</code> <code> | grep Protocol </code> 	 <code> | grep public</code> 
 
 
 </body>

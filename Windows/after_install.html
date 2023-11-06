@@ -17,6 +17,11 @@
 Просмотреть коды часовых поясов <code>tzutil /l </code></p>
 <p>Разрешить корректировку времени не администратору
 <p>Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времен
+<li><h3>Синхронизация времени через Internet </h3>
+<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update</code></p>
+<p><code>net stop w32time & net start w32time</code></p>
+
+
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
 
