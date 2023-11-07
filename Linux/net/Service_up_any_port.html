@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Поднять службу на определенном порту</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Поднять службу на определенном порту</h2>
+используется для тестирования и натсройки
+<ol>
+<li>Поднимаем службу на 11222 порту:
+<p><code>nc -lvp 11222</code></p>
+на экране увидим
+<p><code>Ncat: Listening on 0.0.0.0:11222</code></p>
+<li>С другого сервера подключаемся:
+<p><code>nc -v 192.168.70.12 11222</code></p>
+Результат
+<p><code>Connection to 192.168.70.12 11222 port [tcp/*] succeeded!</code></p>
+Теперь в терминал клиента можно что-то написать, а на сервере в терминале он отобразится. И наоборот
+
+
+
+</body>
+  </html>
