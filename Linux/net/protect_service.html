@@ -15,6 +15,7 @@
 
 <p><code>iptables -A INPUT -m recent --rcheck --seconds 600 --name BANLIST -j DROP</code></p>
 <p><code>iptables -A INPUT -p tcp -m multiport ! --dports 22,5060 -m recent --set --name BANLIST -j DROP</code></p>
+и открыть 22 и 5060
 <p><code>iptables -A INPUT -p tcp --syn --dport 22 -j ACCEPT</code></p>
 <p><code>iptables -A INPUT -p tcp --syn --dport 5060 -j ACCEPT</code></p>
 Попробуйте с помощью telnet тыкнуться в любой другой порт, отличный от 22 и 5060. Тут же получите бан.
@@ -23,14 +24,19 @@
 
 <p><code>iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name BANLIST --set</code></p>
 <p><code>iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name BANLIST --update --seconds 60 --rttl --hitcount 3 -j DROP</code></p>
+и открыть 22
 <p><code>iptables -A INPUT -p tcp --syn --dport 22 -j ACCEPT</code></p>
 
 <p>Разрешаем только 3 запроса в минуту, третий должен быть удачным, чтобы подключиться, иначе ip адрес уходит в бан на 60 секунд.
 <p>Посмотреть содержимое создаваемого списка BANLIST можно так:
 <p><code>cat /proc/net/xt_recent/BANLIST</code></p>
 
-<p>-m state --state NEW: Это модуль -m state, который используется для работы с состояниями соединений. Опция --state NEW означает, что правило будет применяться только к новым соединениям.
-<p>-m recent --name BANLIST --set: Это модуль -m recent, который позволяет отслеживать и управлять списками адресов. Опция --name BANLIST указывает имя списка, которое называется "BANLIST". Опция --set используется для добавления текущего источника пакета (IP-адреса) в список "BANLIST".
+<p>-m state --state NEW: Это модуль -m state, который используется для работы с состояниями соединений. 
+<br>Опция --state NEW означает, что правило будет применяться только к новым соединениям.
+<p>-m recent --name BANLIST --set: 
+<p>Это модуль -m recent, который позволяет отслеживать и управлять списками адресов. 
+<p>Опция --name BANLIST указывает имя списка, которое называется "BANLIST". 
+<p>Опция --set используется для добавления текущего источника пакета (IP-адреса) в список "BANLIST".
 
 </body>
   </html>
