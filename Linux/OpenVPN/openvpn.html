@@ -10,11 +10,19 @@
 
 <body>
 <h2>OpenVPN</h2>
+Используйте wget для загрузки скрипта
 <ol>
-<li> <a href="1-soft_net.sh">Soft</a> 
-<li> <a href="2_srv_crt.sh">Easy-rsa</a> 
-<li> <a href="3_server-conf.sh">Config server</a> 
-<li> <a href="4_create_client_crt.sh">Config client</a> имя клиента указать после имени скрипта
+<li> <a href="1-soft_net.sh">Part1. Install Soft</a>
+<br> Указать имя сетевой карты WAN и номер порта udp
+<li> <a href="2_srv_crt.sh">Part2. Easy-rsa</a> 
+<li> <a href="3_server-conf.sh">Part3. Config Server</a> 
+<br> Определиться с 
+<br>push "redirect-gateway def1 bypass-dhcp"
+<br>push "dhcp-option DNS 208.67.222.222"
+<br>push "dhcp-option DNS 208.67.220.220"
+
+<li> <a href="4_create_client_crt.sh">Part4. Config Client</a> 
+<br>имя клиента указать после имени скрипта
 </ol>
 
 
