@@ -39,6 +39,10 @@ echo "management /run/ovpn-mgmt unix" >>$FILE_SRV
 echo "tls-server" >>$FILE_SRV
 
 
+echo 'push "redirect-gateway def1 bypass-dhcp"' >>$FILE_SRV
+echo 'push "dhcp-option DNS 208.67.222.222"' >>$FILE_SRV
+echo 'push "dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
+
 cat $FILE_SRV
 
 systemctl start openvpn@server
@@ -48,8 +52,4 @@ cat /var/log/openvpn/openvpn.log
 ip a | grep tun
 
 exit 0
-
-#push "redirect-gateway def1 bypass-dhcp"
-#push "dhcp-option DNS 208.67.222.222"
-#push "dhcp-option DNS 208.67.220.220"
 

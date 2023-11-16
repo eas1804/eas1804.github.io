@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OpenVPN</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Add new disk</h2>
+
+<ol>
+<li>Создать каталог для монтирования
+<p><code>mkdir /mnt/disk2</code></p>
+<p><code>chmod -R 777 /mnt/disk2</code></p>
+
+<li>Узнать имя нового диска
+<p><code>lsblk</code></p>
+или
+<p><code>lsblk  /dev/sdb</code></p>
+Диски называются sda, sdb, sdc и т.д.
+
+<p><code>fdisk -l | grep /dev/sd</code></p>
+
+Информация по конктретному диску
+<p><code>fdisk -l | grep /dev/sdb</code></p>
+<hr>
+<h3>Для LVM</h3>
+<p>Добавить новый раздел
+<p><code>vgs</code></p>
+<p>Узнать имя группы, например ubuntu-vg
+<p><code>lvs</code></p>
+<p><code>lvcreate -l 100%FREE -n for-backup ubuntu-vg</code></p>
+<p>Использовать все свободное пространство — l 100%FREE
+<p>-n for-backup — имя логического тома
+<p>Увеличить существующий раздел
+<p><code>lvresize -L +5G  --resizefs VG_Name/LV_Name</code></p>
+<p><code>VG_Name/LV_Name Смотрим lvdisplay</code></p>
+
+<p><code>lvresize -L +5G  --resizefs ubuntu-vg/ubuntu-lv</code></p>
+<hr>
+<li>Форматируем диск, например /dev/sdb в GPT
+<p><code>gdisk /dev/sdb</code></p>
+<p><b>o</b>  - создать новую таблицу разделов
+<p><b>w</b> -записать
+<li>Разделы не обязательно добавлять
+<p>Создать разделов sdb1, sdb2 на диске sdb
+<p><code>fdisk /dev/sdb</code></p>
+<p><b>n</b>             добавим новый раздел
+<p><b>p</b>             основной раздел
+<p><b>w</b>            записать
+
+<li>Форматируем раздел sdb1 в файловой системе ext4
+<p>то есть — создаем файловую систему
+<p><code>mkfs.ext4 /dev/sdb1</code></p>
+<p>Можно форматировать не логический диск sdb1, а диск sdb
+<p><code>mkfs.ext4 /dev/sdb</code></p>
+
+<li>Автоматическое монтирование sdb при загрузке Linux
+<p>определить UUID
+<p><code>blkid -c /dev/null | grep sdb1</code></p>
+в конец файла добавить /etc/fstab
+
+<p><code>UUID="fc1c24cf-3858-4dfa-a7f4-f001428284e3"  /mnt/disk2 ext4 defaults 0 0</code></p>
+После того как вы сохраните этот файл, 
+<p>монтируем диск (без перезагрузки) с помощью команды:
+<p><code>mount -a</code></p>
+
+
+
+</body>
+  </html>
