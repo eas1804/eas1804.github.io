@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dsik test</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h1>Test Disk</h1>
+
+
+<h2>Scrypts</h2>
+<p><code>apt install smartmontools -y</code></p>
+<h3> информация обо всех дисках</h3>
+<pre>
+#!/bin/bash
+
+clear
+# Get list of disks
+disks=$(lsblk -d -n -o name)
+
+# Iterate through disks
+for disk in $disks; do
+  echo "Disk: $disk"
+
+  # Get model, size, power on hours, start/stop count, SMART health, and temperature
+  model=$(smartctl -i /dev/$disk | awk '/Device Model/ {print $3,$4,$5,$6}')
+  size=$(smartctl -i /dev/$disk | awk '/User Capacity/ {print $3,$4}')
+  hours=$(smartctl -a /dev/$disk | awk '/Power_On_Hours/ {print $10}')
+  count=$(smartctl -a /dev/$disk | awk '/Start_Stop_Count/ {print $10}')
+  smart=$(smartctl -H /dev/$disk | awk '/SMART overall-health/ {print $NF}')
+  rpm=$(smartctl -i /dev/$disk | grep "Rotation Rate")
+  temp=$(smartctl -a /dev/$disk | awk '/Temperature_Celsius/ {print $10}')
+
+  # Print disk information
+  echo "Model: $model"
+  echo "Size: $size"
+  echo "Power on hours: $hours"
+  echo "Start/Stop count: $count"
+
+  # Check SMART status
+  if [[ $smart == "PASSED" ]]; then
+    echo "SMART: OK"
+  else
+    echo "SMART: Problem - $smart"
+  fi
+
+  # Print disk rotation speed and temperature
+  echo "$rpm"
+  echo "Temperature: $temp C"
+
+  echo "---------------"
+done
+</pre>
+<h3>SMART test </h3>
+<pre>
+#!/bin/bash
+
+for drive in /dev/sd?
+do
+echo "______________"
+    echo "Drive: $drive"
+    smartctl -a $drive | grep "No Errors Logged" >/dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        echo "SMART - OK"
+    else
+        echo "SMART - PROBLEM"
+    fi
+done
+</pre>
+<h3> Скорость чтения</h3>
+<p><code>apt install  hdparm</code></p>
+<pre>
+#!/bin/bash
+
+clear
+for drive in /dev/sd?
+do
+echo "-------------"
+    echo "Drive: $drive"
+    sudo hdparm -tT $drive
+done
+</pre>
+
+
+<h2>smartctl</h2>
+ 
+<ul>
+<li>-a: отображает полную информацию о состоянии жесткого диска, включая SMART-атрибуты и их значения, а также текущее состояние диска;
+<li>-H: проверяет состояние жесткого диска и выводит краткий отчет, указывающий, прошла ли тестирование успешно;
+<li>-t [short|long]: запускает самотестирование жесткого диска. Ключ -t short запускает быстрое тестирование, а -t long - полное тестирование. Обратите внимание, что тестирование может занять продолжительное время;
+<li>-c: выводит отчет о состоянии технологии S.M.A.R.T. и общую информацию о жестком диске;
+<li>-l [error|selftest|SelectiveSelftest]: отображает журнал ошибок жесткого диска, историю самотестирования или журнал выборочного самотестирования соответственно;
+<li>-i: выводит идентификационную информацию о жестком диске, такую как серийный номер, модель, производитель, размер диска и т.д.;
+<li>-s: устанавливает параметры энергосбережения для жесткого диска;
+<li>-C: выводит информацию о состоянии жесткого диска в виде текстового отчета.
+</ul>
+<ol>
+<li>Инофрмация о диске
+<p><code>smartctl -i /dev/sda</code> подробнее <code>smartctl -a /dev/sda</code></p>
+
+<li>Получение информации о времени работы диска
+<p><code>smartctl -a /dev/sda | grep Power_On_Hours</code></p>
+<p>В маоем случае значение параметра Power_On_Hours равно 8272 часам, что означает, что диск был включен и работал в течение примерно 344 дней и 8 часов
+<p><code>9 Power_On_Hours          0x0032   091   091   000    Old_age   Always       -      <b> 8272</b></code></p>
+
+<li>Списка ошибок, которые произошли на диске
+<p><code>smartctl -l error /dev/sdc</code> или <code>smartctl -l error /dev/sdc | grep -i -E 'error|fail|warning'</code></p>
+
+
+<li>тест S.M.A.R.T
+<p>короткий тест <code>smartctl -t short /dev/sdc</code></p>
+<p>полный тест <code>smartctl -t long /dev/sdc</code></p>
+<p>для проверки результата тестирования <code>smartctl -a /dev/sdc </code></p> 
+
+</ol>
+
+<h2> Badblick test</h2>
+<p><code>apt-get install e2fsprogs</code></p>
+Отмонтируйте раздел, который вы хотите проверить, например, если вы хотите проверить раздел /dev/sda1, используйте следующую команду:
+umount /dev/sda1
+<p><code>badblocks -v /dev/sda1 > badblocks_a.log</code></p>
+
+
+</body>
+  </html>
