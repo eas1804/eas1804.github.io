@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Systemctl</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h3>Просмотреть все активные службы</h3>
+ <p><code>systemctl list-units --type=service</code></p>
+<p><code> systemctl list-units --type=service | grep open</code></p>
+<h3>Просмотреть все службы, включая неактивные</h3>
+<p><code>systemctl list-units --type=service --all</code></p>
+<h3>Просмотреть все службы с подробной информацией:</h3>
+<p><code>systemctl list-units --type=service --all --full</code></p>
+<h3>Проверить статус конкретной службы</h3>
+<p><code>systemctl status название-службы</code></p>
+systemctl status openvpn.servvice
+<p><code>service название-службы status</code></p>
+ 
+
+
+</body>
+  </html>

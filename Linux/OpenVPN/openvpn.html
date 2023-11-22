@@ -10,6 +10,7 @@
 
 <body>
 <h2>OpenVPN</h2>
+<h3> Debian Server </h3>
 Используйте wget для загрузки скрипта
 <ol>
 <li> <a href="1-soft_net.sh">Part1. Install Soft</a>
@@ -24,8 +25,34 @@
 <li> <a href="4_create_client_crt.sh">Part4. Config Client</a> 
 <br>имя клиента указать после имени скрипта
 </ol>
+<hr>
+<h3> Debian Client</h3>
+<ol>
+<li>apt install openvpn
+<li> cp user.ovpn /etc/openvpn/
+</ol>
+<h4>Запуск  вручную</h4>
+<p><code>openvpn --config /etc/openvpn/user.ovpn</code></P>
+<h4>Автоматический запуск</h4>
+Создаем файл службы
+<p><code>nano /etc/systemd/system/openvpn-client.service</code></P>
+его содержимое
+<pre>
+[Unit]
+Description=OpenVPN Client Service
+After=network.target
 
+[Service]
+Type=simple
+ExecStart=/usr/sbin/openvpn --config /etc/openvpn/user.ovpn
 
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<p><code>systemctl daemon-reload</code></P>
+<p><code>systemctl start openvpn-client.service</code></P>
+<p><code>systemctl enable  openvpn-client.service</code></P>
 
 </body>
   </html>
