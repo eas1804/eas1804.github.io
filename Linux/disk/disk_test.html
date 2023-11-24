@@ -10,83 +10,18 @@
 
 <body>
 <h1>Test Disk</h1>
-
-
 <h2>Scrypts</h2>
-<p><code>apt install smartmontools -y</code></p>
-<h3> информация обо всех дисках</h3>
-<pre>
-#!/bin/bash
 
-clear
-# Get list of disks
-disks=$(lsblk -d -n -o name)
-
-# Iterate through disks
-for disk in $disks; do
-  echo "Disk: $disk"
-
-  # Get model, size, power on hours, start/stop count, SMART health, and temperature
-  model=$(smartctl -i /dev/$disk | awk '/Device Model/ {print $3,$4,$5,$6}')
-  size=$(smartctl -i /dev/$disk | awk '/User Capacity/ {print $3,$4}')
-  hours=$(smartctl -a /dev/$disk | awk '/Power_On_Hours/ {print $10}')
-  count=$(smartctl -a /dev/$disk | awk '/Start_Stop_Count/ {print $10}')
-  smart=$(smartctl -H /dev/$disk | awk '/SMART overall-health/ {print $NF}')
-  rpm=$(smartctl -i /dev/$disk | grep "Rotation Rate")
-  temp=$(smartctl -a /dev/$disk | awk '/Temperature_Celsius/ {print $10}')
-
-  # Print disk information
-  echo "Model: $model"
-  echo "Size: $size"
-  echo "Power on hours: $hours"
-  echo "Start/Stop count: $count"
-
-  # Check SMART status
-  if [[ $smart == "PASSED" ]]; then
-    echo "SMART: OK"
-  else
-    echo "SMART: Problem - $smart"
-  fi
-
-  # Print disk rotation speed and temperature
-  echo "$rpm"
-  echo "Temperature: $temp C"
-
-  echo "---------------"
-done
-</pre>
-<h3>SMART test </h3>
-<pre>
-#!/bin/bash
-
-for drive in /dev/sd?
-do
-echo "______________"
-    echo "Drive: $drive"
-    smartctl -a $drive | grep "No Errors Logged" >/dev/null 2>&1
-    if [ $? -eq 0 ]
-    then
-        echo "SMART - OK"
-    else
-        echo "SMART - PROBLEM"
-    fi
-done
-</pre>
-<h3> Скорость чтения</h3>
-<p><code>apt install  hdparm</code></p>
-<pre>
-#!/bin/bash
-
-clear
-for drive in /dev/sd?
-do
-echo "-------------"
-    echo "Drive: $drive"
-    sudo hdparm -tT $drive
-done
-</pre>
-
-
+<ol>
+<li><a href=disk_test_1.sh>Информация обо всех дисках</a> Нужен smartmontools
+<li><a href=Smart_test.sh>SMART test</a> Нужен smartmontools
+<li><a href=Speed_test_hdd.sh>Скорость чтения</a> Нужен hdparm
+</ol>
+<hr>
+<ol>
+<li><p><code>apt install smartmontools -y</code></p>
+<li><p><code>apt install  hdparm -y</code></p>
+</ol>
 <h2>smartctl</h2>
  
 <ul>
@@ -107,13 +42,28 @@ done
 <p><code>smartctl -a /dev/sda | grep Power_On_Hours</code></p>
 <p>В маоем случае значение параметра Power_On_Hours равно 8272 часам, что означает, что диск был включен и работал в течение примерно 344 дней и 8 часов
 <p><code>9 Power_On_Hours          0x0032   091   091   000    Old_age   Always       -      <b> 8272</b></code></p>
-
+<li>Получение информации о температуре диска</code></p>
+<p><code>smartctl -a /dev/sda | grep  Airflow_Temperature_Cel</code></p>
 <li>Списка ошибок, которые произошли на диске
 <p><code>smartctl -l error /dev/sdc</code> или <code>smartctl -l error /dev/sdc | grep -i -E 'error|fail|warning'</code></p>
-
-
 </ol>
 
+<H3>Анализа параметров SMART</h3>
+<ol>
+<li>Полная информация:
+<p><code>smartctl -a /dev/sda</code></p>
+<li>Краткая информация:
+Эта команда проверяет только базовый статус SMART и сообщает, если есть проблемы.
+<p><code>smartctl -H /dev/sda</code></p>
+<li>Тестирование
+<p><code>smartctl -t <b>short</b> /dev/sda</code></p>
+<p><code>smartctl -t <b>long</b> /dev/sda</code></p>
+Эта команда запускает короткий тест. Вы можете заменить short на long для запуска долгосрочного теста
+<li>Результаты тестирования:
+ <p><code>smartctl -l selftest /dev/sda</code></p>
+ <li>Логи ошибок:
+ <p><code>smartctl -l error /dev/sda</code></p>
+ </oL>
 <h2> Badblick test</h2>
 <p><code>apt-get install e2fsprogs</code></p>
 Отмонтируйте раздел, который вы хотите проверить, например, если вы хотите проверить раздел /dev/sda1, используйте следующую команду:
