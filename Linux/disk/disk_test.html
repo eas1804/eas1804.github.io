@@ -16,7 +16,7 @@
 <li><a href=disk_test_1.sh>Информация обо всех дисках</a> Нужен smartmontools
 <li><a href=Smart_test.sh>SMART test</a> Нужен smartmontools
 <li><a href=Speed_test_hdd.sh>Скорость чтения</a> Нужен hdparm
- <p><code>hdparm -tT sda</code></p>
+ <p><code>hdparm -tT  /dev/sda</code></p>
 Изменить скорость записи
 <p><code>time $(dd if=/dev/zero of=test.raw bs=1G count=1 && sync)</code></p>
 Изменить скорость чтения

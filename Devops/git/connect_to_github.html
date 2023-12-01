@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Connect to github</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Connect to github</h2>
+<ol>
+<ll>Генерируем ключ:
+<p><code>ssh-keygen -t rsa -C eas1804@gmail.com</code></p>
+<li> Разместить публичный ключ на Github 
+<p><code>Settings->SSHand GPG keys</code></p>
+<li> Проверить подключение к репозиторию
+<p><code>ssh -T git@github.com</code></p>
+<li> связать свой локальный репозиторий с github
+<p><code>git remote add origin https://github.com/eas1804/eas1804.github.io.git</code></p>
+<li>Узнать, какая ссылка активна (Просмотр удаленных репозиториев)
+<p><code>git remote -v</code></p>
+<li>Также, убедитесь, что вы вошли в свой аккаунт GitHub
+<p><code>git config credential.helper store</code></p>
+<p>Когда вы выполнили эту команду и получили пустую строку без ошибок, это означает, что команда выполнилась успешно.
+
+<p></p>
+
+
+
+
+
+</body>
+  </html>
