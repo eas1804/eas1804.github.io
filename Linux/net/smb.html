@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Smb</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Smb</h2>
+<h2>Установить пакет</h2>
+<p><code>apt install cifs-utils -y</code></p>
+
+<h2>Создать файл с credentials</h2>
+<p><code>vi /etc/credentials</code></p>
+<pre>
+username=user_smb
+password=S#m#B#2017
+domain=corp.unac
+</pre>
+<p>Доступ должен быть не только по сети но ки к файловой системе!
+
+<h2>Монтирование сетевого ресурса</h2>
+Пример монтирования \\192.168.18.103\1c_backup в /mnt/mount-point
+<pre>
+IP=192.168.18.103
+SHARA_FROM=1c_backup         # Shara
+MNT_POINT=/mnt/mount-point   # Точка мониторвания
+SMB_V=2.0                    # Версия smb источника
+</pre>
+<p><code>mount -t cifs //$IP/$SHARA_FROM $MNT_POINT -o credentials=/etc/credentials -o vers=$SMB_V -o ro</code></p>
+
+<h2>Размонтировать</h2>
+<p><code>umount /mnt/mount-point</code></p>
+
+<h2>Автомонтироввание</h2>
+nano /etc/fstab
+<p><code>//192.168.18.33/FOR_lacal/       /mnt/1c/            cifs ro,vers=3.0,user=backup_users,password=hs47s 0 0 </code></p>
+Проверить
+<p><code>systemctl daemon-reload</code></p>
+<p><code>mount -a</code></p>
+
+</body>
+  </html>
