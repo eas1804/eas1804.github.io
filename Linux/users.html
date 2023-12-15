@@ -14,6 +14,12 @@
 <li><h3>Добавление пользователя</h3>
 <p><code>useradd user_name</code></P>
 
+<li><h3>Добавление пользователя, с указанием каталога и оболочки</h3>
+<p><code>name=mtir</code></P>
+<p><code>useradd -m -d /mnt/raid_md127/$name -s /bin/bash $name</code></P>
+<p><code>passwd $name</code></P>
+
+
 <li><h3>Изменение пароля</h3>
 <p><code>passwd user_name</code></P>
 
