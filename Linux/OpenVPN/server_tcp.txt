@@ -1,0 +1,39 @@
+port "443"
+proto tcp
+dev tun
+tls-server
+
+ca ca.crt
+cert server.crt
+key server.key
+tls-auth ta.key 0
+dh dh.pem
+
+key-direction 0
+cipher AES-256-GCM
+auth SHA256
+
+client-to-client
+topology subnet
+
+user nobody
+group nogroup
+
+server 10.33.44.0 255.255.255.0
+keepalive 10 120
+
+persist-key
+persist-tun
+
+status /var/log/openvpn/openvpn-status_443.log
+log    /var/log/openvpn/openvpn_443.log
+ifconfig-pool-persist /var/log/openvpn/ipp_443.txt
+client-config-dir "/etc/openvpn/ccd"
+
+push "route 10.10.10.0 255.255.255.0"
+
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 208.67.222.222"
+push "dhcp-option DNS 208.67.220.220"
+
+verb 3
