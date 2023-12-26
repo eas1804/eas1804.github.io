@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OpenVPN</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3> Debian Client</h3>
+
+<p><code>apt install openvpn</code></P>
+<p><code>cp user.ovpn /etc/openvpn/</code></P>
+
+<h4>Запуск  вручную</h4>
+<p><code>openvpn --config /etc/openvpn/user.ovpn</code></P>
+<h4>Автоматический запуск</h4>
+Создаем файл службы
+<p><code>nano /etc/systemd/system/openvpn-client.service</code></P>
+его содержимое
+<pre>
+[Unit]
+Description=OpenVPN Client Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/openvpn --config /etc/openvpn/user.ovpn
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<p><code>systemctl daemon-reload</code></P>
+<p><code>systemctl start openvpn-client.service</code></P>
+<p><code>systemctl enable  openvpn-client.service</code></P>
+<P> В конфиге /etc/openvpn/user.ovpn писать полные пути к ключам
+<pre>
+remote 121.216.14.10 1194
+remote 212.126.40.12 1194
+remote-random
+
+cert <b>/etc/openvpn/user.crt</b>
+key <b>/etc/openvpn/user.key</b>
+client
+dev tun
+proto udp
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+key-direction 1
+cipher AES-256-GCM
+auth SHA256
+verb 3
+ca <b>/etc/openvpn/ca.crt</b>
+tls-auth <b>/etc/openvpn/ta.key</b> 1
+
+</pre>
+
+
+</body>
+  </html>

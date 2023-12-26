@@ -22,66 +22,20 @@
 <br>push "dhcp-option DNS 208.67.222.222"
 <br>push "dhcp-option DNS 208.67.220.220"
 
-<li> <a href="4_create_client_crt.sh">Part4. Config Client</a> 
+<li> <a href="4_create_client_crt.sh">Part4. Config Client in 5 Files</a> 
 <br>имя клиента указать после имени скрипта
+<p>или, если конфиг нужен в одном файле
+<a href="5_create_client_crt_in_OneFile.sh">Part4. Config Client In One file</a> 
 </ol>
+<p> Проверить синтакчис конфигурационного файла
+<p><code>openvpn --config /etc/openvpn/server.conf --verb 3</code></p>
+
 <h3>Expamle config</h3>
 <a href="server_udp.txt">Server UDP</a> |
 <a href="server_tcp.txt">Server TCP</a> |
 <a href="Client_udp_tcp.txt">Client UDP TCP</a>
 <hr>
-<h3> Debian Client</h3>
-<ol>
-<li>apt install openvpn
-<li> cp user.ovpn /etc/openvpn/
-</ol>
-<h4>Запуск  вручную</h4>
-<p><code>openvpn --config /etc/openvpn/user.ovpn</code></P>
-<h4>Автоматический запуск</h4>
-Создаем файл службы
-<p><code>nano /etc/systemd/system/openvpn-client.service</code></P>
-его содержимое
-<pre>
-[Unit]
-Description=OpenVPN Client Service
-After=network.target
-
-[Service]
-Type=simple
-ExecStart=/usr/sbin/openvpn --config /etc/openvpn/user.ovpn
-
-[Install]
-WantedBy=multi-user.target
-</pre>
-
-<p><code>systemctl daemon-reload</code></P>
-<p><code>systemctl start openvpn-client.service</code></P>
-<p><code>systemctl enable  openvpn-client.service</code></P>
-<P> В конфиге /etc/openvpn/user.ovpn писать полные пути к ключам
-<pre>
-remote 121.216.14.10 1194
-remote 212.126.40.12 1194
-remote-random
-
-cert <b>/etc/openvpn/user.crt</b>
-key <b>/etc/openvpn/user.key</b>
-client
-dev tun
-proto udp
-resolv-retry infinite
-nobind
-persist-key
-persist-tun
-remote-cert-tls server
-key-direction 1
-cipher AES-256-GCM
-auth SHA256
-verb 3
-ca <b>/etc/openvpn/ca.crt</b>
-tls-auth <b>/etc/openvpn/ta.key</b> 1
-
-</pre>
-
-
+<p><a href=Client_Debain.html>Client Debain</a>
+<p><a href=OpenVPN_add.html> Add info</a>
 </body>
   </html>
