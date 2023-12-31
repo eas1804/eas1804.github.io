@@ -17,7 +17,18 @@
 <p>Если ваши клиенты поддерживают более современные алгоритмы, вы можете также рассмотреть использование алгоритмов, таких как ChaCha20-Poly1305, которые могут быть менее нагружены на процессор и при этом предоставляют высокий уровень безопасности.</p>
 
 <p><code>cipher chacha20-poly1305</code></p>
+<h3>Проверить срок дейсвия сертификата</h3>
+<p><code>openssl x509 -noout -dates -in /usr/share/easy-rsa/pki/issued/user2.crt</code></p>
+<p><code>openssl x509 -noout -dates -in /etc/openvpn/ca.crt</code></p>
+<p><code>openssl x509 -noout -dates -in /etc/openvpn/server.crt</code></p>
 
+<h3>Срок действия сертификатов </h3>
+<p>Здается в   /usr/share/easy-rsa/vars </p> 
+<p><code>set_var EASYRSA_CA_EXPIRE</code>  Срок действия корневого сертификата
+<p><code>set_var EASYRSA_CERT_EXPIRE</code>  Срок действия клиентских и серверных сертификатов
+<p>Если пользователю нужно созать сертификат на 20 дней, необходимо в файле /usr/share/easy-rsa/vars задать 
+<p><code>set_var EASYRSA_CERT_EXPIRE       20</code></p>
+После чего сгенерировать сертификат
 
 
 </body>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> Backup</h2>
+<h3> Упаковать каталог </h3>
+<pre>
+set source="C:\ProgramData\Medoc\MedocSRV\db"
+set destination="D:\Medoc_backup\db"
+
+rem Ниже ничего не трогать
+set dd=%DATE:~0,2%
+set mm=%DATE:~3,2%
+set yyyy=%DATE:~6,4%
+set curdate=%dd%-%mm%-%yyyy%
+
+"C:\Program Files\7-Zip\7z.exe" a -tzip -ssw -mx1  -r0 %destination%\backup_%curdate% %source%
+</pre>
+
+<h3> Удалить старыве файлы</h3>
+<pre>
+rem сколько дней хранить копии
+set /a iCount = 20
+set destination="D:\Medoc_backup\db"
+
+rem Ниже ничего не трогать
+setlocal enableextensions enabledelayedexpansion
+for /f "skip=%iCount% usebackq delims=" %%i in (
+	`dir /b /a:-d /o:-d /t:w "%destination%"`
+) do del /f /q "%destination%\%%~i"
+
+endlocal
+</pre>
+</body>
+  </html>
