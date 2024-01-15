@@ -27,8 +27,10 @@ mkdir -p ${SYST_DIR}${SRV_NAME}/increment/
 # Запускаем непосредственно бэкап с параметрами
 /usr/bin/rsync -avz --progress --delete  ${SRV_DIR} ${SYST_DIR}${SRV_NAME}/current/ --backup --backup-dir=${SYST_DIR}${SRV_NAME}/increment/`date +%Y-%m-%d`/
 
-# Чистим папки с инкрементными архивами старше 30-ти дней
-#/usr/bin/find ${SYST_DIR}${SRV_NAME}/increment/ -maxdepth 1 -type d -mtime +30 -exec rm -rf {} \;
+# Чистим
+COUNT=15                # Сколько свежих каталогов оставить
+ls -dt "${SYST_DIR}${SRV_NAME}/increment"/*/ | tail -n +$((COUNT+1)) | xargs -I {} rm -r -- "{}"
+
 date
 echo "Finish backup ${SRV_DIR}"
 }
