@@ -30,6 +30,15 @@
 <p><code>set_var EASYRSA_CERT_EXPIRE       20</code></p>
 После чего сгенерировать сертификат
 
+<h3>шифрования данных</h3>
+
+<p>Алгоритм шифрования	Скорость шифрования (Mbps)
+<br>BF-CBC:		100 (Mbps)
+<br>AES-128-CBC:	80 (Mbps)
+<br>AES-256-CBC:	70 (Mbps)
+<br>CHACHA20-POLY1305:	95(Mbps)
+<p>CHACHA20-POLY1305: комбинированный алгоритм шифрования, который использует CHACHA20 для шифрования данных и POLY1305 для аутентификации. CHACHA20 является очень быстрым алгоритмом шифрования, который может работать почти на той же скорости, что и BF-CBC, при этом обеспечивая высокую безопасность.
+Источник: https://fsnslnr.su/faq/kakoi-algoritm-sifrovaniya-openvpn-samyi-bystryi
 
 </body>
   </html>
