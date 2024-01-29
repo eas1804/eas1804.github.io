@@ -9,10 +9,36 @@
   </head>
 
 <body>
+<p>Создать пользователя с правами Администратора. Убрать его имя с экрана приветсвия. Время пароля - неограничего
+<pre>
+cls
+@chcp 1251
+
+set NEW_USER=Vasya
+
+net user %NEW_USER% /add
+net user %NEW_USER% Pass2024word
+
+
+wmic path Win32_UserAccount where Name="%NEW_USER%" set PasswordExpires=false
+net localgroup "└фьшэшёЄЁрЄюЁ√" %NEW_USER% /add
+net user %NEW_USER%  passwordchg:no
+
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v DontDisplayLastName /t REG_DWORD /d 1 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" /v %NEW_USER% /t reg_dword /d 0 /f
+
+net user %NEW_USER% 
+
+pause
+</pre>
+
+ 
+
+
 <h2>Создать, установить, задать</h2>
 <ol>
 <li><h3>Создать пользователя</h3>
-<p><code>net user NEW_USER add</code></p>
+<p><code>net user NEW_USER PASSWORD/add</code></p>
 
 <li><h3>Установка пароля пользователя Администратор</h3>
 <p><code>net user Администратор NEW_PASSWORD</code></p>

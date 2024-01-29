@@ -24,7 +24,8 @@
 
 <li><h3>Не отображать имя пользователя на экране приветствия</h3>
 <p><code>set WIN_USER=Name_of_user</code></p>
-<p><code>reg add «HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList» /v %WIN_USER% /t reg_dword /d</code></p>
+<p><code>reg add «HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList» /v %WIN_USER% /t reg_dword /d 0 /f</code></p>
+
 
 <li><h3>Запуск программы от имени другого пользователя</h3>
 <p><code>runas /user:administrator "C:\Windows\cmd.exe"</code></p>
