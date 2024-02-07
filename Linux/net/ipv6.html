@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ipv6</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3> Отобразить ipv6 адрес</h3>
+<p><code>ip -6 addr show</code></p>
+<p><code>ip -6 addr show | grep "scope global"</code></p>
+<p><code>cat /etc/network/interfaces | grep address | grep :</code></p>
+
+<p> Через сайт
+<br><a href=https://whatismyipaddress.com/>whatismyipaddress.com</a>
+<br><a href=https://test-ipv6.com/index.html.ru_RU>test-ipv6.com</a>
+
+
+<h3>Firewall</h3>
+<p><code>ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP</code></p>
+<p><code>ip6tables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code></p>
+<p><code>ip6tables -A INPUT -i lo -j ACCEPT -m comment --comment "Enable Loopback"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s 2a01:4f9:2a:30d4::2 -m tcp --dport 22 -j ACCEPT   -m comment --comment "Eddy"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s 2a01:4f9:2a:31ae::2 -m tcp --dport 22 -j ACCEPT   -m comment --comment "giaroom"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s fe80::17ff:fe02:c1ac -m tcp --dport 22 -j ACCEPT   -m comment --comment "oracle1"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s fe80::17ff:fe00:4fcd -m tcp --dport 22 -j ACCEPT   -m comment --comment "oracle2"</code></p>
+<p><code>ip6tables -P INPUT DROP</code></p>
+<p><code>ip6tables -L INPUT -nv</code></p>
+<br>
+<p><code>service netfilter-persistent  save</code></p>
+<p>Разрешить ping
+<p><code>ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT</code></p>
+
+<h3>ПО ipv6</h3>
+<p><code>ssh -6 fe80::d553:81eb:d33c:df53</code></p>
+<p><code>ping -6 ipv6.google.com</code></p>
+
+</body>
+  </html>
