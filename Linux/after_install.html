@@ -12,9 +12,8 @@
 <h2> After install</h2>
  <p><code>apt update</code>
  <code>apt <b>-V</b> upgrade</code></p>
+ <p><code>echo "AddressFamily inet" | tee -a /etc/ssh/sshd_config && service ssh restart</code></p>
 <p><code>apt install tmux mc wget curl vim chrony sudo  -y </code></p>
-
-
  <p><code>echo 'export LS_OPTIONS="--color=auto"' >> /root/.bashrc</code></p>
  <p><code>echo 'eval "$(dircolors)"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias ls="ls $LS_OPTIONS"' >> /root/.bashrc</code></p>

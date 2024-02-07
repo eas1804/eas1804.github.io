@@ -9,6 +9,14 @@
   </head>
 
 <body>
+<h3>Оганичить ssh ipv4. AddressFamily inet</h3>
+  Проверить натсройку
+  <p><code>cat   /etc/ssh/sshd_config |grep AddressFamily</code></p>
+Внести параметр
+ <p><code>echo "AddressFamily inet" |  tee -a /etc/ssh/sshd_config</code></p>
+ <p><code>service ssh restart</code></p>
+ 
+
 <h3> Отобразить ipv6 адрес</h3>
 <p><code>ip -6 addr show</code></p>
 <p><code>ip -6 addr show | grep "scope global"</code></p>
@@ -17,7 +25,6 @@
 <p> Через сайт
 <br><a href=https://whatismyipaddress.com/>whatismyipaddress.com</a>
 <br><a href=https://test-ipv6.com/index.html.ru_RU>test-ipv6.com</a>
-
 
 <h3>Firewall</h3>
 <p><code>ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP</code></p>
@@ -35,8 +42,9 @@
 <p><code>ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT</code></p>
 
 <h3>ПО ipv6</h3>
-<p><code>ssh -6 fe80::d553:81eb:d33c:df53</code></p>
+<p><code>ssh  -6 fe80::d553:81eb:d33c:df53</code></p>
 <p><code>ping -6 ipv6.google.com</code></p>
+
 
 </body>
   </html>
