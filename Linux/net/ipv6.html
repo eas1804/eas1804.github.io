@@ -30,7 +30,9 @@
 <p><code>ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP</code></p>
 <p><code>ip6tables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code></p>
 <p><code>ip6tables -A INPUT -i lo -j ACCEPT -m comment --comment "Enable Loopback"</code></p>
-<p><code>ip6tables -A INPUT -p tcp -s 2a03:7380:254:200:e006:6eff:fe5d:a3f9/64  -m tcp --dport 22 -j ACCEPT   -m comment --comment "Lesnoy"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s 2a03:7380:254:200::/64  -m tcp --dport 22 -j ACCEPT   -m comment --comment "Lesnoy"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s 2a01:4f9:2a:31ae::/64  -m tcp --dport 22 -j ACCEPT   -m comment --comment "giaroom"</code></p>
+<p><code>ip6tables -A INPUT -p tcp -s 2a01:4f9:2a:30d4::/64  -m tcp --dport 22 -j ACCEPT   -m comment --comment "Eddy"</code></p>
 <p><code>ip6tables -P INPUT DROP</code></p>
 <p><code>ip6tables -L INPUT -nv</code></p>
 <br>
