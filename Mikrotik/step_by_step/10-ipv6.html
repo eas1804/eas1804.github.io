@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mikrotik ipv6</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Mikrotik ipv6</h2>
+<ol>
+<li><h3>Настроить DHCPv6 client</h3>
+<p><code>/ipv6 dhcp-client</code></p>
+<p><code>add add-default-route=yes interface=ether10 pool-name=ipv6-pool request=prefix</code></p>
+<p>interface – это wan интерфейс
+<br>Pool Name – любое удобное имя</p>
+<li><h3>Настроить адрес ipv6 для домашней сети</h3>
+<p><code>/ipv6 address</code></p>
+<p><code>add eui-64=yes from-pool=ipv6-pool interface=bridge_lan</code></p>
+<p>interface – это интерфейс, мсотрящий в LAN
+<p>После этого начинает работать IPv6
+<p><code>https://test-ipv6.com</code></p>
+
+<li><h3>Файрвол</h3>
+ether10 – это WAN
+<br>UDP порт 546 используется для протокола DHCPv6
+<pre>
+/ipv6 firewall filter
+add action=drop chain=input connection-state=invalid
+add action=accept chain=input connection-state=established,related in-interface=ether10
+add action=accept chain=input limit=50,5 protocol=icmpv6
+add action=accept chain=input dst-port=546 in-interface=ether10 protocol=udp
+add action=drop chain=input
+add action=accept chain=forward connection-state=established,related in-interface=ether10 out-interface=bridge_lan
+add action=accept chain=forward limit=50,5 protocol=icmpv6
+add action=accept chain=forward in-interface=bridge_lan out-interface=ether10
+add action=drop chain=forward
+</pre>
+<li><h3>Проверить</h3>
+<p><code>ping 2001:4860:4860::8888</code></p>
+
+</body>
+  </html>
