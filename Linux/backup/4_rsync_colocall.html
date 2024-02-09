@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+# В случае ошибки при выполнении функции высылается сообщение в Telegramm
+<pre>
+#!/bin/bash
+
+# telegramm env
+BOT_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+CHAT_ID="yyyyyyyy"
+
+username=backup12345-03
+server=backup12345-03.backup.colocall.eu
+
+sync_box_main (){
+echo _________________________________
+echo local_directory=$local_directory
+echo target_directory=$target_directory
+rsync  -zav --progress  -e 'ssh -p22 -i /root/.ssh/colocall.key ' --recursive $local_directory $username@$server:$target_directory
+rsync  -zav --progress --delete -e 'ssh -p22 -i /root/.ssh/colocall.key ' --recursive $local_directory $username@$server:$target_directory
+# "Есть ли ошибки -
+if [ $? -ne 0 ]; then
+    echo "Ошибка: Команда завершилась с ошибкой."
+MESSAGE="Ошибка выполнения скрипта $echo $0
+$local_directory
+$target_directory
+ip 192.168.18.111"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+else
+    echo "Команда выполнена успешно."
+fi
+}
+
+#-------------Users------------------------
+local_directory=/home/vladimir/
+target_directory=/backup/vladimir/
+sync_box_main
+
+local_directory=/home/larisa/
+target_directory=/backup/larisa/
+sync_box_main
+
+local_directory=/home/Olga/
+target_directory=/backup/Olga/
+sync_box_main
+
+</pre>
+
+
+
+</body>
+  </html>
