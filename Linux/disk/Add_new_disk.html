@@ -9,7 +9,44 @@
   </head>
 
 <body>
-<h2>Add new disk</h2>
+<h2> Добавить новый диск через systemctl </h2>
+<ol>
+<li>Смотрим диски в системе
+<p><code>lsblk</code></p>
+
+<li>На 2м ске должен быть создан раздел с файловой системой ext4
+<p><code>mkfs -t ext4 /dev/sdb</code></p>
+
+<li>Uuid диска смотрим с помощью 
+<p><code>blkid</code></p>
+
+<li>Создаём юнит
+<p><code> nano /etc/systemd/system/mnt-backup.mount</code></p>
+
+<pre>
+[Unit]
+Description=Disk for backups
+[Mount]
+What=/dev/disk/by-uuid/699f2031-0406-4718-992a-5fca14ebbb63
+Where=/mnt/backup
+Type=ext4
+Options=defaults
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+
+<li>Перечитываем содержание юнитов и монтируем файловую систему:
+
+<p><code>systemctl daemon-reload</code></p>
+<p><code>systemctl start mnt-backup.mount</code></p>
+
+<li>Если всё в порядке, можно добавить в автозагрузку:
+
+<p><code>systemctl enable mnt-backup.mount</code></p>
+
+
+<h2>fstab вариант добавления диска</h2>
 
 <ol>
 <li>Создать каталог для монтирования
