@@ -14,24 +14,22 @@
 <pre>
 #!/bin/bash
 
-username=backup94807-09
-server=backup94807-09.backup.colocall.eu
+# telegramm env
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
 
+username=backup12345-05
+server=backup12345-05.backup.colocall.eu
+ssh_port=22
+ssh_key="/root/.ssh/colocall.key"
 
-# Функция1. Не высылать сообщение в случае ошибки синхронизации
-box_unac_notest () {
-echo --------------------------------
-echo  $target_directory
-/usr/bin/rsync -zav  --progress -e 'ssh -p22 -i ~/.ssh/colocall.key' --recursive "$local_directory" "$username@$server:$target_directory"
-/usr/bin/rsync -zav  --progress --delete -e 'ssh -p22 -i ~/.ssh/colocall.key' --recursive "$local_directory" "$username@$server:$target_directory"
-}
+sync_box_main (){
+echo _________________________________
+echo local_directory=$local_directory
+echo target_directory=$target_directory
+rsync -zav --progress -e "ssh -p$ssh_port -i $ssh_key" --recursive $local_directory $username@$server:$target_directory
+rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive $local_directory $username@$server:$target_directory
 
-# Функция2. Выслать сообщение в случае ошибки синхронизации
-box_unac () {
-echo --------------------------------
-echo  $target_directory
-/usr/bin/rsync -zav  --progress -e 'ssh -p22 -i ~/.ssh/colocall.key' --recursive "$local_directory" "$username@$server:$target_directory"
-/usr/bin/rsync -zav  --progress --delete -e 'ssh -p22 -i ~/.ssh/colocall.key' --recursive "$local_directory" "$username@$server:$target_directory"
 # "Есть ли ошибки -
 if [ $? -ne 0 ]; then
 MESSAGE="Ошибка выполнения скрипта
@@ -50,9 +48,9 @@ else
 fi
 }
 
-#Функция 3. Сравнить количество файлов локаьных и удаленных
+#Функция. Сравнить количество файлов локаьных и удаленных
 count_of_files () {
-REMOTE_COUNT=$(ssh -p22 -i ~/.ssh/colocall.key $username@$server find $target_directory | wc -l)
+REMOTE_COUNT=$(ssh  -p$ssh_port -i $ssh_key  $username@$server find $target_directory | wc -l)
 LOCAL_COUNT=$(find  "$local_directory" | wc -l)
 echo REMOTE_COUNT $REMOTE_COUNT
 echo LOCAL_COUNT $LOCAL_COUNT
@@ -80,26 +78,18 @@ fi
 ########
 IP_local=$(ip -4 a | grep inet | grep eth0 |  awk '/inet/ {print $2}')
 IP_global=$(curl 2ip.ru)
-# telegramm env
-BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
-CHAT_ID="33109821804"
 
-
-
-# Drive Z
-local_directory=/mnt/drive_z/
-target_directory=/backup/Arhive/2_unac/drive_z/
-box_unac_notest
-
-# 1c
-local_directory=/mnt/1c/
-target_directory=/backup/Arhive/2_unac/1c/
-box_unac
+#Personal------------------------
+local_directory=/home/vladimir/
+target_directory=/backup/vladimir/
+sync_box_main
 count_of_files
 
+local_directory=/home/larisa/
+target_directory=/backup/larisa/
+sync_box_main
+count_of_files
 </pre>
-
-
 
 </body>
   </html>
