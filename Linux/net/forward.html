@@ -11,9 +11,15 @@
 <body>
 <h2>Forward</h2>
 <ol>
+
+<p><code>iptables -I FORWARD 1 -m state --state INVALID -j DROP</code></p>
+<p><code>iptables -I FORWARD 2 -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
+<p><code> iptables -P FORWARD  DROP</code></p>
+
+
 <li><h3>Проброс порта</h3>
 <p><code>IP_WAN=60.10.20.20</code></p>
-<p><code>WAN_ETH=vmbr0</code></p>
+<p><code>WAN_ETH=eno1</code></p>
 <p><code>IP_LAN_1=10.10.33.2</code></p>
 <p><code>DPORT_EXTERNAL=1194 #из порта WAN</code></p>
 <p><code>DPORT_INTERNAL=1194 #в порт LAN</code></p>
