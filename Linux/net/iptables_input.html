@@ -12,11 +12,11 @@
 <h2>Input</h2>
 <ol>
 <li><h3>Basic</h3>
+<p><code>iptables -I INPUT  1 -m state --state INVALID -j DROP</code></p>
+<p><code>iptables -I INPUT  2 -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
 <p><code>iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP</code></p>
 <p><code>iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP</code></p>
 <p><code>iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP</code></p>
-<p><code>iptables -A INPUT -m state --state INVALID -j DROP</code></p>
-<p><code>iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
 <p><code>iptables -A INPUT -i lo -j ACCEPT -m comment --comment "Enable Loopback"</code></p>
 
 <li><h3> SSH (-m tcp --dport 22)</h3>
@@ -32,6 +32,8 @@
 <p><code>iptables -A INPUT -p icmp  -j ACCEPT</code></p>
 <p><code>iptables -A INPUT -p icmp -s x.x.x.x -j ACCEPT -m comment --comment "My Office"</code></p>
 
+<li><h3>Все закрыть</h3>
+<p><code>iptables -P INPUT DROP</code></p>
 
 <li><h3>Web </h3>
 <p> Октрыть порт 80/tcp (-m tcp --dport 80)
@@ -42,7 +44,7 @@
 <li><h3>Открыть несколько портов (-m multiport)</h3>
 <p><code>iptables -A INPUT -p tcp -s 192.168.0.0/16 -m tcp -m multiport --ports 22,8006 -j ACCEPT </code></p>
 <p><code>iptables -A INPUT -p tcp -s lesnoy.mlp.pp.ua  -m tcp -m multiport --ports 22,8006 -j ACCEPT -m comment --comment "lesnoy"</code></p>
-<p><code>iptables -P INPUT DROP</code></p>
+
 
 <li><h3>Разрешить все c конкретного интерфейса</h3>
 <p><code>iptables -A INPUT -i -eth0 -j ACCEPT -m comment --comment "LAN"</code></p>
