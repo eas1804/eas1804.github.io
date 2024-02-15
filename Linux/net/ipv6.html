@@ -26,7 +26,7 @@
 <br><a href=https://whatismyipaddress.com/>whatismyipaddress.com</a>
 <br><a href=https://test-ipv6.com/index.html.ru_RU>test-ipv6.com</a>
 
-<h3>Firewall</h3>
+<h3>Firewall INPUT</h3>
 <p><code>ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP</code></p>
 <p><code>ip6tables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code></p>
 <p><code>ip6tables -A INPUT -i lo -j ACCEPT -m comment --comment "Enable Loopback"</code></p>
@@ -35,12 +35,35 @@
 <p><code>ip6tables -A INPUT -p tcp -s 2a01:4f9:2a:30d4::/64  -m tcp --dport 22 -j ACCEPT   -m comment --comment "Eddy"</code></p>
 <p><code>ip6tables -P INPUT DROP</code></p>
 <p><code>ip6tables -L INPUT -nv</code></p>
-<br>
-<p><code>service netfilter-persistent  save</code></p>
 <p>Разрешить ping
 <p><code>ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT</code></p>
+<h3>Firewall FORWARD</h3>
+<p><code>WAN_ETH=eno1 #Имя интерфейса WAN</code></p>
+<p><code>LAN_ETH=vmbr0 #Имя интерфейса Lan</code></p>
+<p><code>ip6tables -I FORWARD 1 -m state --state INVALID -j DROP</code></p>
+<p><code>ip6tables -I FORWARD 2 -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
+<p><code>ip6tables -I FORWARD 3 -i $LAN_ETH -o $WAN_ETH -j ACCEPT -m comment --comment "Lan->WAN"</code></p>
+<p><code>ip6tables -P FORWARD DROP</code></p>
+<p><code>ip6tables -L FORWARD -nv</code></p>
+<br>
+<p><code>service netfilter-persistent  save</code></p>
 <h3>ПО ipv6</h3>
 <p><code>ssh  -6 fe80::d553:81eb:d33c:df53</code></p>
 <p><code>ping -6 ipv6.google.com</code> или  <code>ping 2001:4860:4860::8888</code>  это IPv6 DNS Google</p>
+<h3>Отключить IPv6</h3>
+<p>отредактировать /etc/default/grub
+<p>До
+<pre>
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
+</pre>
+<p>После
+<pre>
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash ipv6.disable=1"
+GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0 ipv6.disable=1"
+</pre>
+<p>Перезагрузим grub для применения изменений:
+<p><code>sudo update-grub</code></p>
+
 </body>
   </html>
