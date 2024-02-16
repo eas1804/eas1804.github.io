@@ -11,6 +11,14 @@
 <body>
 <h2>Users and groups</h2>
 <ol>
+<li><h3>Добавление пользователя Prtro с паролем password</h3>
+<p><code> useradd -p $(openssl passwd -6 "password") "Prtro" -s /bin/bash -m -G sudo</code></P>
+<p>-p $(openssl passwd -1 "password"): 
+<br>Эта часть команды устанавливает пароль для нового пользователя. 
+<br> openssl passwd -1, чтобы создать хэш пароля с использованием алгоритма MD5.
+<br>openssl passwd -6 указывает OpenSSL использовать SHA-256 для создания хэша пароля
+<br>Этот подход считается более безопасным по сравнению с MD5. 
+Заметьте, что не все системы могут поддерживать SHA-256 в данном контексте
 <li><h3>Добавление пользователя</h3>
 <p><code>useradd user_name</code></P>
 
