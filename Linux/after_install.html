@@ -56,10 +56,30 @@
 <h3>tmux</h3>
 <p>запускт проверки уже созданных сессий и если активных подключений нет — создается новое подключение.
 <p><code>tmux attach || tmux new</code></p>
-
 <p>создания именной сессии:
 <p><code>tmux new -s название сессии</code></p>
+<p>Автозапуск
+<p><code>nano ~/.bashrc</code></p>
+<pre>
+if [[ -z $TMUX && -n $SSH_TTY ]]; then
+    me=$(whoami)
+    real_tmux=$(command -v tmux)
 
+    if [ -z $real_tmux ]; then
+        echo "No tmux installed."
+    fi
+
+    export TERM="xterm-256color"
+
+    if $real_tmux has-session -t $me 2>/dev/null; then
+        $real_tmux attach-session -t $me
+    else
+        if [[ -n $SSH_TTY ]]; then
+            (tmux new-session -d -s $me && tmux attach-session -t $me)
+        fi
+    fi
+fi
+</pre>
 
 <h3>ssh key </h3>
 <p><code>ssh-keygen -t ed25519 -C "My Debian"</code></p>

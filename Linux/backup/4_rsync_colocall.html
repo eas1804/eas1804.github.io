@@ -14,6 +14,8 @@
 <pre>
 #!/bin/bash
 
+#Имя сетевого интерфейса
+ETH=eth0 
 # telegramm env
 BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
 CHAT_ID="33109821804"
@@ -24,13 +26,23 @@ ssh_port=22
 ssh_key="/root/.ssh/colocall.key"
 
 sync_box_main (){
-echo _________________________________
+echo _________________________________________________________________________________________
 echo local_directory=$local_directory
 echo target_directory=$target_directory
-rsync -zav --progress -e "ssh -p$ssh_port -i $ssh_key" --recursive $local_directory $username@$server:$target_directory
-rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive $local_directory $username@$server:$target_directory
 
-# "Есть ли ошибки -
+#Проверяем наличие каталогов increment и current на удаленном сервере
+ssh -p$ssh_port -i $ssh_key $username@$server ls ${target_directory}increment/ || ssh -p$ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}increment/
+ssh -p$ssh_port -i $ssh_key $username@$server ls ${target_directory}current/   || ssh -p$ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}current/
+
+# Синхронизируем с удаленным сервером
+rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive $local_directory $username@$server:$target_directory/current/ \
+ --backup --backup-dir=${target_directory}/increment/`date +%Y-%m-%d`/
+
+# Удаляем старые каталоги в increment
+ssh -p$ssh_port -i $ssh_key $username@$server ls -dt "${target_directory}increment"/*/ | tail -n +$((COUNT+1)) | \
+xargs -I {} ssh -p$ssh_port -i $ssh_key $username@$server  rm -r -- "{}"
+
+# Есть ли ошибки?
 if [ $? -ne 0 ]; then
 MESSAGE="Ошибка выполнения скрипта
 $echo $0
@@ -50,7 +62,7 @@ fi
 
 #Функция. Сравнить количество файлов локаьных и удаленных
 count_of_files () {
-REMOTE_COUNT=$(ssh  -p$ssh_port -i $ssh_key  $username@$server find $target_directory | wc -l)
+REMOTE_COUNT=$(ssh  -p$ssh_port -i $ssh_key  $username@$server find $target_directory/current/ | wc -l)
 LOCAL_COUNT=$(find  "$local_directory" | wc -l)
 echo REMOTE_COUNT $REMOTE_COUNT
 echo LOCAL_COUNT $LOCAL_COUNT
@@ -74,12 +86,13 @@ LOCAL_COUNT  $LOCAL_COUNT
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
 fi
 }
-
 ########
-IP_local=$(ip -4 a | grep inet | grep eth0 |  awk '/inet/ {print $2}')
+IP_local=$(ip -4 a | grep inet | grep $ETH |  awk '/inet/ {print $2}')
 IP_global=$(curl 2ip.ru)
 
 #Personal------------------------
+COUNT=15                # Сколько свежих каталогов оставить
+
 local_directory=/home/vladimir/
 target_directory=/backup/vladimir/
 sync_box_main
@@ -89,6 +102,9 @@ local_directory=/home/larisa/
 target_directory=/backup/larisa/
 sync_box_main
 count_of_files
+
+
+
 </pre>
 
 </body>
