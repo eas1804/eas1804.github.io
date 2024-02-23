@@ -11,24 +11,28 @@
 <body>
 <h2>Users and groups</h2>
 <ol>
-<li><h3>Добавление пользователя Prtro с паролем password</h3>
-<p><code> useradd -p $(openssl passwd -6 "password") "Prtro" -s /bin/bash -m -G sudo</code></P>
+<li><h3>Добавление пользователя</h3>
+<p><code>useradd user_name</code></P>
+<li><h3>Добавление пользователя Prtro c sudo </h3>
+<p><code>useradd Prtro -s /bin/bash -m -G sudo</code></P>
+
+<li><h3>Добавление пользователя, с указанием каталога и оболочки</h3>
+<p><code>name=Prtro</code></P>
+<p><code>useradd -m -d /mnt/raid_md127/$name -s /bin/bash $name</code></P>
+<p><code>passwd $name</code></P>
+
+
+<li><h3>Добавление пользователя Prtro, без домашнего каталога и оболочки</h3>
+<p><code>useradd --no-create-home --shell /bin/false Prtro</code></P>
+<li><h3>Добавление пользователя Petro с паролем password</h3>
+<p><code> useradd -p $(openssl passwd -6 "password") "Petro" -s /bin/bash -m -G sudo</code></P>
 <p>-p $(openssl passwd -1 "password"): 
 <br>Эта часть команды устанавливает пароль для нового пользователя. 
 <br> openssl passwd -1, чтобы создать хэш пароля с использованием алгоритма MD5.
 <br>openssl passwd -6 указывает OpenSSL использовать SHA-256 для создания хэша пароля
 <br>Этот подход считается более безопасным по сравнению с MD5. 
 Заметьте, что не все системы могут поддерживать SHA-256 в данном контексте
-<li><h3>Добавление пользователя</h3>
-<p><code>useradd user_name</code></P>
-<li><h3>Добавление пользователя, с указанием каталога и оболочки</h3>
-<p><code>name=mtir</code></P>
-<p><code>useradd -m -d /mnt/raid_md127/$name -s /bin/bash $name</code></P>
-<p><code>passwd $name</code></P>
 
-
-<li><h3>Добавление пользователя prometheus, без домашнего каталога и оболочки</h3>
-<p><code>useradd --no-create-home --shell /bin/false prometheus</code></P>
 
 <li><h3>Изменение пароля</h3>
 <p><code>passwd user_name</code></P>

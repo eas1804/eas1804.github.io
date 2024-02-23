@@ -18,9 +18,10 @@
 <p><code>tmux attach || tmux new</code></p>
 <li>создания именной сессии:
 <p><code>tmux new -s название сессии</code></p>
-<li>Автозапуск
+<li>Автозапуск. для не root!!!
 <p><code>nano ~/.bashrc</code></p>
 <pre>
+#tmux
 if [[ -z $TMUX && -n $SSH_TTY ]]; then
     me=$(whoami)
     real_tmux=$(command -v tmux)
@@ -40,6 +41,11 @@ if [[ -z $TMUX && -n $SSH_TTY ]]; then
     fi
 fi
 </pre>
+<p>На всякий случай добавить резервного пользователя
+<p><code>useradd Prtro2 -s /bin/bash -m -G sudo</code></p>
+<p><code>passwd Prtro2</code></p>
+
+
 <li>Деление окна горизонтально
 <p>C-b "
 <p><code>tmux split-window -h</code></p>
