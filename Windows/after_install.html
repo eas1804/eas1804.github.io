@@ -11,25 +11,15 @@
 <body>
 <h2>Windows. After install</h2>
 <ol>
+<li><h3>Отображение даты окончания активации</h3>
+<p><code>slmgr.vbs /xpr</code></p>
+
 <li><h3>Задать часовой пояс Украина/Киев</h3>
 <p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
 <p>узнать текущий часовой пояс <code>Get-TimeZone</code>  
 Просмотреть коды часовых поясов <code>tzutil /l </code></p>
 <p>Разрешить корректировку времени не администратору
 <p>Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времен
-<li><h3>Синхронизация времени через Internet </h3>
-<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update</code></p>
-<p><code>net stop w32time & net start w32time</code></p>
-
-
-<li><h3>Отключить cortana</h3>
-<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
-
-<li><h3>Отключить гибернацию</h3>
-<p><code>powercfg -h off</code> или включить <code>powercfg -h on</code></p>
-
-<li><h3>Электропитание — максимальная производительность</h3>
-<p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
 
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>
@@ -44,12 +34,36 @@
 <p>Get tips, tricks, and suggestions as you are use Windows 
 <p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f</code></p>
 
+
+<li><h3>Синхронизация времени через Internet </h3>
+<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update</code></p>
+<p><code>net stop w32time & net start w32time</code></p>
+
+
+<li><h3>Отключить cortana</h3>
+<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
+
+<li><h3>Электропитание</h3>
+<p>Отобразить схемы электропитания</P>
+<p><code>powercfg /list</code></p>
+<p> Активирвать схему "максимальная производительность"</P>
+<p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
+<p>Задать схему </P>
+<p><code>powercfg /setactive <идентификатор схемы</code></p>
+<p><code>powercfg /setactive 2d701401-90cb-4798-a5b4-89bc64f7f2aa</code></p>
+<p>Измените тайм-аут монитора:</P>
+<p><code>powercfg /change monitor-timeout-ac 15</code></p>
+
+
 <li><h3>BitLocker on/off</h3>
 <p><code>Manage-bde -status</code> <code>Manage-bde -off C</code></p>
+
+<li><h3>Выключить/Вкючить гибернацию</h3>
+<p><code>powercfg -h off</code> или включить <code>powercfg -h on</code></p>
+
 <li><h3>Автозагрузка</h3>
 <p><code>shell:startup</code></p>
-<li><h3>Отображение даты окончания активации</h3>
-<p><code>slmgr.vbs /xpr</code></p>
+
 
 </ol>
 </body>

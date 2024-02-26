@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ремонт</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> Ремонт</h2>
+<ol>
+<li><h3>sfc</h3>
+<p><code>sfc /scannow</code></p>
+<p>запустить тест только без ремонта.
+<p>Восстановления поврежденных файлов образа Windows
+<p><code>sfc /verifyonly</code></p>
+<li><h3>dism</h3>
+<p>Восстановить поврежденные файлоы образа Windows
+<p><code>dism /Online /Cleanup-Image /RestoreHealth</code></p>
+<p>только анализирует образ и предоставляет информацию о состоянии целостности системных файлов.
+<p><code>DISM /Online /Cleanup-Image /ScanHealth</code></p>
+<p>Выполняет проверку целостности образа Windows, но она может быть менее полной и интенсивной по сравнению с /ScanHealth
+<p><code>DISM /Online /Cleanup-Image /CheckHealth</code></p>
+<p>/RestoreHealth пытается восстановить поврежденные файлы, 
+<p>/ScanHealth просто сканирует их, а 
+<p>/CheckHealth выполняет более легкую проверку целостности.
+</body>
+  </html>
