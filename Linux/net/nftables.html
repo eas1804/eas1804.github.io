@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>nftables</h2>
+<h3>Смотрим существующий список правил и таблиц</h3>
+<p><code>nft list ruleset</code></p>
+<p><code>nft -a list ruleset</code> - Показать порядковые номера правил</p>
+<h3>Удалить все правила</h3>
+<p><code>nft flush ruleset</code></p>
+<h3>Сохранить правила</h3>
+<p><code>echo "flush ruleset" > /etc/nftables.conf</code></p>
+<p><code>nft -s list ruleset >> /etc/nftables.conf</code></p>
+<p><code>systemctl enable nftables.service</code></p>
+
+<h3>INPUT</h3>
+<pre>
+nft add table inet filter
+nft add chain inet filter INPUT {type filter hook input priority 0\; policy drop\;} 
+
+nft add rule inet filter INPUT ct state invalid counter drop
+nft add rule inet filter INPUT ct state related,established counter accept
+nft add rule inet filter INPUT iifname "lo" counter accept
+nft add rule inet filter INPUT ip protocol icmp counter accept
+nft add rule inet filter INPUT ip saddr {10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, mlp.pp.ua } tcp dport {22, 8006} counter accept
+</pre>
+<h3>Forward</h3>
+<p><code>echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf</code></p>
+<p><code>sysctl -p</code></p>
+
+<p>Iifname – input interface name, oifname – output interface name
+<pre>
+nft add chain inet filter FORWARD {type filter hook forward priority 0\; policy drop\;} 
+nft add rule inet filter FORWARD ct state invalid counter drop
+nft add rule inet filter FORWARD ct state related,established counter accept
+#разрешить прохождение трафика из vmbr0 в etho
+nft add rule net filter FORWARD iifname “vmbr0” oifname “etho” counter accept
+</pre>
+<h3>SNAT, masquerade</h3>
+<p><code>nft add table ip nat</code></p>
+<p><code>nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; }</code></p>
+<p><code>nft add rule nat POSTROUTING oifname eth0 ip saddr 172.16.181.0/24 counter snat to 178.101.9.15</code></p>
+или
+<p><code>nft add rule nat POSTROUTING oifname eth0 ip saddr 172.16.181.0/24 counter masquerade</code></p>
+<h3>PREROUTING</h3>
+Проброс порта
+<p><code>nft add table ip nat</code></p>
+<p><code>nft add chain nat PREROUTING { type nat hook prerouting priority dnat \; }</code></p>
+<p><code>nft add rule nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 192.168.1.120</code></p>
+
+
+
+</body>
+  </html>

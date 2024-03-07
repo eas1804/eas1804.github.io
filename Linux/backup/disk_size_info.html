@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>РАзмер свободного пространства</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Отправить размер удаленного каталога</h2>
+<pre>
+#!/bin/bash
+
+# telegramm env
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
+
+size_box (){
+MESSAGE=$(ssh -p$PORT -i $KEY  $username@$server du -hs /backup/Arhive/5_diol_v2/ )
+}
+
+# Переенные
+username=backup12345-05
+server=backup12345-05.backup.colocall.eu
+KEY=/home/user/.ssh/colocall.key
+COMPANY=Company_name
+PORT=22
+
+##### Constanta
+size_box
+ALL_MESSAGE="
+$COMPANY
+size=$MESSAGE
+$username
+My IP
+$(curl -s 2ip.ru)
+$(ip addr show | grep -oP 'inet \K\S+' | grep -v '127.0.0.1')
+"
+echo "$ALL_MESSAGE"
+#########Seng message in telegram############
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$ALL_MESSAGE" > /dev/null
+
+exit 0
+
+</pre>
+
+<h2>Свободное простоанство</h2>
+<p>Скрипт измеряет размер свободного пространства, и если оно выходит за пороговое значение, отправляет сообщение</p>
+
+<pre>
+#!/bin/bash
+
+# telegramm env
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
+
+ETH=eth0
+IP_local=$(ip -4 a | grep inet | grep $ETH |  awk '/inet/ {print $2}')
+IP_global=$(curl 2ip.ru)
+clear
+
+free_size_test() {
+# Получаем процент использованного места в каталоге /mnt/raid_md127
+usage_percentage=$(df -h | grep   "${DRIVE_BACKUP%/}" | awk '{print $5}' | cut -d '%' -f1)
+
+# Проверка, превышает ли использование места пороговое значение
+if [ "$usage_percentage" -gt "$threshold" ]; then
+
+MESSAGE="Скрипт $echo $0
+Мало свободного пространства на диске
+LAN ip $IP_local
+WAN ip $WAN $IP_global
+Free size in $DRIVE_BACKUP is: $usage_percentage %
+"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+echo "Free size in $DRIVE_BACKUP is: $usage_percentage % - PROBLEMA!!!!"
+else
+  echo "Free size in $DRIVE_BACKUP is: $usage_percentage % - ОК"
+fi
+}
+
+#### Диск 1
+#Куда смонторован носитель с резервной копией
+DRIVE_BACKUP=/dev/md127
+# Устанавливаем пороговое значение (80%)
+threshold=80
+free_size_test
+
+#Диск 2
+DRIVE_BACKUP=/dev/sda1
+threshold=80
+free_size_test
+</pre>
+
+
+
+
+</body>
+  </html>
