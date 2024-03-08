@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables. INPUT</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>INPUT</h2>
+<h3>Посмотреть</h3>
+<p><code>nft list ruleset</code></p>
+
+<h3>Создаем таблицу filter</h3>
+<p><code>nft add table inet filter</code></p>
+<h3>Создаем цепочку input</h3>
+<p><code>nft add chain inet filter input {type filter hook input priority 0\;} </code></p>
+<h3>Базовая часть правил безопасности для TCP-соединений</h3>
+<p><code>nft 'add rule inet  filter input tcp flags != syn / fin,syn,rst,ack ct state new counter drop'</code></p>
+<p><code>nft 'add rule inet  filter input tcp flags fin,syn,rst,psh,ack,urg / fin,syn,rst,psh,ack,urg counter drop'</code></p>
+<p><code>nft 'add rule inet  filter input tcp flags & (fin|syn|rst|psh|ack|urg) == 0x0 counter drop'</code></p>
+
+<h3>Invalid + related,established + lo</h3>
+<p><code>nft 'add rule inet  filter input ct state invalid counter drop'</code></p>
+<p><code>nft 'add rule inet  filter input ct state related,established counter accept'</code></p>
+<p><code>nft 'add rule inet  filter input iifname "lo" counter accept '</code></p>
+<h3>icmp</h3>
+<p><code>nft 'add rule inet  filter input ip protocol icmp counter accept'</code></p>
+<h3>SSH + 8006</h3>
+<p><code>nft 'add rule inet filter input ip saddr {10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, mlp.pp.ua } tcp dport {22, 8006} counter accept'</code></p>
+<h3>Задать политику</h3>
+<p><code>nft chain inet filter input {policy drop \;}</code></p>
+
+
+</body>
+  </html>

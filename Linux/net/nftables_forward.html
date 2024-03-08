@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables. FORWARD</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>FORWARD</h2>
+<h3>Посмотреть</h3>
+<p><code>nft list ruleset</code></p>
+<h3>включить форвардинг пакетов</h3>
+<p><code>echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf</code></p>
+<p><code>sysctl -p</code></p>
+
+<h3>Добавить таблицу</h3>
+<p><code>nft add chain inet filter FORWARD {type filter hook forward priority 0\; policy drop\;} </code></p>
+<h3>invalid + related,established</h3>
+<p><code>nft add rule inet filter forward ct state invalid counter drop</code></p>
+<p><code>nft add rule inet filter forward ct state related,established counter accept</code></p>
+<h3>разрешить прохождение трафика из vmbr0 в etho</h3>
+<p><code>nft add rule net filter forward iifname “vmbr0” oifname “etho” counter accept</code></p>
+iifname – input interface name
+<br>oifname – output interface name
+
+
+</body>
+  </html>

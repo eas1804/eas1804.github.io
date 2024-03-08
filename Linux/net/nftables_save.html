@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>nftables</h2>
+<h3>Очистка правил</h3>
+<p><code>nft flush ruleset</code></p>
+
+<h3>Перечитать правила из файла</h3>
+<p><code>nft -f /etc/nftables.conf</code></p>
+
+<h3>Сохранить правила</h3>
+<p><code> echo '#!/usr/sbin/nft -f' > /etc/nftables.conf </code></p>
+<p><code>echo "flush ruleset" >> /etc/nftables.conf</code></p>
+<p><code>nft -s list ruleset >> /etc/nftables.conf</code></p>
+<br>
+<p><code>systemctl enable nftables.service</code></p>
+
+<h3>Показать порядковые номера правил</h3>
+<p><code>nft -a list ruleset</code></p>
+<h3>Удаление правила по номеру</h3>
+<p><code>nft delete rule inet filter input handle 9</code></p>
+<h3>Добавление правила в конкретное место с номером в списке</h3>
+<p><code>nft add rule inet filter input position 8 tcp dport 22 counter accept</code></p>
+
+<h3>После установки</h3>
+<pre>
+root@clear:~# cat /etc/nftables.conf
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter;
+        }
+        chain forward {
+                type filter hook forward priority filter;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
+</pre>
+
+</body>
+  </html>
