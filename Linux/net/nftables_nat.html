@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables. NAT</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>NAT</h2>
+<p><code>nft add table ip nat</code></p>
+<h3>PREROUTING</h3>
+<p><code>nft add chain nat PREROUTING { type nat hook prerouting priority dnat \; }</code></p>
+<p>Проброс порта
+<p><code>nft add rule nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 192.168.1.120</code></p>
+
+
+<h3>POSTROUTING</h3>
+<p><code>nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; }</code></p>
+<p>Например LAN: 172.16.181.0/24
+<p>SNAT, если внешний IP – статический
+<p><code>nft add rule nat POSTROUTING oifname eth0 ip saddr 172.16.181.0/24 counter snat to 18.187.61.156</code></p>
+<p>Если адрес WAN – динамический, используем <b>masquerade</b>
+<p><code>nft add rule nat POSTROUTING oifname eth0 ip saddr 172.16.181.0/24 counter masquerade</code></p>
+</body>
+  </html>

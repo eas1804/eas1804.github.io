@@ -29,6 +29,12 @@
 <p><code>nft delete rule inet filter input handle 9</code></p>
 <h3>Добавление правила в конкретное место с номером в списке</h3>
 <p><code>nft add rule inet filter input position 8 tcp dport 22 counter accept</code></p>
+<h3>Переводит команду из tptables</h3>
+<p><code> iptables-translate </code></p>
+Например
+<p><code> iptables-translate  -A  FORWARD  -i vmbr1 -o vmbr0 -j ACCEPT -m comment --comment "Lan->WAN"</code></p>
+
+
 
 <h3>После установки</h3>
 <pre>
