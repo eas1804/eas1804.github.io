@@ -26,12 +26,18 @@
 <p><code>nft 'add rule inet  filter input ct state invalid counter drop'</code></p>
 <p><code>nft 'add rule inet  filter input ct state related,established counter accept'</code></p>
 <p><code>nft 'add rule inet  filter input iifname "lo" counter accept '</code></p>
-<h3>icmp</h3>
-<p><code>nft 'add rule inet  filter input ip protocol icmp counter accept'</code></p>
+
 <h3>SSH + 8006</h3>
 <p><code>nft 'add rule inet filter input ip saddr {10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, mlp.pp.ua } tcp dport {22, 8006} counter accept'</code></p>
 <h3>Задать политику</h3>
 <p><code>nft chain inet filter input {policy drop \;}</code></p>
+<hr>
+<h3>icmp</h3>
+<p><code>nft 'add rule inet  filter input ip protocol icmp counter accept'</code></p>
+<h3> WEB</h3>
+<p><code>nft 'add rule inet filter input tcp dport {80, 443} counter accept'</code></p>
+<h3>Zabbix</h3>
+<p><code>nft add rule inet filter input ip saddr 193.123.36.107/32 tcp dport 10050 counter accept</code></p>
 
 
 </body>
