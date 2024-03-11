@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Сетевой инфтефейс. Скороть</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Пример правильного написания скоростей передачи данных:</h2>
+<pre>
+- килобиты в секунду — кбит/с (kbps, kbit/s или kb/s)
+- мегабиты в секунду — Мбит/с (Mbps, Mbit/s или Mb/s)
+- гигабиты в секунду — Гбит/с (Gbps, Gbit/s или Gb/s)
+</pre>
+<p>Килобиты (kb) всегда в сокращениях пишутся с маленькой буквы, хотя килобайты с большой - KB.
+<pre>
+Пример правильного написания размера данных:
+- Килобайт — КБ, Кбайт (KB)
+- Мегабайт — МБ, Мбайт (MB)
+- Гигабайт — ГБ, Гбайт (GB)
+</pre>
+<h2> Выяснить пропускную способность сетевого интерфейса </h2>
+ <p><code>dmesg -T | grep  enp2s0 | grep Up</code></p>
+<h2>Мониторинг Скорости сетевого интерфейса (100 или 1000 Mbps )</h2>
+<h3>bmon</h3>
+<p><code>apt install bmon -y</code></p>
+<h3>iftop</h3>
+<p><code>apt install iftop -y</code></p>
+<p><code>iftop -i eth0</code></p>
+2. Для отображения статистики по отдельным хостам используйте опцию "-F" (filter):
+<p><code> iftop -i eth0 -F 192.168.0.1/24</code></p>
+3. Для вывода статистики в более удобном формате можно воспользоваться опцией "-B" (burst mode). 
+Эта опция позволяет выводить статистику не непрерывно, а только при появлении трафика в сети:
+<p><code>iftop -i eth0 -B</code></p>
+4. Для отображения суммарной статистики использования сетевого интерфейса воспользуйтесь опцией "-t" (totals):
+<p><code>iftop -i eth0 -t</code></p>
+
+
+</body>
+  </html>
