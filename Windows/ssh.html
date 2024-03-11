@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows ssh</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Установить SSH сервер</h2>
+<ol>
+<li>Выяснить текующую версию 
+<p>cmd от Админа <code>dism /online /get-capabilities | findstr /i "OpenSSH.Server"</code></p>
+<li>Устанвить версию 0.0.1.0
+<p><code>dism /Online /Add-Capability /CapabilityName:OpenSSH.Server~~~~0.0.1.0</code></p>
+<li>Запуск
+<p><code>Start-Service sshd</code></p>
+<li>Автозапуск при загрузке
+<p><code>Set-Service -Name sshd -StartupType 'Automatic'</code></p>
+<li>Проверить
+<p><code>Get-WindowsCapability -Online | ? Name -like 'OpenSSH.Ser*'</code></p>
+<li>Проверить зарущенную службу
+<p><code>netstat -na| findstr ":22"</code></p>
+<li>Проверить файрвол
+<p><code>Get-NetFirewallRule -Name *OpenSSH-Server* |select Name, DisplayName, Description, Enabled</code></p>
+</body>
+  </html>
