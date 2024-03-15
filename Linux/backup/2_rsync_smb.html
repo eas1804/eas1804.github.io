@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>rsync smb</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2> rsync smb</h2>
+<ol>
+<li>step
+<p><code>apt install cifs-utils  -y</code></p>
+<p><code>apt install rsync -y</code></p>
+<li>step
+<p>В файле /etc/credentials разместить данные для досупа к Windows
+<pre> cat /etc/credentials
+
+username=backup_user
+password=hs47-H7)yM
+
+</pre>
+<li>step
+
+<pre>
+#!/bin/bash
+
+lan_sync () {
+ mount -t cifs //$IP/$SHARA_FROM $MNT_POINT -o credentials=/etc/credentials -o vers=$SMB_V -o ro
+
+ ls "${target_directory}increment/" || mkdir -p "${target_directory}increment/"
+ ls "${target_directory}current/"   || mkdir -p "${target_directory}current/"
+
+ rsync -zav --progress --delete  --recursive $local_directory $target_directory/current/  --backup --backup-dir=${target_directory}/increment/$(date +%Y-%m-%d)/
+ umount $MNT_POINT
+
+}
+
+
+
+IP=172.16.181.18
+SHARA_FROM=google_drive # Shara
+MNT_POINT=/mnt/win11/   # Точка мониторвания
+SMB_V=3.0               # Версия smb источника
+
+local_directory=$MNT_POINT
+target_directory=/mnt/disk2_WD/Google_Drive/
+lan_sync
+
+</pre>
+
+</body>
+  </html>
