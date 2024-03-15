@@ -1,5 +1,5 @@
 @echo off
-set NEW_USER=Micosoft
+set NEW_USER=Microsoft
 set NEW_PASS=Samsung1!
 
 chcp 1251
