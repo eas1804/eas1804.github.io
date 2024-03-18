@@ -25,5 +25,22 @@
 <p><code>netstat -na| findstr ":22"</code></p>
 <li>Проверить файрвол
 <p><code>Get-NetFirewallRule -Name *OpenSSH-Server* |select Name, DisplayName, Description, Enabled</code></p>
+
+<h3>Подключение по ключу </h3>
+<p>На сервере OpenSSH.  Включить аутентификацию по ключам
+<p><code>Notepad C:\ProgramData\ssh\sshd_config</code></p>
+<p>Раскоментировать:
+<p><code>PubkeyAuthentication yes</code></p>
+<p><code>StrictModes no </code></p>
+<p>Чтобы использовать ключ authorized_keys из профиля пользователя, и не переносить данные в файл administrators_authorized_keys
+<p>Закомментируйте строки:
+<p><code>#Match Group administrators</code></p>
+<p><code># AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys</code></p>
+<p>Перезапустить OpenVPN
+<p><code>net stop sshd</code></p>
+<p><code>net start sshd</code></p>
+<p>Скопировать публичный ключ в c:\users\user1\.ssh\authorized_keys
+
+
 </body>
   </html>
