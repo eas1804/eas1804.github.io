@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>telegramm</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>отправить файл</h2>
+
+<pre>
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
+
+FILE_PATH=/etc/openvpn/client.ovpn
+MESSAGE="Это ваш конфиг"
+
+curl -F chat_id="$CHAT_ID" -F document=@"$FILE_PATH" -F caption="$MESSAGE" "https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
+</pre>
+
+<h2>отправит сообщение</h2>
+<p><code>IP_local=$(ip -4 a | grep inet | grep $ETH |  awk '/inet/ {print $2}')</code>
+<p><code>IP_global=$(curl 2ip.ru)	</code>
+<pre>
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
+
+MESSAGE="LAN ip $IP_local
+WAN ip $WAN $IP_global"
+
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+</pre>
+
+</body>
+  </html>
