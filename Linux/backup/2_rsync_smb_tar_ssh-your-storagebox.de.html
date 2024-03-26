@@ -123,7 +123,7 @@ fi
 # Функция. Удаляем старые каталоги в increment. Удаленная файловая система /home  монтируется в /mnt/storagebox/ по sshfs
 fun_del_old () {
 ls  /mnt/storagebox/ || mkdir /mnt/storagebox/
-umount /mnt/storagebox/
+umount /mnt/storagebox/  > /dev/null
 
 sshfs $username@$server:/home  /mnt/storagebox/   -o IdentityFile=$ssh_key -o port=$ssh_port
 ls -dt "${del_directory}increment"/*/ | tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
@@ -134,21 +134,22 @@ umount /mnt/storagebox/
 
 clear
 ########################Работаем##############################
-#Folder 1 desktop
-SHARA_FROM=<b>Desktop</b>         # Shara на windows
-target_directory=<b>/backup/yurist/desktop/</b> # каталог на удаленном сервере, в который проводим синхронизацию
+#Backup from win2019
+local_directory=$MNT_POINT
+target_directory=/home/<u>backup</u>/
+del_directory=<b>/mnt/storagebox/</b><u>backup</u>/
+COUNT=15                # Сколько свежих каталогов оставить
 
-umount $MNT_POINT
-fun_mount
 fun_rsync
 fun_del_old
 fun_count
 
-#Folder 2 desktop
-SHARA_FROM=Documents        
-target_directory=/backup/yurist/doc/
-
+#Folder desktop
+SHARA_FROM=<b>Desktop</b>         # Shara на windows
+target_directory=<b>/backup/yurist/desktop/</b> # каталог на удаленном сервере, в который проводим синхронизацию
+del_directory=<b>/mnt/storagebox/</b>yurist/desktop/
 umount $MNT_POINT
+
 fun_mount
 fun_rsync
 fun_del_old
