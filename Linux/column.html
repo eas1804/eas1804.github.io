@@ -4,18 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>column</title>
+    <title>Utils</title>
     <link rel="stylesheet" href="../style.css">
   </head>
 
 <body>
-<h2>column</h2>
 
+<h1>Disk, Folder info</h1>
+<h2>duf</h2>
+duf - замена df
+<p><code>apt install duf -y</code></p>
+или из пакетов
+<pre>git clone https://github.com/muesli/duf.git
+cd duf
+go build</pre>
+В старых версиях Linux нужно обновлять go до 17 версии
+<pre>sudo apt update
+sudo apt install curl git mercurial make binutils bison gcc build-essential
+bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+source ~/.gvm/scripts/gvm
+gvm install go1.17
+gvm use go1.17 --default
+go mod tidy</pre>
+
+<h2>ncdu</h2>
+ <p>утилита, с помощью которой можно быстро узнать, кто сколько занимает места на диске
+<p><code> apt install ncdu -y</code></p>
+<h1>View</h1>
+<h2>column</h2>
 <p> Эта  утилита делает одну вещь: выстраивает данные в удобочитаемые таблицы, используя различные разделители. 
 В общем случае разделителем считается пробел, но его через ключ можно переназначить. 
 <p><code>mount | column -t</code></p>
 <p><code>column -s ":" -t /etc/passwd</code></p>
 <p><code>column -s ":" -t /etc/passwd | awk '{print $1}'</code></p>
+
+<h2>bat</h2>
+ <p>аналог cat и less одновременно
+<p><code>apt install bat -y</code></p>
+<p><code>batcat /var/log/syslog</code></p>
+<p>Короткий файл она целиком выводит в терминал с подсветкой и нумерацией строк, а длинный, который не умещается на экран, подгружает по мере прокрутки вниз, как less
+<h1>Net</h1>
+<h2>traceroute</h2>
+<p><code>apt install mtr-tiny tcptraceroute -y</code></p>
+<p><code>mtr i.ua </code></p>
+<p><code>tcptraceroute i.ua</code></p>
 
 </body>
   </html>

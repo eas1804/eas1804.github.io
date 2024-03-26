@@ -34,6 +34,23 @@ Options=defaults
 [Install]
 WantedBy=multi-user.target
 </pre>
+Имя Юнита должно соответвовать имени каталога. Наример
+<p>Каталог /mnt/<b>music</b> заранее можно не создавать. 
+
+<p><code>cat  /etc/systemd/system/mnt-<b>music</b>.mount</code></p>
+<pre>
+[Unit]
+Description=Disk for music
+
+[Mount]
+What=/dev/disk/by-uuid/c1879e74-3980-49af-9254-88e6d9e76e6a
+Where=/mnt/<b>music</b>
+Type=ext4
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target
+</pre>
 
 
 <li>Перечитываем содержание юнитов и монтируем файловую систему:

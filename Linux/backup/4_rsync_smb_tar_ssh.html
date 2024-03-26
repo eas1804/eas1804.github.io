@@ -92,8 +92,8 @@ rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive "$lo
 
 
 # Удаляем старые каталоги в increment
-    ssh -p $ssh_port -i $ssh_key $username@$server ls -dt "${target_directory}increment"/*/ | \
-    tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
+#    ssh -p $ssh_port -i $ssh_key $username@$server ls -dt "${target_directory}increment"/*/ | \
+#   tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
     }
 
 #Функция. Сравнить количество файлов локаьных и удаленных
@@ -123,6 +123,16 @@ curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id
 fi
 }
 
+# Функция. Удаляем старые каталоги в increment. Удаленная файловая система /home  монтируется в /mnt/storagebox/ по sshfs
+fun_del_old () {
+ls  /mnt/storagebox/ || mkdir /mnt/storagebox/
+umount /mnt/storagebox/
+
+sshfs $username@$server:/home  /mnt/storagebox/   -o IdentityFile=$ssh_key -o port=$ssh_port
+ls -dt "${del_directory}increment"/*/ | tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
+umount /mnt/storagebox/
+}
+
 
 
 clear
@@ -134,6 +144,7 @@ target_directory=<b>/backup/yurist/desktop/</b> # каталог на удале
 umount $MNT_POINT
 fun_mount
 fun_rsync
+fun_del_old
 fun_count
 
 #Folder 2 desktop
@@ -143,6 +154,7 @@ target_directory=/backup/yurist/doc/
 umount $MNT_POINT
 fun_mount
 fun_rsync
+fun_del_old
 fun_count
 
 
