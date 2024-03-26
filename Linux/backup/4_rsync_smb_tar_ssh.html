@@ -14,6 +14,8 @@
 <li>step
 <p><code>apt install cifs-utils  -y</code></p>
 <p><code>apt install rsync -y</code></p>
+<p><code>apt install sshfs -y</code></p> Используется для удаления по ssh your-storagebox.de
+
 <li>step
 <p>В файле /etc/credentials разместить данные для досупа к Windows
 <pre> cat /etc/credentials
@@ -92,6 +94,7 @@ rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive "$lo
 
 
 # Удаляем старые каталоги в increment
+# для your-storagebox.de - не подходит
 #    ssh -p $ssh_port -i $ssh_key $username@$server ls -dt "${target_directory}increment"/*/ | \
 #   tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
     }
