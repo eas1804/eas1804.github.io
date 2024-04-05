@@ -9,6 +9,11 @@
   </head>
 
 <body>
+<h2>Rsync по ssh</h2>
+
+<p><code>rsync -zav --progress  -e "ssh -p22 -i $ssh_key" --recursive $local_directory $username@$server:$target_directory</code><p>
+
+
 
 <h2>Инкриментный Backup. Rsync</h2>
 
