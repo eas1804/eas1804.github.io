@@ -16,6 +16,15 @@
 <li><a href="swap.html">Swap on/off </a>
 <li><a href="disk_test.html">Test disk</a>
 
+<h2>Если закончилось свободное место на дисках</h2>
+<p><code> du -h -d 1 / | sort -hr</code></p>
+<p><code>du -hs /* | sort -hr</code></p>
+Ограничиваем вывод:
+<p><code>du -h -d 1 / | sort -hr | head -10</code></p>
+Смотрим топ 20 самых больших директорий:
+<p><code>du -hcx --max-depth=6 / | sort -rh | head -n 20</code></p>
+Смотрим топ 20 самых больших файлов:
+<p><code>find / -mount -ignore_readdir_race -type f -exec du -h "{}" + 2>&1 > | sort -rh | head -n 20</code></p>	
 
 </body>
   </html>

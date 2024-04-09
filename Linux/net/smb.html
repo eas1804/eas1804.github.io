@@ -22,7 +22,32 @@ domain=corp.unac
 </pre>
 <p>Доступ должен быть не только по сети но ки к файловой системе!
 
-<h2>Монтирование сетевого ресурса</h2>
+<h2>Монтирование сетевого ресурса <b>systemd</b></h2>
+<p><code>nano /etc/systemd/system/mnt-<b>remote</b>.mount</code></p>
+<pre>
+[Unit]
+Description=Mount SMB Share
+Requires=network-online.target
+After=network-online.target
+
+[Mount]
+What=//server/share
+Where=/mnt/<b>remote</b>
+Type=cifs
+Options=username=your_username,password=your_password,uid=1000,gid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p>Для монтирования SMB ресурса в режиме "только чтение" вы можете добавить параметр ro (read-only) в опции монтирования.
+<p><code>Options=username=your_username,password=your_password,ro</code></p>
+<p>Запускаем службу </p>
+<p><code>systemctl daemon-reload</code></p>
+<p><code>systemctl start mnt-remote.mount</code></p>
+<p><code>systemctl enable mnt-remote.mount</code></p>
+
+
+<h2>Монтирование сетевого ресурса - mount</h2>
 Пример монтирования \\192.168.18.103\1c_backup в /mnt/mount-point
 <pre>
 IP=192.168.18.103

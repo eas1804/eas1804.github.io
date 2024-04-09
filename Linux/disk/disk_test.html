@@ -41,7 +41,15 @@
 </ul>
 <ol>
 <li>Инофрмация о диске
-<p><code>smartctl -i /dev/sda</code> подробнее <code>smartctl -a /dev/sda</code></p>
+<p><code>smartctl -i /dev/sda</code> 
+<p>подробнее <code>smartctl -a /dev/sda</code></p>
+<p>
+Ключевое значение имеет содержимое 3-х столбцов:
+<p>VALUE - текущее значение параметра
+<p>WORST - наихудшее значение, которого когда-либо достигало значение Value
+<p>THRESH - значение, которого должен достигнуть Value этого же атрибута, чтобы состояние атрибута было признано критическим.
+<p>Критичным является поле WHEN_FAILED, если оно имеет значение FAIL, то высока вероятность выхода жесткого диска из строя в ближайшее время.
+
 
 <li>Получение информации о времени работы диска
 <p><code>smartctl -a /dev/sda | grep Power_On_Hours</code></p>
@@ -52,6 +60,8 @@
 <li>Списка ошибок, которые произошли на диске
 <p><code>smartctl -l error /dev/sdc</code> или <code>smartctl -l error /dev/sdc | grep -i -E 'error|fail|warning'</code></p>
 </ol>
+
+
 
 <H3>Анализа параметров SMART</h3>
 <ol>
