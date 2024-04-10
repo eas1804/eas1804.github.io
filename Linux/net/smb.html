@@ -9,6 +9,35 @@
   </head>
 
 <body>
+<h2>ksmbd</h2>
+<p>Ядро Linux содержит реализацию файлового сервера на базе протокола smb - ksmbd.
+<p>Для поддержки ksmbd нужно относительно свежее ядро. В Ubuntu 22 и Debian 12 оно уже точно подходящей версии
+<ol>
+<li> <code>mkdir -p /mnt/backup/1c/</code>
+<li><code>apt install ksmbd-tools</code>
+
+<li> создаем конфиг /etc/ksmbd/ksmbd.conf:
+<pre>
+[global]
+ netbios name = 1cbackup
+ map to guest = never
+
+[backup]
+ comment = 1C_backup
+ path = <b>/mnt/backup/1c/</b>
+ writeable = yes
+ users = ksmbduser
+ </pre>
+ <li> добавляем cистемного пользователя
+ <p>Ksmbd использует сопоставление с системным пользователем
+<p><code> useradd -s /sbin/nologin ksmbduser</code></p>
+<p>И сопоставляем с пользователем ksmbd:
+<p><code>ksmbd.adduser --add-user=ksmbduser</code></p>
+ <p><code>chown ksmbduser:ksmbduser /mnt/backup/1c/</code></p>
+<p>В автозагрузку она добавляется автоматически после установки. 
+<p><code>systemctl restart ksmbd</code></p>
+</ol>
+<hr>
 <h2>Smb</h2>
 <h2>Установить пакет</h2>
 <p><code>apt install cifs-utils -y</code></p>
