@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Backup 1c</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>backup 1c</h3>
+<ol>
+<li>Расшарить каталог Base на Windows  (ip 10.10.10.3)
+<li> Скопировать публичный ключ из /home/user/.ssh/id_ed25519.pub в 
+ <p><code>c:\users\user\.ssh\authorized_keys</code>
+
+<li>nano /etc/systemd/system/mnt-1c.mount
+<pre>
+[Unit]
+Description=Mount SMB Share 1c
+Requires=network-online.target
+After=network-online.target
+
+[Mount]
+What=//10.10.10.3/Base/
+Where=/mnt/1c/
+Type=cifs
+Options=username=Vasya,password=PassPORT,uid=1000,gid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,ro
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<li>Скрипт
+<pre>
+#!/bin/bash
+
+backup_func (){
+tar -vczf $TO`date "+%d-%m-%g_%H-%M-%S"`-COMPANY_1c.tar.gz   $FROM
+}
+
+del_old_files () {
+ls -t "$TO" | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
+}
+
+#закрываем 1с
+ssh -i /home/user/.ssh/id_ed25519 user@10.10.10.3 'C:\Windows\System32\taskkill /F /FI "ImageName eq 1c*"'
+
+# Монитруем сетевой диск 
+systemctl  start mnt-1c.mount
+
+# Part 1 Local
+TO=/mnt/backup/1c/Local/
+FROM=/mnt/1c/
+COUNT=15                 # Сколько свежих файлов оставить
+backup_func
+del_old_files
+
+# Part 2. Remote
+TO=/mnt/backup/1c/Remote/
+FROM=/mnt/1c/
+COUNT=5                 # Сколько свежих файлов оставить
+backup_func
+del_old_files
+
+systemctl  stop mnt-1c.mount
+
+exit 0
+</pre>
+
+</body>
+  </html>

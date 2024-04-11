@@ -37,21 +37,9 @@
 <p>В автозагрузку она добавляется автоматически после установки. 
 <p><code>systemctl restart ksmbd</code></p>
 </ol>
-<hr>
-<h2>Smb</h2>
-<h2>Установить пакет</h2>
-<p><code>apt install cifs-utils -y</code></p>
 
-<h2>Создать файл с credentials</h2>
-<p><code>vi /etc/credentials</code></p>
-<pre>
-username=user_smb
-password=S#m#B#2017
-domain=corp.unac
-</pre>
-<p>Доступ должен быть не только по сети но ки к файловой системе!
 
-<h2>Монтирование сетевого ресурса <b>systemd</b></h2>
+<h2>Монтирование сетевого ресурса, используя <b>systemd</b></h2>
 <p><code>nano /etc/systemd/system/mnt-<b>remote</b>.mount</code></p>
 <pre>
 [Unit]
@@ -74,6 +62,20 @@ WantedBy=multi-user.target
 <p><code>systemctl daemon-reload</code></p>
 <p><code>systemctl start mnt-remote.mount</code></p>
 <p><code>systemctl enable mnt-remote.mount</code></p>
+
+<hr>
+<h2>Smb</h2>
+<h2>Установить пакет</h2>
+<p><code>apt install cifs-utils -y</code></p>
+
+<h2>Создать файл с credentials</h2>
+<p><code>vi /etc/credentials</code></p>
+<pre>
+username=user_smb
+password=S#m#B#2017
+domain=corp.unac
+</pre>
+<p>Доступ должен быть не только по сети но ки к файловой системе!
 
 
 <h2>Монтирование сетевого ресурса - mount</h2>
