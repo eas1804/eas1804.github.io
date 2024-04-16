@@ -19,9 +19,17 @@
 <p><code>add address-pool=dhcp_pool_lan disabled=no interface=bridge_lan lease-time=1d10m name=dhcp_srv_lan</p></code>
 <h3>Задаем сеть</h3>
 <p><code>/ip dhcp-server network</p></code>
-<p><code>add address=<b>192.168.72.0/24</b> dns-server=8.8.8.8 gateway=<b>192.168.72.1<b></p></code>
+<p><code>add address=<b>192.168.72.0/24</b> dns-server=8.8.8.8 gateway=<b>192.168.72.1</b></p></code>
+<hr>
+<h3>Как связать ip 172.16.181.21 и MAC E6:26:3E:49:85:D8</h3>
 
+<p><code>/ip dhcp-server lease</p></code>
+<p><code>add address=172.16.181.21 mac-address=E6:26:3E:49:85:D8 server=dhcp_srv_lan</p></code>
 
+<p>После отключить устройчство с MAC E6:26:3E:49:85:D8 и включить</p>
 
+<p>	server можно увидеть в поле Name
+<p><code>/ip dhcp-server print</p></code>
+<p>P.S. server=dhcp_srv_lan можно не указывать</p>
 </body>
   </html>
