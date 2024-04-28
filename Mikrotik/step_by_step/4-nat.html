@@ -28,9 +28,11 @@
 <p>Проброс портов</p>
 
 <P>OpenVPN</p>
-<p><code>/ip firewall nat add action=netmap chain=dstnat comment=OpenVPN dst-port=1194 in-interface=ether1 protocol=udp to-addresses=192.168.1.205 to-ports=1194</p></code>
+<p><code>/ip firewall nat add action=netmap chain=dstnat comment=OpenVPN dst-port=1194 <b>in-interface=ether1</b> protocol=udp to-addresses=192.168.1.205 to-ports=1194</p></code>
 <p>1c from My IP</p>
-<p><code>/ip firewall nat add action=netmap chain=dstnat comment=1c dst-port=3390 in-interface=ether1 protocol=tcp src-address-list=allowed_to_router to-addresses=192.168.1.201 to-ports=3389 </p></code>
+<p><code>/ip firewall nat add action=netmap chain=dstnat comment=1c dst-port=3390 <b>in-interface=ether1</b> protocol=tcp src-address-list=allowed_to_router to-addresses=192.168.1.201 to-ports=3389 </p></code>
+<p> Внимательно с 443 и 80 портом
+ <p><img src=dnat.jpg>
 
 </body>
   </html>

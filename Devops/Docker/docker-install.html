@@ -23,15 +23,10 @@
 <h2>c-top</h2>
 <p>программа для просмотра используемых ресурсов контейнерами</p>
 <p>в ctop все метрики собраны в одно место для каждого контейнера. </p>
-<h3>Вариант 1. Запуск в docker</h3>
+<h3>Запуск в docker</h3>
  <p>nano /usr/local/bin/ctop
 <p><code>docker run --rm -ti --name=ctop  --volume /var/run/docker.sock:/var/run/docker.sock:ro  quay.io/vektorlab/ctop:latest</code></p>
 
-<h3>Вариант 2. Устанока приложения </h3>
-<p><code>echo "deb http://packages.azlux.fr/debian/ buster main" | tee /etc/apt/sources.list.d/azlux.list</code></p>
-<p><code>wget -qO - https://azlux.fr/repo.gpg.key | apt-key add - </code></p>
-<p><code>apt update </code></p>
-<p><code>apt install docker-ctop</code></p>
 
 
 
