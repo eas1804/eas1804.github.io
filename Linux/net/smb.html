@@ -10,13 +10,21 @@
 
 <body>
 <h2>ksmbd</h2>
+<p>Если  нужен полноценный и функциональный файловый сервер уровня предприятия, то лучше остановить свой выбор на Samba. 
+<p>А ksmbd нужен там, где надо быстро и просто организовать один или несколько общих ресурсов.
 <p>Ядро Linux содержит реализацию файлового сервера на базе протокола smb - ksmbd.
-<p>Для поддержки ksmbd нужно относительно свежее ядро. В Ubuntu 22 и Debian 12 оно уже точно подходящей версии
+<p>Пример конфигурации <code> /etc/ksmbd/ksmbd.conf.example</code>
+
 <ol>
-<li> <code>mkdir -p /mnt/backup/1c/</code>
 <li><code>apt install ksmbd-tools</code>
 
+<h4>Гостевой доступ</h4>
+[global]
+<p><code>map to guest = never</code> #отключен гостевой доступ</p>
+<p><code>map to guest = bad user</code> #включить гостевой доступ</p>
+
 <li> создаем конфиг /etc/ksmbd/ksmbd.conf:
+
 <pre>
 [global]
  netbios name = 1cbackup
@@ -26,17 +34,59 @@
  comment = 1C_backup
  path = <b>/mnt/backup/1c/</b>
  writeable = yes
- users = ksmbduser
+ users = <b>ksmbduser</b>
  </pre>
  <li> добавляем cистемного пользователя
  <p>Ksmbd использует сопоставление с системным пользователем
+ <p>создаем системного пользователя, не задавая ему домашней папки и запретив интерактивный вход 
+<br> (если вам не нужен реальный пользователь в системе с этим именем)
+ 
 <p><code> useradd -s /sbin/nologin ksmbduser</code></p>
 <p>И сопоставляем с пользователем ksmbd:
 <p><code>ksmbd.adduser --add-user=ksmbduser</code></p>
- <p><code>chown ksmbduser:ksmbduser /mnt/backup/1c/</code></p>
+
 <p>В автозагрузку она добавляется автоматически после установки. 
 <p><code>systemctl restart ksmbd</code></p>
 </ol>
+
+
+
+<h4> Дополнительно</h4>
+<p>изменить пароль пользователя:
+<p><code>ksmbd.adduser --update-user=ksmbduser --password=NewPa$$w0rd</code></p>
+<p>удалить пользователя:
+<p><code>ksmbd.adduser --del-user=ksmbduser</code></p>
+
+<p>Если нужен ананимный доступ
+<pre>
+[backup_1c]
+ path = /mnt/backup/1c/
+ writeable = yes
+<b> guest ok = yes </b> ; Разрешить анонимный доступ только к этому ресурсу
+</pre>
+
+
+<p> скрыть только конкретный общий ресурc
+<p><code>hide share = backup_1c</code></p>
+
+
+<p>задать список пользователей имеющих право доступа к ресурсу:
+<p><code>valid users = ivanov petrov</code></p>
+<p>задать список тех, кому доступ запрещен:
+<p><code>invalid users = kozlov</code></p>
+<p>Данный список имеет приоритет над valid users.
+
+<p>В случае ресурса с доступом только на чтения можно дополнительно указать пользователей имеющих право записи:
+<p><code>write list = ivanov</code></p>
+<p>Также можно выборочно переключить некоторых пользователей в режим только чтения:
+<p><code>read list = kozlov</code></p>
+<p>В случае совместного применения опций read list имеет приоритет над write list.
+
+
+
+<H4> Logs</h4>
+<p><code>journalctl -u ksmbd.service</code></p>
+
 
 
 <h2>Монтирование сетевого ресурса, используя <b>systemd</b></h2>

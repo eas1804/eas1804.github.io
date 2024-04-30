@@ -13,6 +13,12 @@
  <p><code>systemctl list-units --type=service</code></p>
 <p><code> systemctl list-units --type=service | grep open</code></p>
 
+
+<h3>Какие службы будут запущены автоматически</h3>
+<p><code>systemctl list-unit-files --state=enabled</code></p>
+
+
+
 <h3>Просмотреть все службы, включая неактивные</h3>
 <p><code>systemctl list-units --type=service --all</code></p>
 
