@@ -9,14 +9,19 @@
   </head>
 
 <body>
-<h3>Оганичить ssh ipv4. AddressFamily inet</h3>
-  Проверить натсройку
-  <p><code>cat   /etc/ssh/sshd_config |grep AddressFamily</code></p>
-Внести параметр
- <p><code>echo "AddressFamily inet" |  tee -a /etc/ssh/sshd_config</code></p>
- <p><code>service ssh restart</code></p>
- 
 
+<h3>Отключить IPv6 до перезагрузки</h3>
+<p><code> nano /etc/sysctl.conf</code></p>
+<p>В конец файла добавляем строки:
+
+<p><code>    # Turn off IPv6</code></p>
+<p><code>    net.ipv6.conf.all.disable_ipv6 = 1</code></p>
+<p><code>    net.ipv6.conf.default.disable_ipv6 = 1</code></p>
+<p> Для вступления изменений в силу, заставим sysctl перечитать файл /etc/sysctl.conf:
+
+<p><code>sysctl -p</code></p>
+
+<hr>
 <h3> Отобразить ipv6 адрес</h3>
 <p><code>ip -6 addr show</code></p>
 <p><code>ip -6 addr show | grep "scope global"</code></p>
@@ -50,6 +55,7 @@
 <h3>ПО ipv6</h3>
 <p><code>ssh  -6 fe80::d553:81eb:d33c:df53</code></p>
 <p><code>ping -6 ipv6.google.com</code> или  <code>ping 2001:4860:4860::8888</code>  это IPv6 DNS Google</p>
+<hr>
 <h3>Отключить IPv6</h3>
 <p>отредактировать /etc/default/grub
 <p>До

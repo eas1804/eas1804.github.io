@@ -9,24 +9,31 @@
   </head>
 
 <body>
+
 <h2> After install</h2>
  <p><code>apt update && apt <b>-V</b> upgrade && apt autoremove</code></p>
- <p><code>apt install tmux mc wget curl vim chrony sudo  -y </code></p>
+ <p><code>apt install tmux mc wget curl chrony sudo duf -y </code></p>
  <p><code>echo 'export LS_OPTIONS="--color=auto"' >> /root/.bashrc</code></p>
  <p><code>echo 'eval "$(dircolors)"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias ls="ls $LS_OPTIONS"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias ll="ls $LS_OPTIONS -l"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias l="ls $LS_OPTIONS -lA"' >> /root/.bashrc</code></p>
-
-
 <p><code>echo 'export PATH=$PATH:/usr/sbin' >> /root/.bashrc</code></p>
-<p>yeloow color dir <code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code></p>
+<p><code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code> #yeloow color dir </p> 
 
 <p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
 <p><code>echo 'server time.ntp.org.ua  iburst' >>/etc/chrony/chrony.conf</code></p>
 <p><code>echo 'server pool.ntp.org.ua iburst' >>/etc/chrony/chrony.conf</code></p>
 <p><code>systemctl start chrony && systemctl enable chrony</code></p>
 <p><code>sudo sed -i '/^# User privilege specification$/a exch_adm ALL=(ALL) NOPASSWD: ALL' /etc/sudoers</code></p>
+<p><code>source ~/.bashrc</code></p>
+
+<h3>Scrypts</h3>
+<ol>
+<li><a href=monitoring/Scrypts/raid1.sh>test raid1</a>
+<li><a href=monitoring/Scrypts/refresh_home_mlp_pp_ua.sh>refresh DNS name home_mlp_pp_ua</a>
+<li><a href=monitoring/Scrypts/size_local_drive.sh>size local drive 80%</a>
+</ol>
 
 
 <h3>History </h3>
@@ -35,6 +42,21 @@
 <p><code>echo 'PROMPT_COMMAND="history -a"' >> ~/.bashrc</code></p>
 <p><code>echo 'export HISTIGNORE="ls:ll:history:w:htop:pwd"' >> ~/.bashrc</code></p>
 
+<h3>Приглашение </h3>
+<p><code>echo "PS1='${debian_chroot:+($debian_chroot)}\u@NAME:\w\$ '" >> ~/.bashrc</code></p>
+
+<h3>ssh key </h3>
+<p><code>ssh-keygen -t ed25519 -C "My Debian"</code></p>
+<p><code>cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys</code></p>
+<p><code>cat ~/.ssh/id_ed25519</code></p>
+
+<h3>Install additionas soft</h3>
+<p><code>apt install cockpit sysstat  dstat  htop iftop ifstat gdisk -y</code></p>
+<p><code>cockpit  ip:9090</code></p>
+
+
+
+<hr>
 <h3>Vim</h3>
 <p><code>echo "syntax on" >> ~/.vimrc</code></p>
 <p><code>echo "set incsearch" >> ~/.vimrc</code></p>
@@ -48,26 +70,10 @@
 <p><code>echo "set wrap" >> ~/.vimrc</code></p>
 <p><code>echo "colorscheme desert" >> ~/.vimrc</code></p>
 <br>
-<h3>Приглашение </h3>
-<p><code>echo "PS1='${debian_chroot:+($debian_chroot)}\u@NAME:\w\$ '" >> ~/.bashrc</code></p>
-<p><code>source ~/.bashrc</code></p>
-<h3>ssh key </h3>
-<p><code>ssh-keygen -t ed25519 -C "My Debian"</code></p>
-<p><code>cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys</code></p>
-<p><code>cat ~/.ssh/id_ed25519</code></p>
-
-<h3>Install</h3>
-<p><code>apt install cockpit sysstat  dstat  htop iftop ifstat gdisk -y</code></p>
-<p><code>cockpit  ip:9090</code></p>
-
-
-
-
-
-
 
 
 
 
 </body>
   </html>
+

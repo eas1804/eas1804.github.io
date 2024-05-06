@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2> Тест cвободного пространства</h2>
+
+<pre>
+#!/bin/bash
+
+# telegramm env
+BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+CHAT_ID="33109821804"
+
+IP_global=$(curl 2ip.ru)
+clear
+
+free_size_local () {
+# Получаем процент использованного места в каталоге $DRIVE_BACKUP
+usage_percentage=$(df -h | grep   "${DRIVE_BACKUP%/}" | awk '{print $5}' | cut -d '%' -f1)
+
+# Проверка, превышает ли использование места пороговое значение
+if [ "$usage_percentage" -gt "$threshold" ]; then
+
+MESSAGE="Скрипт $echo $0
+Мало свободного пространства на диске
+$COMPANY
+SERVER=$SERVER
+WAN ip $WAN $IP_global
+Free size in $DRIVE_BACKUP is: $usage_percentage %
+"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+echo "Free size in $DRIVE_BACKUP is: $usage_percentage % - PROBLEMA!!!!"
+else
+  echo "$Free size in $DRIVE_BACKUP is: $usage_percentage % - ОК. $COMPANY, $SERVER"
+MESSAGE="Свободного места - достаточно!!!
+$COMPANY
+SERVER=$SERVER
+Free size in $DRIVE_BACKUP is: $usage_percentage %
+Скрипт $echo $0
+
+"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+
+fi
+
+
+
+}
+
+
+
+
+free_size_remote() {
+# Получаем процент использованного места в каталоге $DRIVE_BACKUP
+usage_percentage=$(ssh $USER@$SERVER -i $KEY -p $PORT df -h | grep   "${DRIVE_BACKUP%/}" | awk '{print $5}' | cut -d '%' -f1)
+
+# Проверка, превышает ли использование места пороговое значение
+if [ "$usage_percentage" -gt "$threshold" ]; then
+
+MESSAGE="Скрипт $echo $0
+Мало свободного пространства на диске
+$COMPANY
+SERVER=$SERVER
+WAN ip $WAN $IP_global
+Free size in $DRIVE_BACKUP is: $usage_percentage %
+"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+echo "Free size in $DRIVE_BACKUP is: $usage_percentage % - PROBLEMA!!!!"
+else
+  echo "$Free size in $DRIVE_BACKUP is: $usage_percentage % - ОК. $COMPANY, $SERVER"
+MESSAGE="Свободного места - достаточно!!!
+$COMPANY
+SERVER=$SERVER
+Free size in $DRIVE_BACKUP is: $usage_percentage %
+Скрипт $echo $0
+
+"
+curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
+
+fi
+}
+
+#### Server remote
+#Куда
+DRIVE_BACKUP=/backup/
+# Устанавливаем пороговое значение (80%)
+threshold=80
+USER=backup12345
+SERVER=backup12345.backup.colocall.eu
+KEY=/root/monitor_colocall/colocall_mtir.key
+COMPANY="Server 1"
+PORT=22
+free_size_remote
+
+#Server local
+DRIVE_BACKUP=/backup/
+threshold=80
+COMPANY="Server2"
+PORT=22
+free_size_local
+
+
+
+</body>
+  </html>
