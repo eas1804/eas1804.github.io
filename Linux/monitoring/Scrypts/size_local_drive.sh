@@ -40,6 +40,14 @@ fi
 }
 
 ##################################################
-DRIVE_BACKUP=/dev/md3
+SERVER=pbs.giaroom.com
+COMPANY=GiaRoom
+# Порог. Сколько проценторв носителя занято данными
 threshold=80
+
+DRIVE_BACKUP=/dev/md3
 free_size_local
+
+DRIVE_BACKUP=/dev/md2
+free_size_local
+
