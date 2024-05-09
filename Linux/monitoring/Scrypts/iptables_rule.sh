@@ -1,6 +1,7 @@
-iptables -I INPUT 1 -m state --state INVALID -j DROP
 
-iptables -I INPUT 2 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -m state --state INVALID -j DROP
+
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
 
@@ -56,6 +57,6 @@ ip6tables -P INPUT DROP
 
 
 
+apt update
 apt install iptables-persistent -y
-
 service netfilter-persistent save

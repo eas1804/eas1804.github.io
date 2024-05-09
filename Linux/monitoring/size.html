@@ -12,6 +12,7 @@
 <h2> Тест cвободного пространства</h2>
 
 <pre>
+ GNU nano 5.4                                                                     size_test.sh
 #!/bin/bash
 
 # telegramm env
@@ -23,7 +24,7 @@ clear
 
 free_size_local () {
 # Получаем процент использованного места в каталоге $DRIVE_BACKUP
-usage_percentage=$(df -h | grep   "${DRIVE_BACKUP%/}" | awk '{print $5}' | cut -d '%' -f1)
+usage_percentage=$(df -h | grep   "${DRIVE_BACKUP%}" | awk '{print $5}' | cut -d '%' -f1)
 
 # Проверка, превышает ли использование места пороговое значение
 if [ "$usage_percentage" -gt "$threshold" ]; then
@@ -50,11 +51,28 @@ curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id
 
 fi
 
-
-
 }
 
+##################################################
+SERVER=pbs.giaroom.com
+COMPANY=GiaRoom
+# Порог. Сколько проценторв носителя занято данными
+threshold=80
 
+DRIVE_BACKUP=/dev/md3
+free_size_local
+
+DRIVE_BACKUP=/dev/md2
+free_size_local
+
+</pre>
+
+
+<h2> Удаленный сервер</h2>
+
+
+
+<pre>
 
 
 free_size_remote() {
@@ -98,14 +116,6 @@ KEY=/root/monitor_colocall/colocall_mtir.key
 COMPANY="Server 1"
 PORT=22
 free_size_remote
-
-#Server local
-DRIVE_BACKUP=/backup/
-threshold=80
-COMPANY="Server2"
-PORT=22
-free_size_local
-
 
 
 </body>

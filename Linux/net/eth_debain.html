@@ -59,8 +59,18 @@ nameserver 8.8.8.8
 nameserver 1.1.1.1
 </pre>
 
+
+<h3>ifupdown2</h3>
+С помощью ifupdown2 вы можете применить новую сетевую конфигурацию к хосту, не перезагружая его.
+<p><code>apt install ifupdown2</code></p>
+<p><code>ifreload  -a</code></p>
+
+
+
 <h3>Перезапуск службы сети:</h3>
 Эта команда перезапустит службу сети, что приведет к перезагрузке всех сетевых интерфейсов и применению изменений
 <p><code>systemctl restart networking.service</code></p>
+
+
 </body>
   </html>
