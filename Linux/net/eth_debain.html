@@ -65,8 +65,28 @@ nameserver 1.1.1.1
 <p><code>apt install ifupdown2</code></p>
 <p><code>ifreload  -a</code></p>
 
+<hr>
+<h3>Показать сетевые интерфейсы</h3>
+<p><code>ip link show</code></p>	
+<p><code>ip link show eno1</code></p>
+<h3>Выключить/включить интерфейсы</h3>
+<p><code>ip link set  eno1 down</code></p>
+<p><code>ip link set  eno1 up</code></p>
+
+<h3>Добавить дополнительный ip адрес</h3>
+<p><code>ip a add 192.168.0.22/24 dev eno1</code></p>
+<h3>Удалить ip адрес</h3>
+<p><code>ip a delete  192.168.0.22/24 dev eno1</code></p>
+Удаление основного ip удаляет все дополнительные адреса
+<h3>Показать маршруы</h3>
+<p><code>ip route show</code></p>
+<h3>Добавить маршрут по умолчанию</h3>
+<p><code>ip route default via 192.168.0.1</code></p>
+<h3>Удалить маршрут по умолчанию</h3>
+<p><code>ip route delete default </code></p>
 
 
+<hr>
 <h3>Перезапуск службы сети:</h3>
 Эта команда перезапустит службу сети, что приведет к перезагрузке всех сетевых интерфейсов и применению изменений
 <p><code>systemctl restart networking.service</code></p>
