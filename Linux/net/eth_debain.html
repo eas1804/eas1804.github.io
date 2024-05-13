@@ -36,6 +36,32 @@ iface eth0 inet dhcp
 
 <h3>Мост (Bridge -vmbr0)</h3>
 
+
+<pre>
+iface eno1 inet manual
+
+auto vmbr0
+iface vmbr0 inet static
+        address 37.187.95.231/24
+        gateway 37.187.95.254
+        bridge-ports eno1
+        bridge-stp off
+        bridge-fd 0
+        hwaddress E0:69:95:88:51:63
+
+auto vmbr1
+iface vmbr1 inet static
+        address 10.10.10.1/24
+        bridge-ports none
+        bridge-stp off
+        bridge-fd 0
+        post-up echo 1 > /proc/sys/net/ipv4/ip_forward
+        post-up iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MA                                                                                             SQUERADE
+        post-down iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j                                                                                              MASQUERADE
+#virt net
+</pre>
+
+или
 <pre>
 auto lo
 iface lo inet loopback
@@ -86,6 +112,7 @@ nameserver 1.1.1.1
 <p><code>ip route delete default </code></p>
 
 
+<hr>
 <hr>
 <h3>Перезапуск службы сети:</h3>
 Эта команда перезапустит службу сети, что приведет к перезагрузке всех сетевых интерфейсов и применению изменений

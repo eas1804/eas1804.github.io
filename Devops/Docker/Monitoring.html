@@ -38,6 +38,7 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+	restart: unless-stopped
     volumes:
       - grafana-data:/var/lib/grafana
       - grafana-configs:/etc/grafana
@@ -46,6 +47,7 @@ services:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
+	restart: unless-stopped
     volumes:
       - prom-data:/prometheus
       - prom-configs:/etc/prometheus
@@ -54,6 +56,7 @@ services:
     image: prom/node-exporter:latest
     ports:
       - "9100:9100"
+	restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -69,5 +72,44 @@ volumes:
   prom-data:
   prom-configs:
 </pre>
+
+
+
+<h3>Добавить  node в prometheus</h3>
+<p><code>nano /var/lib/docker/volumes/monitoring_prom-configs/_data/prometheus.yml</code></p>
+<p>Каталог monitoring_prom-configs может называться иначе
+<p>добавить IP наблюдаемых хостов. Внимательно с отступами
+<pre>
+  - job_name: "pc2"
+    static_configs:
+      - targets: ["172.16.181.221:9100"]
+  - job_name: "pc1"
+    static_configs:
+      - targets: ["172.16.181.220:9100"]
+</pre>
+
+<h3>Локальная установка  </h3>
+<h4>Debian</h4>
+<p><code>apt install prometheus-node-exporter</code></p>
+<p><code>systemctl status prometheus-node-exporter</code></p>
+
+<h4>Windows exporter</h4>
+<p><code>https://github.com/prometheus-community/windows_exporter/releases</code></p>
+Можно скачать:
+<p><code>https://github.com/prometheus-community/windows_exporter/releases/download/v0.22.0/windows_exporter-0.22.0-amd64.exe</code></p>
+
+<p>Необходимо с помощью стандартной утилиты sc.exe создать службу, которая будет запускать необходимый файл с нужными параметрами, 
+и добавить URL адрес экспортера в настройки Prometheus.
+
+<p><code>sc.exe create windows_exporter type= own start= auto binpath= "C:\windows_exporter\windows_exporter-0.22.0-amd64.exe --config.file=C:\windows_exporter\config.yml" displayname= "Windows exporter (Prometheus)"</code></p>
+<p>Каталог должен быть доступен для пользователей
+<p>Для запуска службы файл C:\Constanta\config.yml должен существовать
+<p>Проверить
+<p><code>sc query  windows_exporter</code></p>
+<p><code>sc start windows_exporter</code></p>
+<p><code>netstat -aont | findstr 9182</code></p>
+
+
+
 </body>
   </html>

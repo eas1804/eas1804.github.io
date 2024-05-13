@@ -23,9 +23,11 @@
 <h2>c-top</h2>
 <p>программа для просмотра используемых ресурсов контейнерами</p>
 <p>в ctop все метрики собраны в одно место для каждого контейнера. </p>
+
 <h3>Запуск в docker</h3>
  <p>nano /usr/local/bin/ctop
 <p><code>docker run --rm -ti --name=ctop  --volume /var/run/docker.sock:/var/run/docker.sock:ro  quay.io/vektorlab/ctop:latest</code></p>
+ <p><code>chmod +x  /usr/local/bin/ctop</code></p>
 
 
 
