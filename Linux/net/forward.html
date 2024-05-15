@@ -14,6 +14,13 @@
 <h3>включить форвардинг пакетов</h3>
 <p><code>echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf</code></p>
 <p><code>sysctl -p</code></p>
+
+<h3>Разрешить форвардинг пакетов межу vmbr0 и vmbr1</h3>
+<p><code>iptables -A FORWARD -i vmbr1 -o vmbr0 -j ACCEPT</code></p>
+<p><code>iptables -A FORWARD -i vmbr0 -o vmbr1 -j ACCEPT</code></p>
+
+
+
 <li><h3>Базовые натсройки</h3>
 <p><code>WAN_ETH=eno1</code> #Имя интерфейса WAN</p>
 <p><code>LAN_ETH=vmbr0</code> #Имя интерфейса Lan</p>
