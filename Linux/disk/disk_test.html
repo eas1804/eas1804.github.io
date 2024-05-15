@@ -40,6 +40,8 @@
 <li>-C: выводит информацию о состоянии жесткого диска в виде текстового отчета.
 </ul>
 <ol>
+<li> ошибки на носиетеле
+<p><code>journalctl -p 2 | grep smartd </code></p>
 <li>Инофрмация о диске
 <p><code>smartctl -i /dev/sda</code> 
 <p>подробнее <code>smartctl -a /dev/sda</code></p>
