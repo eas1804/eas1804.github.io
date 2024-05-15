@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Raid. mdadm</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>mdadm</h2>
+<ul>
+<li>Информация  
+<p><code>/etc/mdadm/mdadm.conf </code>
+
+<li>Подробная информация о массиве 
+<p><code>mdadm -D /dev/md0</code>
+
+<li>Просмотреть статус Raid  
+<p><code> cat /proc/mdstat</code>
+
+
+<li>Создать Raid
+
+<p><code>mdadm --create /dev/md2 --level=1 --raid-disks=2 /dev/sda3 /dev/sdb3 </code>
+<p>Объеденить 2 раздела /dev/sda3 и /dev/sdb3 в Raid 1 и назвать устройство /dev/md2
+
+<li>Просмотр процесса в реальном времени
+<p><code> watch -n 3 tail -n 10 /proc/mdstat</code>
+
+<li>Добавим информацию о новом массиве в конфигурационный файл /etc/mdadm/mdadm.conf, иначе после перезагрузки массив не будет виден в системе:
+<p><code>mdadm --examine --scan | grep 'md/2' >> /etc/mdadm/mdadm.conf</code>
+
+<li>Проверка целостности
+<p><code>echo 'check' > /sys/block/md0/md/sync_action</code>
+<p>Результат проверки смотрим командой:
+<p><code>cat /sys/block/md0/md/mismatch_cnt</code>
+<p>если команда возвращает 0, то с массивом все в порядке.
+
+<li>Остановка проверки:
+<p><code>echo 'idle' > /sys/block/md0/md/sync_action</code>
+
+</body>
+  </html>

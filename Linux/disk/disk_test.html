@@ -27,6 +27,18 @@
 <li><p><code>apt install smartmontools -y</code></p>
 <li><p><code>apt install  hdparm -y</code></p>
 </ol>
+
+
+<h2> ошибки на носиетеле</h2>
+<p><code>journalctl -p 2 | grep smartd </code></p>
+
+ <p><code>dmesg | grep nvme</code></p>
+
+<h2>Какие носители установлены</h2>
+<ol>
+<li>Для NVME носителей: <code>fdisk -l | grep nvm | grep iB</code>
+<li>Для HDD носителей: <code>fdisk -l  | grep sd | grep iB</code>
+</ol>
 <h2>smartctl</h2>
  
 <ul>
@@ -39,9 +51,14 @@
 <li>-s: устанавливает параметры энергосбережения для жесткого диска;
 <li>-C: выводит информацию о состоянии жесткого диска в виде текстового отчета.
 </ul>
-<ol>
-<li> ошибки на носиетеле
-<p><code>journalctl -p 2 | grep smartd </code></p>
+
+
+
+
+
+
+
+
 <li>Инофрмация о диске
 <p><code>smartctl -i /dev/sda</code> 
 <p>подробнее <code>smartctl -a /dev/sda</code></p>
@@ -54,11 +71,12 @@
 
 
 <li>Получение информации о времени работы диска
-<p><code>smartctl -a /dev/sda | grep Power_On_Hours</code></p>
-<p>В маоем случае значение параметра Power_On_Hours равно 8272 часам, что означает, что диск был включен и работал в течение примерно 344 дней и 8 часов
-<p><code>9 Power_On_Hours          0x0032   091   091   000    Old_age   Always       -      <b> 8272</b></code></p>
+<p><code>smartctl -a /dev/sda | grep Hours</code></p>
+
 <li>Получение информации о температуре диска</code></p>
-<p><code>smartctl -a /dev/sda | grep  Airflow_Temperature_Cel</code></p>
+<p><code>smartctl -a /dev/nvme1n1 | grep Celsius</code></p>
+
+
 <li>Списка ошибок, которые произошли на диске
 <p><code>smartctl -l error /dev/sdc</code> или <code>smartctl -l error /dev/sdc | grep -i -E 'error|fail|warning'</code></p>
 </ol>

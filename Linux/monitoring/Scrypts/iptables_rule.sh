@@ -57,6 +57,5 @@ ip6tables -P INPUT DROP
 
 
 
-apt update
-apt install iptables-persistent -y
-service netfilter-persistent save
+iptables-save > /etc/iptables/rules.v4
+iptables-save > /etc/iptables/rules.v6
