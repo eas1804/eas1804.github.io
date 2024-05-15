@@ -9,20 +9,20 @@
   </head>
 
 <body>
-<h2>logs</h2>
-<h3> Через броузер</h3>
-<p> Есть служба systemd-journal-gatewayd, с помощью которой можно смотреть логи systemd через браузер. 
-<p><code> apt install systemd-journal-remote -y</code></p>
-<p><code> systemctl start systemd-journal-gatewayd.service && systemctl enable systemd-journal-gatewayd.service</code></p>
-<p>Порт по умолчанию 19531. 
-<p><code>iptables -A INPUT -p tcp -m tcp --dport 19531 -j ACCEPT -m comment --comment "WebLog"</code></p>
-<p><code>service netfilter-persistent save</code></p>
+<h2>Журнал (logs)</h2>
 
-<p><code>http://192.168.20.25:19531/browse</code></p>
-<p>только текущей загрузки логи :
-<p><code>http://192.168.20.25:19531/entries?boot </code></p>
-<h3> В консоли</h3>
 <ol>
+<li>Журнал системных сообщений
+<p><code>journalctl</code>  или <code>journalctl | grep error</code></p>
+<li> просмотреть только сообщения после последней перезагрузки
+<p><code>journalctl -b	</code></p>
+<li> Даты
+<p>Отобразить записи журнала, начиная с 1 мая 2024 года, 12:00:00
+<p><code> journalctl --since "2024-05-01 12:00:00"</code></p>
+<p>Можно использовать опцию --until, чтобы указать конечную дату и время, если вы хотите просмотреть записи за определенный временной интервал:
+<p><code>journalctl --since "YYYY-MM-DD HH:MM:SS" --until "YYYY-MM-DD HH:MM:SS"</code></p>
+
+
 <li>Фильтрация событий по важности
 <p><code>journalctl -p 0</code></p>
 <br>0: emergency (неработоспособность системы)
@@ -47,5 +47,19 @@
 Или по времени:
 <p><code>journalctl --vacuum-time=1week</code></p>
 <p>Link: https://habr.com/ru/companies/ruvds/articles/533918/
+
+<hr>
+<h3> Через броузер</h3>
+<p> Есть служба systemd-journal-gatewayd, с помощью которой можно смотреть логи systemd через браузер. 
+<p><code> apt install systemd-journal-remote -y</code></p>
+<p><code> systemctl start systemd-journal-gatewayd.service && systemctl enable systemd-journal-gatewayd.service</code></p>
+<p>Порт по умолчанию 19531. 
+<p><code>iptables -A INPUT -p tcp -m tcp --dport 19531 -j ACCEPT -m comment --comment "WebLog"</code></p>
+<p><code>service netfilter-persistent save</code></p>
+
+<p><code>http://192.168.20.25:19531/browse</code></p>
+<p>только текущей загрузки логи :
+<p><code>http://192.168.20.25:19531/entries?boot </code></p>
+
 </body>
   </html>
