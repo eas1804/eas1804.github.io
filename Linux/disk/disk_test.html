@@ -57,8 +57,6 @@
 
 
 
-
-
 <li>Инофрмация о диске
 <p><code>smartctl -i /dev/sda</code> 
 <p>подробнее <code>smartctl -a /dev/sda</code></p>
@@ -75,6 +73,7 @@
 
 <li>Получение информации о температуре диска</code></p>
 <p><code>smartctl -a /dev/nvme1n1 | grep Celsius</code></p>
+<p><code>smartctl -a /dev/sdb     | grep  Temperature</code></p>
 
 
 <li>Списка ошибок, которые произошли на диске
