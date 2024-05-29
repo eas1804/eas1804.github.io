@@ -1,0 +1,14 @@
+---
+version: "3"
+
+services:
+  gotify:
+    image: gotify/server
+    ports:
+      - 8080:80
+    environment:
+      - GOTIFY_DEFAULTUSER_PASS=Manipura2010
+      - TZ=Europe/Kiev
+    volumes:
+      - "./gotify_data:/app/data"
+    restart: unless-stopped

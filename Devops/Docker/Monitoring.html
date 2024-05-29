@@ -10,88 +10,174 @@
 
 <body>
 <h2>Kuma</h2>
-<pre>
-version: '3.8'
 
+<p>Download Kuma  <a href=yaml/kuma/docker-compose.yaml>docker-compose.yaml</a>
+<p></p>
 
-services:
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    volumes:
-      - /root/docker_app/kuma/data:/app/data
-    ports:
-      - 3001:3001
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+<style>
+  #hiddenText {
+      display: none; /* Изначально скрываем текст */
+  }
+</style>
+</head>
+<body>
+<button onclick="toggleText()">Показать/Скрыть текст</button>
+<div id="hiddenText">
+  <pre>
+    version: '3.8'
+    
+    
+    services:
+      uptime-kuma:
+        image: louislam/uptime-kuma:1
+        container_name: uptime-kuma
+        volumes:
+          - /root/docker_app/kuma/data:/app/data
+        ports:
+          - 3001:3001
+        restart: unless-stopped
+        security_opt:
+          - no-new-privileges:true
+    
+    </pre>
+    
+</div>
 
-</pre>
+<script>
+  function toggleText() {
+      var hiddenText = document.getElementById("hiddenText");
+      if (hiddenText.style.display === "none") {
+          hiddenText.style.display = "block";
+      } else {
+          hiddenText.style.display = "none";
+      }
+  }
+</script>
+
 
 <h2>Gotify</h2>
-<pre>
-  version: "3"
 
-services:
-  gotify:
-    image: gotify/server
-    ports:
-      - 8080:80
-    environment:
-      - GOTIFY_DEFAULTUSER_PASS=custom
-    volumes:
-      - "./gotify_data:/app/data"
-</pre>
+<p>Download Gotify <a href=yaml/gotify/docker-compose.yaml>docker-compose.yaml</a>
+  <p></p>
+
+
+<style>
+  #hiddenText {
+      display: none; /* Изначально скрываем текст */
+  }
+</style>
+</head>
+<body>
+<button onclick="toggleText()">Показать/Скрыть текст</button>
+<div id="hiddenText">
+  <pre>
+    version: "3"
+  
+  services:
+    gotify:
+      image: gotify/server
+      ports:
+        - 8080:80
+      environment:
+        - GOTIFY_DEFAULTUSER_PASS=custom
+      volumes:
+        - "./gotify_data:/app/data"
+  </pre>
+  
+</div>
+
+<script>
+  function toggleText() {
+      var hiddenText = document.getElementById("hiddenText");
+      if (hiddenText.style.display === "none") {
+          hiddenText.style.display = "block";
+      } else {
+          hiddenText.style.display = "none";
+      }
+  }
+</script>
+
+
 <p> Send meeesge
   <p><Code>curl "https://pbs.giaroom.com/message?token=AO3NiV0_fwYV3Ut" -F "title=Мой заголовок" -F "message=Мое сообщение" -F "priority=5"</Code></p>
   <p><Code>http -f POST "https://push.example.de/message?token=<apptoken>" title="my title" message="my message" priority="5"</Code></p>
 </p>
 
 
-<h2>prometheus+grafana+node-exporter</h2>
+<h2>Prometheus+grafana+node-exporter</h2>
 
-<pre>
-version: "3.9"
-services:
-  grafana:
-#    image: grafana/grafana:8.5.3-ubuntu
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-	restart: unless-stopped
+<p>Download  Prometheus+grafana+node-exporter <a href=yaml/prometheus/docker-compose.yaml>docker-compose.yaml</a>
+
+<p></p>
+
+<style>
+  #hiddenText {
+      display: none; /* Изначально скрываем текст  */
+  }
+</style>
+</head>
+<body>
+<button onclick="toggleText()">Показать/Скрыть текст</button>
+<div id="hiddenText">
+  <pre>
+    version: "3.9"
+    services:
+      grafana:
+    #    image: grafana/grafana:8.5.3-ubuntu
+        image: grafana/grafana:latest
+        ports:
+          - "3000:3000"
+      restart: unless-stopped
+        volumes:
+          - grafana-data:/var/lib/grafana
+          - grafana-configs:/etc/grafana
+      prometheus:
+    #    image: prom/prometheus:v2.36.0
+        image: prom/prometheus:latest
+        ports:
+          - "9090:9090"
+      restart: unless-stopped
+        volumes:
+          - prom-data:/prometheus
+          - prom-configs:/etc/prometheus
+      node-exporter:
+    #    image: prom/node-exporter:v1.3.1
+        image: prom/node-exporter:latest
+        ports:
+          - "9100:9100"
+      restart: unless-stopped
+        volumes:
+          - /proc:/host/proc:ro
+          - /sys:/host/sys:ro
+          - /:/rootfs:ro
+        command:
+          - '--path.procfs=/host/proc'
+          - '--path.sysfs=/host/sys'
+          - '--collector.filesystem.mount-points-exclude'
+          - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
     volumes:
-      - grafana-data:/var/lib/grafana
-      - grafana-configs:/etc/grafana
-  prometheus:
-#    image: prom/prometheus:v2.36.0
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-	restart: unless-stopped
-    volumes:
-      - prom-data:/prometheus
-      - prom-configs:/etc/prometheus
-  node-exporter:
-#    image: prom/node-exporter:v1.3.1
-    image: prom/node-exporter:latest
-    ports:
-      - "9100:9100"
-	restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude'
-      - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
-volumes:
-  grafana-data:
-  grafana-configs:
-  prom-data:
-  prom-configs:
-</pre>
+      grafana-data:
+      grafana-configs:
+      prom-data:
+      prom-configs:
+    </pre>
+</div>
+
+<script>
+  function toggleText() {
+      var hiddenText = document.getElementById("hiddenText");
+      if (hiddenText.style.display === "none") {
+          hiddenText.style.display = "block";
+      } else {
+          hiddenText.style.display = "none";
+      }
+  }
+</script>
+ 
+
+
+
+
 
 
 
