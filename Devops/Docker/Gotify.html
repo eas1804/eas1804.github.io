@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monitoring</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+
+
+<h2>Gotify</h2>
+
+<p>Download Gotify <a href=yaml/gotify/docker-compose.yaml>docker-compose.yaml</a>
+  <p></p>
+
+
+
+  <pre>
+    version: "3"
+  
+  services:
+    gotify:
+      image: gotify/server
+      ports:
+        - 8080:80
+      environment:
+        - GOTIFY_DEFAULTUSER_PASS=custom
+      volumes:
+        - "./gotify_data:/app/data"
+  </pre>
+  
+
+
+<p> Send meeesge
+  <p><Code>curl "https://pbs.giaroom.com/message?token=AO3NiV0_fwYV3Ut" -F "title=Мой заголовок" -F "message=Мое сообщение" -F "priority=5"</Code></p>
+  <p><Code>http -f POST "https://push.example.de/message?token=<apptoken>" title="my title" message="my message" priority="5"</Code></p>
+</p>
+
+
+
+</body>
+  </html>

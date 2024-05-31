@@ -9,7 +9,20 @@
   </head>
 
 <body>
-<h2>Monitoring Scrypts </h2>
+<h2>Уязвимости</h2>
+<a href="https://www.shodan.io/">shodan.io</a>
+<p><code> wget https://gitlab.com/api/v4/projects/33695681/packages/generic/nrich/latest/nrich_latest_x86_64.deb</code>
+<p><code> dpkg -i nrich_latest_x86_64.deb</code></p>
+<p>Формируем текстовый файл с ip адресами, где в каждой строке по ip адресу:</p>
+<pre>
+1.1.1.1
+8.8.8.8
+и т.д.
+</pre>
+<p>Запускаем проверку:</p>
+
+<p><code>nrich ip.list</code>
+  <h2>Monitoring Scrypts </h2>
 <ol>
 <li><a href=Scrypts/raid1.sh> test Raid</a>
 <li><a href=Scrypts/smartd_test.sh> test Smart journal HDD SSD</a>

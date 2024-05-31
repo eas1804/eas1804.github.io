@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monitoring</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Kuma</h2>
+
+<p>Download Kuma  <a href=yaml/kuma/docker-compose.yaml>docker-compose.yaml</a>
+<p></p>
+
+  <pre>
+    version: '3.8'
+    
+    
+    services:
+      uptime-kuma:
+        image: louislam/uptime-kuma:1
+        container_name: uptime-kuma
+        volumes:
+          - /root/docker_app/kuma/data:/app/data
+        ports:
+          - 3001:3001
+        restart: unless-stopped
+        security_opt:
+          - no-new-privileges:true
+    
+    </pre>
+    
+</div>
+
+
+
+</body>
+  </html>

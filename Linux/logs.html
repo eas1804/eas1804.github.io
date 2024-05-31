@@ -13,12 +13,33 @@
 
 <ol>
 <li>Журнал системных сообщений
-<p><code>journalctl</code>  или <code>journalctl | grep error</code></p>
-<li> просмотреть только сообщения после последней перезагрузки
-<p><code>journalctl -b	</code></p>
+<p><code>journalctl</code>  </p>
+  
+<p><code>journalctl | grep error</code> 
+<code>journalctl | grep fail</code>
+<code>journalctl | grep warning</code>
+<code>journalctl | grep critical</code></p>
+
+
+
+<li>Список журналов по каждой отдельной загрузке</li>
+  <p><code>journalctl --list-boots</code>
+
+<p> Показать логи текущей загрузки:</p>
+      <p><code>journalctl -b</code>  или   <code>journalctl -b	0</code></p>
+      
+    
+    <p>просмотреть только сообщения после последней перезагрузки</p>
+    <p><code>journalctl -b	-1</code></p>
+    
+  <p> Показать логи загрузки за два сеанса до текущего</p>
+      <p><code>journalctl -b	-2</code></p>
+
+
+  
 <li> Даты
 <p>Отобразить записи журнала, начиная с 1 мая 2024 года, 12:00:00
-<p><code> journalctl --since "2024-05-01 12:00:00"</code></p>
+<p><code> journalctl --since "2024-05-31 12:00:00"</code></p>
 <p>Можно использовать опцию --until, чтобы указать конечную дату и время, если вы хотите просмотреть записи за определенный временной интервал:
 <p><code>journalctl --since "YYYY-MM-DD HH:MM:SS" --until "YYYY-MM-DD HH:MM:SS"</code></p>
 
@@ -33,6 +54,7 @@
 <br>5: notice (уведомления)
 <br>6: info (информационные сообщения)
 <br>7: debug (отладочные сообщения)
+
 
 <li>Логи определенного юнита
 <p><code>journalctl -u nginx</code></p>
