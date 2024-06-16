@@ -11,78 +11,24 @@
 <body>
 <h2>rsync smb ssh</h2>
 <ol>
-<li>step
-<p><code>apt install cifs-utils  -y</code></p>
-<p><code>apt install rsync -y</code></p>
-<p><code>apt install sshfs -y</code> Используется для удаления по ssh your-storagebox.de</p>
-
-<li>step
-<p>В файле /etc/credentials разместить данные для досупа к Windows
-<pre> cat /etc/credentials
-
-username=backup_user
-password=hs47-H7)yM
-
-</pre>
-<li>step
+<li><code>apt install cifs-utils  -y</code></p>
+<li><code>apt install rsync -y</code></p>
+<li><code>apt install sshfs -y</code> Используется для удаления по ssh your-storagebox.de</p>
 </ol>
-<h2>SSH backup</h2>
+
+Вариант Vector
 <pre>
-#!/bin/bash
+# var
+username=u12345-sub1
+server=u12345.your-storagebox.de
+ssh_port=23
+ssh_key=/root/.ssh/id_ed25519
 
-########################### Constants ###########################
-#### Данные для подключения по SSH
-    username=<b>backup12345-67</b>
-    server=<b>backup12345-67.your-storagebox.de</b>
-    ssh_port=<b>23</b>
-    ssh_key=<b>"/root/.ssh/storagebox.key"</b>
+sshfs $username@$server:/home  /mnt/storagebox/   -o IdentityFile=/root/.ssh/id_ed25519  -o port=23
 
-#Даные для SMB
-    <b>IP=192.168.1.248</b>
-    <b>MNT_POINT=/mnt/alena/</b>   # Точка мониторвани
-	
-	ls $MNT_POINT >/dev/null || mkdir -p $MNT_POINT
-    SMB_V=3.0                       # Версия smb источника
-    CREDENTIAL=/etc/credentials    # файл с credentials для smb
-    local_directory=$MNT_POINT
-	
-#Имя сетевого интерфейса и его IP
-    <b>ETH=enp3s0</b>
-# Сколько свежих каталогов оставить
-    COUNT=15
-# telegramm
-    BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
-    CHAT_ID="33109821804"
-# тескт сообщений
-IP_local=$(ip -4 a | grep inet | grep $ETH |  awk '/inet/ {print $2}')
-IP_global=$(curl 2ip.ru)
 
-MESS="Проблема $0
-LAN: $IP_local
-WAN: $IP_global"
 
-########################### Функции ###########################
-# Монтирование SMB
-fun_mount () {
-    MESS="$MESS Ошибка mount"
-    mount -t cifs //$IP/$SHARA_FROM $MNT_POINT -o credentials=$CREDENTIAL -o vers=$SMB_V -o ro
-    if [[ $? -eq 0 ]]; then
-    echo "Ресурс смонтирован. ОК"
-else
-    echo "Ошибка при монтировании"
-    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESS" > /dev/null
-    umount $MNT_POINT
-    exit 0
-fi
-}
-
-#2 tar
-fun_tar () {
-    ls "${target_directory}" || mkdir -p "${target_directory}"
-    tar -vczf ${target_directory}`date "+%d-%m-%g_%H-%M-%S"`-Sveta_1cv8.tar.gz   $MNT_POINT
-}
-#3 rsync
-fun_rsync () {
+folder_sync () {
     ssh -p $ssh_port -i $ssh_key $username@$server ls ${target_directory}increment/ >/dev/null || \
     ssh -p $ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}increment/
 
@@ -93,74 +39,34 @@ rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive "$lo
 "$username@$server:$target_directory/current/"  --backup --backup-dir="${target_directory}/increment/$(date +%Y-%m-%d)/"
     }
 
-#Функция. Сравнить количество файлов локаьных и удаленных
-fun_count () {
-REMOTE_COUNT=$(ssh  -p$ssh_port -i $ssh_key  $username@$server find $target_directory/current/ | wc -l)
-LOCAL_COUNT=$(find  "$local_directory" | wc -l)
-echo REMOTE_COUNT $REMOTE_COUNT
-echo LOCAL_COUNT $LOCAL_COUNT
 
-if [ "$REMOTE_COUNT" -ne "$LOCAL_COUNT" ]; then
-    echo "ошибка"
-MESSAGE="Ошибка выполнения скрипта
-$echo $0
-LAN ip $IP_local
-WAN ip $WAN $IP_global
-$local_directory
-
-Remote:
-$server
-$target_directory
-
-Колличество файлов не совпадает!!!
-REMOTE_COUNT $REMOTE_COUNT
-LOCAL_COUNT  $LOCAL_COUNT
-"
-curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
-fi
-}
-
-# Функция. Удаляем старые каталоги в increment. Удаленная файловая система /home  монтируется в /mnt/storagebox/ по sshfs
 fun_del_old () {
-ls  /mnt/storagebox/ || mkdir /mnt/storagebox/
-umount /mnt/storagebox/  > /dev/null
-
-sshfs $username@$server:/home  /mnt/storagebox/   -o IdentityFile=$ssh_key -o port=$ssh_port
 ls -dt "${del_directory}increment"/*/ | tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
-umount /mnt/storagebox/
 }
 
 
+COUNT=10
 
-clear
-########################Работаем##############################
-#Backup from win2019
-local_directory=$MNT_POINT
-target_directory=/home/<u>backup</u>/
-del_directory=<b>/mnt/storagebox/</b><u>backup</u>/
-COUNT=15                # Сколько свежих каталогов оставить
+#1 Medoc Tanta
+local_directory=/mnt/MedocTanta/
+target_directory=/home/MedocTanta/
+folder_sync
 
-fun_rsync
+del_directory=/mnt/storagebox/$target_directory
 fun_del_old
-fun_count
 
-#Folder desktop
-SHARA_FROM=<b>Desktop</b>         # Shara на windows
-target_directory=<b>/backup/yurist/desktop/</b> # каталог на удаленном сервере, в который проводим синхронизацию
-del_directory=<b>/mnt/storagebox/</b>yurist/desktop/
-umount $MNT_POINT
+#2 Desktop_Olga
+local_directory=/mnt/Desktop_Olga/
+target_directory=/home/Desktop_Olga/
+folder_sync
 
-fun_mount
-fun_rsync
+del_directory=/mnt/storagebox/$target_directory
 fun_del_old
-fun_count
-
-
-umount $MNT_POINT
-exit 0
 
 
 </pre>
+
+
 
 </body>
   </html>
