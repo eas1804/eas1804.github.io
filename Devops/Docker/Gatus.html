@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gatus</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Gatus</h2>
+<h3> Step 1</h3>
+<p><code>docker-compose.yml</code><p>
+  <pre>
+---
+
+services:
+  gatus:
+    image: twinproduction/gatus
+    container_name: gatus
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.yaml:/config/config.yaml
+    restart: unless-stopped
+      </pre>
+
+<h3> Step 2</h3>
+<p><code>config.yaml</code><p>
+<pre>
+---
+
+alerting:
+  telegram:
+    token: "1393668911:AAHtEAKqxUH7ZpyX28R-wxKfvH1WR6-vdNw"
+    id: "12345678"
+
+endpoints:
+
+  - name: Diol Kyiv. Провайдер основной  -  HelpHelpTeh
+    url: "icmp://91.233.110.34"
+    interval: 30s
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Balzaka gate ssh
+    url: "tcp://176.37.155.208:22"
+    group: Home
+    interval: 120s
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
+
+
+
+</pre>    
+
+<p>
+<a href=https://github.com/TwiN/gatus/blob/master/README.md#endpoints> Documentation</a>
+
+
+
+
+</body>
+  </html>
