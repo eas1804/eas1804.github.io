@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ремонт</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> Microsoft Outlook</h2>
+<h3>Перенети базу на другой диск</h3>
+<p>1. Открыть консоль от имени администратора
+
+<p> 2. Перенесение папки данных MS Outlook в новое место
+<p><code>move "%USERPROFILE%\Local Settings\Application Data\Microsoft\Outlook" "d:\Mail"</code></p>
+
+<p> 3. Создание соединения для папки в Windows 10
+<p><code>mklink /j "%USERPROFILE%\Local Settings\Application Data\Microsoft\Outlook" "d:\Mail"</code></p>
+
+<hr>
+<h3>Cache Outlook</h3>
+<p><code>C:\Users\%user%\AppData\Local\Microsoft\Outlook</code></p>
+</body>
+  </html>
