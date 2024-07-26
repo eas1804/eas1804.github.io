@@ -16,7 +16,9 @@
 <pre>
 TO=/backup		# В каком каталоге удалять старые файлы
 COUNT=5    		# Сколько свежих файлов оставить 
-ls -t "$TO" | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
+
+cd $TO
+ls -t  | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
 </pre>
 <p></p>
 <h2>Оставляем 5 самых свежих каталогов в каталоге /backup</h3>
@@ -24,6 +26,8 @@ ls -t "$TO" | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
 <pre>
 TO=/backup		# В каком каталоге удалять старые файлы
 COUNT=5    		# Сколько свежих файлов оставить 
+
+cd $TO
 ls -dt "$TO"/*/ | tail -n +$((COUNT+1)) | xargs -I {} rm -r -- "{}"
 </pre>
 
