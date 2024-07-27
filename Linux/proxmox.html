@@ -40,6 +40,13 @@
 <li>Диски находятся здесь:
 <p><code>/var/lib/vz/images/</code></p>
 
+<li>Перезапустите службу pvedaemon, чтобы освежить управление VM
+<p><code>systemctl restart pvedaemon</code></p>
+
+
+<li>Перосмотр журнала  pvedaemon
+<p><code>journalctl -u pvedaemon -f</code></p>
+
 
 </ul>
 </body>
