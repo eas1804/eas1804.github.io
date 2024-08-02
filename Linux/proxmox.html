@@ -34,10 +34,10 @@
 <li>Инфлрмация о диске
 <p><code>qemu-img info  vm-101-disk-0.qcow2</code></p>
 
-<li>Конфиг фиртуалок ледит здаесь
+<li>Конфиг VM здесь:
   <p><code>/etc/pve/qemu-server</code></p>
 
-<li>Диски находятся здесь:
+<li>Диски VM здесь:
 <p><code>/var/lib/vz/images/</code></p>
 
 <li>Перезапустите службу pvedaemon, чтобы освежить управление VM
@@ -46,6 +46,43 @@
 
 <li>Перосмотр журнала  pvedaemon
 <p><code>journalctl -u pvedaemon -f</code></p>
+
+<h2>Уменьшение размера qqow2</h2>
+<ol>
+<li>Указать тип дискового контроллера <b>Virtio-SCSI</b>, 
+<br>а для самого диска установить параметр <b>Discard</b>. 
+<li>внутри VM с Linux выполнить команду
+<p><code>fstrim -av</code></p>
+В результате диск на самом гипервизоре ужмётся до реального размера данных внутри VM.
+<li> Проверить 
+<p><code>root@eddy /var/lib/vz/images/103 # qemu-img info vm-103-disk-0.qcow2</code></p>
+<p>
+<pre>
+image: vm-103-disk-0.qcow2
+file format: qcow2
+virtual size: 32 GiB (34359738368 bytes)
+disk size: 3.44 GiB 10:50 29.07.2024
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    compression type: zlib
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false
+    extended l2: false
+Child node '/file':
+    filename: vm-103-disk-0.qcow2
+    protocol type: file
+    file length: 32 GiB (34365243392 bytes)
+    disk size: 3.44 GiB
+</pre>
+</ol>
+<p>То же самое можно сделать и с уровня гипервизора, но для этого нужно будет выключить виртуальную машину.
+<p>используем утилиты virt-sparsify из комплекта libguests-tools:
+
+<p><code>virt-sparsify --in-place vm-100-disk-0.qcow2</code></p>
+
+<p>Для успешной работы этой команды, на диске гипервизора должно быть место для создания копии образа диска, так как по факту команда делает копию, работает с ней и потом заменяет основной файл. 
 
 
 </ul>

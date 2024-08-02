@@ -45,5 +45,9 @@ systemctl status openvpn.servvice
 <p><code>systemctl cat sshd </code></p>
 
 
+<h3> Выполнить команду на удаленной системе. </h3>
+Остановит cron на компьютере с IP-адресом 192.168.0.15, подключившись под учетной записью root
+<p><code>systemctl --host root@192.168.0.15 stop cron</code></p>
+
 </body>
   </html>
