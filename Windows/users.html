@@ -79,6 +79,9 @@ pause
 <li><h3>В какие группы входит пользователь</h3>
 <p><code>net user USER_NAME |findstr Членство</code></p>
 
+<li><h3>Время опследнего login</h3>
+<p><code>Get-LocalUser | Select-Object Name, LastLogon</code></p>
+
 <h2>Удаление</h2>
 <li><h3>Удалить ползователя</h3>
 <p><code>net user NAME_OF_USER /delete</code></p>
