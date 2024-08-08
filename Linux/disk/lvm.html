@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LVM</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>LVM</h2>
+<p>LVM — это дополнительный слой абстракции от железа, позволяющий собрать кучи разнородных дисков в один, и затем снова разбить этот один именно так как нам хочется.
+
+  <p>есть 3 уровня абстракции:</p>
+  <p>1. PV (Physical Volume) — физические тома (это могут быть разделы или целые «неразбитые» диски)</p>
+  <p>2. VG (Volume Group) — группа томов (объединяем физические тома (PV) в группу, создаём единый диск, который будем дальше разбивать так, как нам хочется)</p>
+  <p>3. LV (Logical Volume) — логические разделы, собственно раздел нашего нового «единого диска» ака Группы Томов, который мы потом форматируем и используем как обычный раздел, обычного жёсткого диска.</p>
+<H3>Установка </H3>
+  <p></p><code>apt install lvm2</code>
+<h3>Инициировать диск как физический том (PV)</h3>
+<p><code><b>pv</b>create /dev/sdb</code></p>
+<h3>Вывести  инфомацию о физичкеский томах (PV)</h3>
+<p><code>pvs</code> - кратко.
+<code>pvdisplay</code>
+  <hr>
+<h3>Создаём группу томов (VG)</h3>
+<p><code>vgcreate "имя группы" диск"</code> например: 
+<code>vgcreate server1 /dev/sdb</code></p>
+<h3>Вывести  инфомацию о группе томов (VG)</h3>
+<p><code>vgs</code> -  кратко.
+<code>vgdisplay</code></p>
+<h3>Расширить группу</h3>
+<p><code>vgextend "Имя группы" "диск"</code>  например:
+<code>vgextend server1 /dev/sdc </code></p>
+<hr>
+<h3>Создаём логический том (LV)</h3>
+<p><code>lvcreate "В какой группе созать LV" -n "имя LV" -L "Размер"</code> например:
+<code> lvcreate server1 -n MyItem -L 1G  </code></p>
+<code> lvcreate server1 -n MyItem3 -l 100%FREE  </code></p>
+<h3>Вывести инфомацию о логическом томе (LV)</h3>
+<p><code>lvs</code> - кратко.
+<code>lvdisplay</code></p>
+<p>Появляются новые блочные устройста</p>
+<p><code>ls -l /dev/mapper/</code></p>
+<h3>Создаем файловую систему на логическом томе</h3>
+<p><code>mkfs.ext4 /dev/mapper/server1-MyItem</code>
+Монтируем
+<code>mount /dev/mapper/server1-MyItem /mnt/test</code></p>
+<P>Проверяем:
+<code>lsblk</code> или <code> df -h </code></p>
+
+<h3>Удалить логический том</h3>
+<ol>
+<li><p><code>umount /dev/mapper/server1-MyItem3</code></p></li>
+<li><p><code>lvremove  /dev/mapper/server1-MyItem3</code></p></li>
+</ol>
+<h3>Увеличить логический том</h3>
+<ol>
+<li><p><code>lvextend /dev/mapper/server1-MyItem -L +2G</code></p></li>
+<li><p><code>resize2fs /dev/mapper/server1-MyItem</code></p></li>
+</ol>
+или одной командой - добавить ключ r
+<p><code>lvextend /dev/mapper/server1-MyItem -L +2G -r</code></p>
+
+
+<h3>Уменьшить логический том</h3>
+<ol>
+<li>Размонтировать файловую систему</li>
+<p><code>umount  /dev/server1/MyItem</code></p>
+<li>Проверка файловой системы</li
+  <p><code>fsck -f /dev/server1/MyItem</code></p>
+<li>Уменьшение размера файловой системы</li>
+<p><code>resize2fs /dev/server1/MyItem 2G</code></p>
+зесь 2G — это желаемый размер файловой системы.
+<li>Уменьшение размера логического тома:</li>
+<p><code>lvreduce -L 2G /dev/server1/MyItem</code></p>
+Здесь 2G — это желаемый размер логического тома.
+<li>Проверка файловой системы после уменьшения:</li>
+<p><code>fsck -f /dev/server1/MyItem</code></p>
+<li>Монтировать файловую систему</li>
+<p><code>mount  /dev/server1/MyItem /mnt/test</code></p>
+
+</ol>
+
+</body>
+  </html>
