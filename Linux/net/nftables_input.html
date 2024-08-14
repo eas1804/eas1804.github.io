@@ -27,18 +27,57 @@
 <p><code>nft 'add rule inet  filter input ct state related,established counter accept'</code></p>
 <p><code>nft 'add rule inet  filter input iifname "lo" counter accept '</code></p>
 
-<h3>SSH + 8006</h3>
-<p><code>nft 'add rule inet filter input ip saddr {10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, mlp.pp.ua } tcp dport {22, 8006} counter accept'</code></p>
+<h3>Разрешить все с доверенных IP</h3>
+<p><code>nft add rule inet filter input ip saddr {178.150.69.156, 193.123.36.107} accept</code></p>
+
+
+<h3>Разрешить все с доверенных IP по определенным портам (SSH + 8006)</h3>
+<p><code>nft 'add rule inet filter input <b>ip saddr {10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, mlp.pp.ua }  </b> tcp dport {22, 8006} counter accept'</code></p>
 <h3>Задать политику</h3>
 <p><code>nft chain inet filter input {policy drop \;}</code></p>
 <hr>
 <h3>icmp</h3>
 <p><code>nft 'add rule inet  filter input ip protocol icmp counter accept'</code></p>
+<p>ipv6
+<p><code>nft add rule inet filter input ip6 saddr 178.150.69.156 ip6 nexthdr icmpv6 accept</code></p>
+
+<p>Если с доверенного  адреса
+<p><code>nft add rule inet filter input ip <b>saddr 178.150.69.156 </b> ip protocol icmp accept</code></p>
+<p>Если с доверенных адресов
+<p><code>nft add rule inet filter input ip <b>saddr {178.150.69.156, 193.123.36.107}</b> ip protocol icmp accept</code></p>
+
 <h3> WEB</h3>
 <p><code>nft 'add rule inet filter input tcp dport {80, 443} counter accept'</code></p>
 <h3>Zabbix</h3>
 <p><code>nft add rule inet filter input ip saddr 193.123.36.107/32 tcp dport 10050 counter accept</code></p>
 
 
+<h3> Пример файла</h3>
+root@ip-172-31-91-126:~# cat   /etc/nftables.conf
+<pre>
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+                tcp flags != syn / fin,syn,rst,ack ct state new counter drop
+                tcp flags fin,syn,rst,psh,ack,urg / fin,syn,rst,psh,ack,urg counter drop
+                tcp flags ! fin,syn,rst,psh,ack,urg counter drop
+                ct state invalid counter drop
+                ct state established,related counter accept
+                iifname "lo" counter accept
+                ip saddr { 10.0.0.0/8, 172.16.0.0/12, 178.150.69.156, 192.168.0.0/16, 193.123.36.107 } tcp dport { 22, 8006 } counter accept
+                ip saddr 178.150.69.156 ip protocol icmp accept
+        }
+
+        chain forward {
+                type filter hook forward priority filter; policy accept;
+        }
+
+        chain output {
+                type filter hook output priority filter; policy accept;
+        }
+}
+
+</pre>
 </body>
   </html>
+

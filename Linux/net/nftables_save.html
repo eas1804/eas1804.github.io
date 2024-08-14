@@ -10,18 +10,20 @@
 
 <body>
 <h2>nftables</h2>
-<h3>Очистка правил</h3>
-<p><code>nft flush ruleset</code></p>
+<p>Правила nftables можно настроить через файл конфигурации <code>/etc/nftables.conf</code> или напрямую с помощью команд. 
 
-<h3>Перечитать правила из файла</h3>
-<p><code>nft -f /etc/nftables.conf</code></p>
-
-<h3>Сохранить правила</h3>
+<h3>Вариант 1. Применить правила, после редактирваония /etc/nftables.conf</h3>
+<p>После редактирования /etc/nftables.conf перезагрузите nftables
+<p><code>systemctl restart nftables</code></p>
+<h3>Вариант 2. Сохранить правила в /etc/nftables.conf, созданные командами</h3>
 <p><code> echo '#!/usr/sbin/nft -f' > /etc/nftables.conf </code></p>
 <p><code>echo "flush ruleset" >> /etc/nftables.conf</code></p>
 <p><code>nft -s list ruleset >> /etc/nftables.conf</code></p>
 <br>
 <p><code>systemctl enable nftables.service</code></p>
+
+<hr>
+
 
 <h3>Показать порядковые номера правил</h3>
 <p><code>nft -a list ruleset</code></p>
@@ -55,6 +57,15 @@ table inet filter {
         }
 }
 </pre>
+<hr>
+<h3>Очистка правил</h3>
+<p><code>nft flush ruleset</code></p>
+
+<h3>Перечитать правила из файла</h3>
+<p><code>nft -f /etc/nftables.conf</code></p>
+
 
 </body>
   </html>
+
+

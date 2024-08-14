@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AdguardHome</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>AdguardHome</h2>
+<a href=https://hub.docker.com/r/adguard/adguardhome>link</a>
+<p><code>cat docker-compose.yaml</code></p>
+<pre>
+---
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    restart: unless-stopped
+    volumes:
+      - ./workdir:/opt/adguardhome/work
+      - ./confdir:/opt/adguardhome/conf
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+
+      - "3000:3000/tcp"
+      - "80:80/tcp"
+
+      - "443:443/tcp"
+      - "443:443/udp"
+
+      - "67:67/udp"
+      - "68:68/udp"
+
+
+      - "853:853/tcp"
+      - "784:784/udp"
+      - "853:853/udp"
+      - "8853:8853/udp"
+      - "5443:5443/tcp"
+      - "5443:5443/udp"
+</pre>
+<ol>
+<li> port 3000/tcp - Панель установки
+<li> port 80,443/tcp  - Админпанель
+<li> port 67:67/udp, 68:68/tcp, 68:68/udp  - использовать AdGuard Home в качестве DHCP-сервера.
+<li> port 853:853/tcp - запустить AdGuard Home как сервер DNS-over-TLS⁠.
+<li> port 784:784/udp, 853:853/udp, 8853:8853/udp - запустить AdGuard Home как DNS-over-QUIC⁠ сервер. 
+<li> port 5443:5443/tcp,  5443:5443/udp - запустить AdGuard Home как DNSCrypt⁠ server.
+</ol>
+
+</body>
+  </html>
