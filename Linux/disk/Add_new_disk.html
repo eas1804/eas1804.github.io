@@ -17,7 +17,9 @@
 <li>Форматируем диск, например /dev/sdb в GPT
 <p><code>gdisk /dev/sdb</code></p>
 <li>На 2м ске должен быть создан раздел с файловой системой ext4
-<p><code>mkfs -t ext4 /dev/sdb</code></p>
+<p><code>mkfs -t ext4 /dev/sdb</code> или
+<code>/usr/sbin/mkfs.ext4 /dev/sdb</code></p>
+
 
 <li>Uuid диска смотрим с помощью 
 <p><code>blkid</code></p>

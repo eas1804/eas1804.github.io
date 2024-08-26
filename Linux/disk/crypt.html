@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Шифрование диска</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Шифрование диска</h2>
+<p>LUKS является стандартом для шифрования жесткого диска Linux. Расшифровать данные на диске можно только имея доступ к секретному ключу и паролю.
+<p>Как правило утилита для шифрования дисков по-умолчанию уже установлена на Linux
+<p><code>apt-get install cryptsetup</code></p>
+<ol>
+<li>Создание ключа</li>
+<p><code>dd if=/dev/urandom of=/root/secret.key bs=1024 count=2</code></p>
+<p><code> chmod 0400 /root/secret.key</code></p>
+<li>Создание и инициализация LUKS-раздела</li>
+<p>Появится предупреждение об уничтожении данных, большими буквами введите YES:
+<p><code>cryptsetup luksFormat /dev/sdb1 /root/secret.key</code></p>
+<p>Если не указать путь к ключу, то необходимо ввести ПАРОЛЬ
+<li>Свяжите ключ с разделом, что позже позволит его авторизовать раздел и скрыть подсказку пароля:
+<p><code>cryptsetup luksAddKey /dev/sdb1 /root/secret.key --key-file=/root/secret.key</code></p>
+<li>создать устройство ввода-вывода
+<p><code>cryptsetup luksOpen /dev/sdb1 secret --key-file=/root/secret.key</code></p>
+<p>Устройство ввода-вывода LUKS теперь доступно в /dev/mapper/secret.
+<li> укажите размер раздела LUKS
+<p>При использовании опции resize без дополнительных переменных будет занят максимальный размер базового раздела.
+<p><code>cryptsetup resize secret --key-file=/root/secret.key</code></p> 
+<li>Создайте файловую систему, например ext4:
+<p><code>mkfs.ext4 /dev/mapper/secret</code></p>
+<li>Проверить состояние устройства <code>cryptsetup -v status secret</code></p>
+<p> посмотреть информацию заголовка LUKS <code>cryptsetup luksDump /dev/sdb1</code></p>
+<li>Смонтировать диск в систему
+<p><code>blkid | grep secret</code></p>
+</Ol>
+
+</body>
+  </html>
