@@ -41,6 +41,21 @@
 SHOW TABLES;</code></p>
 <h3>Удалить базу c именем roundcubemail</h3>
 <p><code>DROP DATABASE roundcubemail;</code></p>
+<h3>Backup</h3>
+<pre>
+#!/bin/bash
 
+TO=/Backup_SQL/         # В каком каталоге хранить резерные копии
+COUNT=10                # Сколько свежих файлов оставить
+
+cd $TO
+#/bin/mysqldump  --all-databases  > $(date +%Y-%m-%d)-dump.sql   #в имени файла не будет времени. Только дата
+/bin/mysqldump --all-databases > $(date +%Y-%m-%d_%H_%M)-dump.sql
+
+ls -t  | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
+
+
+exit 0
+</pre>
 </body>
   </html>

@@ -1,0 +1,42 @@
+---
+
+volumes:
+  nextcloud:
+  db:
+
+services:
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=MyPass2024
+      - MYSQL_PASSWORD=MyPass2024
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - db
+    volumes:
+      - ./nextcloud:/var/www/html
+      - ./config:/var/www/html/config
+      - ./data:/var/www/html/data
+      - ./apps:/var/www/html/custom_apps
+    environment:
+      - MYSQL_PASSWORD=MyPass2024
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+      - NEXTCLOUD_TRUSTED_DOMAINS=pbs.giaroom.com
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_ADMIN_PASSWORD=MyPassAdmin
+      - TRUSTED_PROXIES=10.10.12.0/24 94.130.143.81   
+      - APACHE_DISABLE_REWRITE_IP=1
