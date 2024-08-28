@@ -35,7 +35,30 @@
 <p> посмотреть информацию заголовка LUKS <code>cryptsetup luksDump /dev/sdb1</code></p>
 <li>Смонтировать диск в систему
 <p><code>blkid | grep secret</code></p>
+<p><code> nano /etc/systemd/system/mnt-disk2.mount</code></p>
+<pre>
+[Unit]
+Description=Disk for disk Crypt
+[Mount]
+What=/dev/disk/by-uuid/cf7ba25d-ba9c-45b3-bb20-bccbaf4bb001
+Where=/mnt/disk2
+Type=ext4
+Options=defaults
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p><code>systemctl start mnt-disk2.mount</code></p>
 </Ol>
+<h3> Просмотреть все текущие устройства, которые были открыты с использованием LUKS</h3>
+<p><code>dmsetup ls --target crypt</code></p>
+
+<h3>Отключить (закрыть) зашифрованный раздел</h3>
+<p><code>cryptsetup luksClose secret</code></p>
+
+
+<h3> Подключение диска после перезагрузки системы</h3>
+<p><code>cryptsetup luksOpen /dev/sdb1 secret --key-file=/root/secret.key</code></p>
+<p><code>systemctl start mnt-disk2.mount</code></p>
 
 </body>
   </html>
