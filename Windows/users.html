@@ -58,9 +58,21 @@ pause
 <p><code>net localgroup Администраторы USER_NAME add</code></p>
 <p>также, может быть «administrators», вместо «Администраторы»</p>
 
-<li><h3>включить встроенную учетную запись администратора</h3>
+<li><h3>Включить встроенную учетную запись администратора</h3>
 <p><code>net user Администратор /active:yes</code></p>
-<p>/active:{yes | no} </p>
+<p>/active:{yes|no} </p>
+
+<li><h3> Отключить учетную запись пользователей и вывести  результат на экран</h3>
+<pre>
+chcp 1252
+set USER=Petro
+net user %USER%  /active:no
+net user %USER% | findstr active
+
+set USER=Bogdan
+net user %USER%  /active:no
+net user %USER% | findstr active
+</pre>
 
 <li><h3>Срок действия пароля — не заканчивается.</h3>
 <p><code>wmic path Win32_UserAccount where Name="userName" set PasswordExpires=false</code></p>
