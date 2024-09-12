@@ -28,7 +28,7 @@
 <p><code>nft 'add rule inet  filter input iifname "lo" counter accept '</code></p>
 
 <h3>Разрешить все с доверенных IP</h3>
-<p><code>nft add rule inet filter input ip saddr {178.150.69.156, 193.123.36.107} accept</code></p>
+<p><code>nft add rule inet filter input ip saddr {178.150.69.156, 193.123.36.107, 172.16.2.0/24} accept</code></p>
 
 
 <h3>Разрешить все с доверенных IP по определенным портам (SSH + 8006)</h3>

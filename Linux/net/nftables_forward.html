@@ -24,11 +24,28 @@
 <p><code>nft add rule inet filter forward ct state related,established counter accept</code></p>
 
 <h3>разрешить прохождение трафика из vmbr1 в vmbr0</h3>
-<p><code> nft add rule inet filter forward  iifname "vmbr1" oifname "vmbr0" counter accept
-</code></p>
+<p><code> nft add rule inet filter forward  iifname "vmbr1" oifname "vmbr0" counter accept</code></p>
 <br>iifname – input  interface name
 <br>oifname – output interface name
 
+<h3>Разрешить форвардинг 22 порт</h3>
+<p><code> nft add rule inet filter forward tcp dport 22 accept</code></p>
+
+<h3>Задать подитику</h3>
+<p><code> nft chain inet filter forward  {policy drop \;}</code></p>
+<p><code> nft chain inet filter forward  {policy accept \;}</code></p>
+
+<h3>Пример</h3>
+<pre>
+        chain forward {
+                type filter hook forward priority filter; policy drop;
+                ct state invalid counter packets 0 bytes 0 drop
+                ct state established,related counter packets 222 bytes 24208 accept
+                iifname "vmbr1" oifname "vmbr0" counter packets 4 bytes 304 accept
+                tcp dport 22 accept
+                tcp dport { 25, 110, 465, 587, 993 } accept
+        }
+</pre>
 
 </body>
   </html>
