@@ -10,15 +10,18 @@
 
 <body>
 <h2>NAT</h2>
+<h3>Создаем таблицу nat</h3>
 <p><code>nft add table ip nat</code></p>
-<h3>PREROUTING</h3>
-<p><code>nft add chain nat PREROUTING { type nat hook prerouting priority dnat \; }</code></p>
-<p>Проброс порта
+
+<h3>Создаем цепочки PREROUTING и POSTROUTING</h3>
+<p><code>nft add chain nat POSTROUTING { type nat hook postrouting priority 0\; }</code></p>
+<p><code>nft add chain nat PREROUTING { type nat hook prerouting priority 0\; }</code></p>
+
+
+<h3>DNAT. Проброс порта</h3>
 <p><code>nft add rule nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 192.168.1.120</code></p>
 
-
-<h3>POSTROUTING</h3>
-<p><code>nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; }</code></p>
+<h3>SNAT. masquerade</h3>
 <p>Например LAN: 172.16.181.0/24
 <p>SNAT, если внешний IP – статический
 <p><code>nft add rule nat POSTROUTING oifname eth0 ip saddr 172.16.181.0/24 counter snat to 18.187.61.156</code></p>
