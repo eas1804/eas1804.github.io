@@ -19,7 +19,9 @@
 
 
 <h3>DNAT. Проброс порта</h3>
-<p><code>nft add rule nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 192.168.1.120</code></p>
+<p><code>
+<p><code>nft add rule ip nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 172.16.2.2</code></p>
+<p><code>nft add rule ip nat PREROUTING tcp dport 2222 dnat to 172.16.2.2:22</code></p>
 
 <h3>SNAT. masquerade</h3>
 <p>Например LAN: 172.16.181.0/24
