@@ -20,13 +20,13 @@
 
 <h3>Детали</h3>
 <li>Установка
-<p><code>apt install nftables -y  &&
+<code>apt install nftables -y  &&
 systemctl enable nftables  &&
 systemctl start nftables</code></p>
 
 <li>Таблицы и цепочки могут быть привязаны к различным семействам протоколов <b>ip, ip6, inet</b>
-<p>Если создаем таблиуц для inet, то и внутри таблицы все inet
-<li>counter  - отслеживать количество пакетов и байт, которые проходят через эти правила.
+<p>Если создаем таблиц для inet, то и внутри таблицы все inet
+<li><b>counter</b>  - отслеживать количество пакетов и байт, которые проходят через эти правила.
 <li>Переводит команду из tptables
 <p><code>iptables-translate</code></p>
 Например
