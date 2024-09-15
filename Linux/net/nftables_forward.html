@@ -10,6 +10,7 @@
 
 <body>
 <h2>forward</h2>
+
 <h3>Посмотреть</h3>
 <p><code>nft list ruleset</code></p>
 <h3>включить форвардинг пакетов</h3>
@@ -29,7 +30,7 @@
 <br>oifname – output interface name
 
 <h3>Разрешить форвардинг 22 порт</h3>
-<p><code> nft add rule inet filter forward tcp dport 22 accept</code></p>
+<p><code> nft add rule inet filter forward tcp dport 22 counter  accept</code></p>
 
 <h3>Задать подитику</h3>
 <p><code> nft chain inet filter forward  {policy drop \;}</code></p>

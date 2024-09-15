@@ -9,18 +9,28 @@
   </head>
 
 <body>
-<h3>Установка</h3>
-<p><code>apt install nftables -y</code></p>
-<p><code>systemctl enable nftables</code> </p>
-<p><code>systemctl start nftables</code></p>
-
-<p>В nftables таблицы и цепочки могут быть привязаны к различным семействам протоколов ip, ip6, inet
-<p>Если создаем таблиуц для inet, то и внутри таблицы все inet
+<h2>nftables  </h2>
 <ol>
 <li><a href=nftables_save.html>Просмотр, сохранение, добавление, удаление</a>
 <li><a href="nftables_input.html">Цепочка input</a>
 <li><a href=nftables_forward.html>Цепочка forward</a>
 <li><a href=nftables_nat.html>NAT</a>
+</ol>
+
+
+<h3>Детали</h3>
+<li>Установка
+<p><code>apt install nftables -y  &&
+systemctl enable nftables  &&
+systemctl start nftables</code></p>
+
+<li>Таблицы и цепочки могут быть привязаны к различным семействам протоколов <b>ip, ip6, inet</b>
+<p>Если создаем таблиуц для inet, то и внутри таблицы все inet
+<li>counter  - отслеживать количество пакетов и байт, которые проходят через эти правила.
+<li>Переводит команду из tptables
+<p><code>iptables-translate</code></p>
+Например
+<p><code>iptables-translate -A FORWARD -i vmbr1 -o vmbr0 -j ACCEPT -m comment --comment "Lan->WAN"</code></p>
 </ol>
 </body>
   </html>

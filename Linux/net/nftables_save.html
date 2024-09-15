@@ -22,6 +22,15 @@
 <br>
 <p><code>systemctl enable nftables.service</code></p>
 
+<h3>Перечитать правила из файла</h3>
+<p><code>nft -f /etc/nftables.conf</code></p>
+
+<h3>Перечитать правила из файла после загузки сетевого интерфейса</h3>
+<p>в файл <code>/etc/network/interfaces</code>:
+<p> после поисания сетевого интерфейса 
+<p><code>iface enp5s0 inet manual</code></p>
+<p> добваить
+<p><code>   post-up  nft -f /etc/nftables.conf</code></p>
 <hr>
 
 
@@ -31,12 +40,6 @@
 <p><code>nft delete rule inet filter input handle 9</code></p>
 <h3>Добавление правила в конкретное место с номером в списке</h3>
 <p><code>nft add rule inet filter input position 8 tcp dport 22 counter accept</code></p>
-<h3>Переводит команду из tptables</h3>
-<p><code> iptables-translate </code></p>
-Например
-<p><code> iptables-translate  -A  FORWARD  -i vmbr1 -o vmbr0 -j ACCEPT -m comment --comment "Lan->WAN"</code></p>
-
-
 
 <h3>После установки</h3>
 <pre>
@@ -61,8 +64,7 @@ table inet filter {
 <h3>Очистка правил</h3>
 <p><code>nft flush ruleset</code></p>
 
-<h3>Перечитать правила из файла</h3>
-<p><code>nft -f /etc/nftables.conf</code></p>
+
 
 
 </body>

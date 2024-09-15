@@ -27,12 +27,17 @@
 <p><code>/usr/sbin/iptables-restore &#60; /etc/iptables/rules.v4 </code></p>
 <p><code>/usr/sbin/iptables-restore &#60; /etc/iptables/rules.v6 </code></p>
 
-
-
-
 <h3>CentOS</h3>
 <p><code>service iptables save</code></p>
 
+
+<h3>Загрузить правил iptables на поднятие wan интерфейса. </h3>
+<p>Добавляю применение правил в файл /etc/network/interfaces:
+
+<pre>
+iface enp5s0 inet manual
+   post-up iptables-restore < /etc/iptables.rules
+</pre>
 
 
 </body>
