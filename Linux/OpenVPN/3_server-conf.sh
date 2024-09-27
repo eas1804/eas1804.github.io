@@ -1,10 +1,25 @@
 #!/bin/bash
 
-# create congif server
+
+PORT=1194
+ETH=ens18
+
+echo "part 1. Install soft and config networt"
+apt update && apt install openvpn easy-rsa curl  -y
+echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
+
+
+
+/sbin/nft add table ip nat
+/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
+/sbin/nft add rule ip nat postrouting oif $ETH masquerade 
+
+
+/sbin/nft list ruleset
+
+echo "part 2. create congif server"
 mkdir /etc/openvpn/ccd
 FILE_SRV=/etc/openvpn/server.conf
-result=$(iptables -L INPUT -nv | grep OpenVPN)
-PORT=$(echo "$result" | awk '{print $11}' | cut -d: -f2)
 
 
 echo "port $PORT"  >$FILE_SRV
@@ -21,7 +36,7 @@ echo "client-to-client" >>$FILE_SRV
 echo "dh dh.pem" >>$FILE_SRV
 echo "user nobody" >>$FILE_SRV
 echo "group nogroup" >>$FILE_SRV
-echo "server 10.88.99.0 255.255.255.0" >>$FILE_SRV
+echo "server 172.31.31.0 255.255.255.0" >>$FILE_SRV
 echo "keepalive 10 120" >>$FILE_SRV
 echo "persist-key" >>$FILE_SRV
 echo "persist-tun" >>$FILE_SRV

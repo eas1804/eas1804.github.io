@@ -13,15 +13,14 @@
 <h3> Debian Server </h3>
 Используйте wget для загрузки скрипта
 <ol>
-<li> Указать <b>имя сетевой карты</b> WAN, например ens18 (по умолчанию eth0) и номер порта udp
-<p> <a href="1-soft_net.sh">Part1. Install Soft</a>
+<li> <a href="2_srv_crt.sh">Easy-rsa</a> 
 
-<li> <a href="2_srv_crt.sh">Part2. Easy-rsa</a> 
-<li> <a href="3_server-conf.sh">Part3. Config Server</a> 
+<li> <a href="3_server-conf.sh">Config Server</a> 
+<p> Указать <b>имя сетевой карты</b> WAN, например eth0 (по умолчанию ens18) и номер порта udp (по умолчанию 1194)
 <br> Определиться с 
-<br>push "redirect-gateway def1 bypass-dhcp"
-<br>push "dhcp-option DNS 208.67.222.222"
-<br>push "dhcp-option DNS 208.67.220.220"
+<br><code>push "redirect-gateway def1 bypass-dhcp"</code></p>
+<br><code>push "dhcp-option DNS 208.67.222.222"</code></p>
+<br><code>push "dhcp-option DNS 208.67.220.220"</code></p>
 <H3>Доступ к сетям </h3>
 <p>Сеть за сервером Ubuntu: 10.0.0.0 255.255.255.0
 <p>Сеть за клиентом: 192.168.1.0 255.255.255.0
@@ -30,10 +29,10 @@
 <p><code>route 192.168.1.0 255.255.255.0</code>      #Сделать доступной сеть за Клиентом </p>
 
 
-<li> <a href="4_create_client_crt.sh">Part4. Config Client in 5 Files</a> 
+<li> <a href="4_create_client_crt.sh">Config Client in 5 Files</a> 
 <br>имя клиента указать после имени скрипта
 <p>или, если конфиг нужен в одном файле
-<a href="5_create_client_crt_in_OneFile.sh">Part4. Config Client In One file</a> 
+<a href="5_create_client_crt_in_OneFile.sh">Config Client In One file</a> 
 <li> for tcp 
 <p><a href=7_server-conf_tcp_80.sh>server-conf_tcp_80</a>
 <p><a href=6_create_client_crt_TCP80.sh>create_client_crt</a>
