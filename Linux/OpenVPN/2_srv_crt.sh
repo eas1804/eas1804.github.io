@@ -2,6 +2,8 @@
 
 clear
 echo "Create srt for server"
+apt update && apt install openvpn easy-rsa curl  -y
+
 cd /usr/share/easy-rsa/
 cp vars.example vars
 

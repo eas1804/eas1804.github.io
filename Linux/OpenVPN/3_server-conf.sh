@@ -5,9 +5,14 @@ PORT=1194
 ETH=ens18
 
 echo "part 1. Install soft and config networt"
-apt update && apt install openvpn easy-rsa curl  -y
+
 echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 
+
+
+/sbin/nft add table inet filter
+/sbin/nft add chain inet filter input {type filter hook input priority 0\;}
+/sbin/nft add rule inet filter input udp dport $PORT counter accept
 
 
 /sbin/nft add table ip nat
