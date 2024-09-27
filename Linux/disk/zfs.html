@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ZFS</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>ZFS</h2>
+
+<p><code>zpool status</code></p>
+
+
+<h3>Показать все ZFS пулы и их файловую структуру.</h3>
+<p><code>zfs list</code></p>
+
+
+<h3>увидеть созданные ZVOL и их путь</h3>
+<p>диски находятся в формате ZFS томов (ZVOL)
+<p><code>zfs list -t volume</code></p>
+
+<h3>Прямое копирование ZFS тома (ZVOL)</h3>
+<p>Используйте команду zfs send для передачи тома виртуального диска на другой сервер:	
+<p>Создть моментальный снимок и отправить его через SSH на целевой сервер.
+<p><code>zfs snapshot rpool/data/vm-101-disk-0@snapshot_name</code></p>
+<p><code>zfs send rpool/data/vm-101-disk-0@snapshot_name | ssh user@remote-server zfs receive rpool/data/vm-101-disk-0</code></p>
+
+
+</body>
+  </html>
