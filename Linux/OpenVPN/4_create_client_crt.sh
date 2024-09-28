@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+PORT=1194
+
 ls /etc/openvpn/client/ || mkdir /etc/openvpn/client/
 ls /etc/openvpn/ccd || mkdir /etc/openvpn/ccd
 
@@ -23,8 +25,7 @@ echo "# disable" > /etc/openvpn/ccd/$USER_NAME
 
 # generatee file.ovpn
 IP=$(curl ifconfig.me)
-result=$(iptables -L INPUT -nv | grep OpenVPN)
-PORT=$(echo "$result" | awk '{print $11}' | cut -d: -f2)
+
  
 echo "remote $IP $PORT" >> $KEY_FOLDER/$USER_NAME/$USER_NAME.ovpn
 echo "cert $USER_NAME.crt" >> $KEY_FOLDER/$USER_NAME/$USER_NAME.ovpn

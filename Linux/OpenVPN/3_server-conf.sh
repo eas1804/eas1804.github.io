@@ -66,6 +66,7 @@ echo 'push "dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
 cat $FILE_SRV
 
 systemctl start openvpn@server
+systemctl enable openvpn@server
 systemctl status openvpn@server
 cat /var/log/openvpn/openvpn.log
 
