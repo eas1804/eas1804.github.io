@@ -49,12 +49,12 @@ endlocal
 <p>Пути заключать в "кавычки"
 
 <h3>Резервное копирования с помощью Robocopy</h3>
-<p><code>robocopy C:\base Z:\ /MIR /R:5 /W:10 /LOG:C:\backup\log.txt /NFL /NDL /NP</code></p>
+<p><code>robocopy C:\base Z:\ /MIR /R:5 /W:10  </code></p>
 <ul>
 <li>/MIR: Полная синхронизация каталога.
 <li>/R:5: Количество попыток при неудачной передаче.
 <li>/W:10: Время ожидания между попытками в секундах.
-<li>/LOG: Запись лога.
+<li>/LOG:C:\backup\log.txt Запись лога.
 <li>/NFL /NDL /NP: Отключение вывода информации о файлах и прогрессе.
 </ul>
 </body>

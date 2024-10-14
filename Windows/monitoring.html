@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Мониторинг</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<p>Создайте новую задачу и установите триггеры на запуск скрипта по расписанию.
+<p>В действиях укажите путь к PowerShell с параметром для выполнения вашего скрипта, например:
+powershell
+<p><code>>powershell.exe -ExecutionPolicy Bypass -File "C:\Путь\к\вашему\скрипту.ps1"</code></p>
+
+
+<h2>Мало места на диске</h2>
+<P>Отправить уведомление, если на диске C: занято более 80% </h2>
+<pre>
+    # Токен и ID чата Telegram
+    $token ="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+    $chatId ="33109821804"
+
+# Задаем порог использования диска в процентах
+$threshold = 80
+
+# Проверяем использование диска C:
+$drive = Get-PSDrive -Name C
+$usedSpacePercent = ($drive.Used / $drive.Free) * 100
+
+# Если использование диска превышает порог, отправляем уведомление в Telegram
+if ($usedSpacePercent -gt $threshold) {
+
+    # Текст сообщения
+    $message = "Warning! Drive C: > $threshold %. Now is: $([math]::Round($usedSpacePercent, 2))%"
+
+    # URL для отправки сообщения
+    $url = "https://api.telegram.org/bot$token/sendMessage?chat_id=$chatId&text=$message"
+
+    # Отправка запроса
+    Invoke-RestMethod -Uri $url -Method Get
+}
+
+</pre>
+<h2>Отправить внешний и внутренний IP адрес</h2>
+<pre>
+# Токен и ID чата Telegram
+$token = "Ваш_Токен"
+$chatId = "Ваш_Chat_ID"
+
+
+# Получаем внутренний IP, исключая APIPA (169.254.*) и loopback (127.0.0.1)
+$internalIP = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {
+    $_.IPAddress -notlike "169.254.*" -and $_.IPAddress -ne "127.0.0.1"
+}).IPAddress
+
+# Получаем внешний IP через API ipify.org
+$externalIP = Invoke-RestMethod -Uri "https://api.ipify.org"
+
+# Выводим IP адреса
+Write-Host "Internal IPs: $($internalIP -join ', ')"
+Write-Host "External IP: $externalIP"
+
+# Формируем сообщение для отправки в Telegram
+$message = "Internal IPs: $($internalIP -join ', ')`nExternal IP: $externalIP"
+
+
+# Кодируем текст в формат URL
+$encodedMessage = [System.Web.HttpUtility]::UrlEncode($message)
+
+# URL для отправки сообщения в Telegram
+$url = "https://api.telegram.org/bot$token/sendMessage?chat_id=$chatId&text=$encodedMessage"
+
+# Отправляем сообщение
+Invoke-RestMethod -Uri $url -Method Get
+</pre>
+
+</pre>
+
+</body>
+  </html>
