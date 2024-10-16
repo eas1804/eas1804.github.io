@@ -12,8 +12,6 @@
 <h2>Hyper-v</h2>
 <a href=Hyper-V_control.pdf>Удаленное управление Hyper-V Server с помощью Hyper-V Manager</a>
 
-<h3>Определить поколение виртуальной машины </h3>
-<p><code>Get-VM <VMName> | Select-Object Name, Generation</code></p>
 
 <h3>Backup Hyper-v</h3>
 Download 
@@ -36,6 +34,9 @@ C:\Portatable\HyperVBackup.exe -l %VM% -i %IGNORE% -o %OUTPUT% -d --outputformat
 
 <li>Получить список виртуальных машин
 <p><code>get-vm</code></p>
+
+<P>Определить поколение виртуальной машины </p>
+<p><code>Get-VM <VMName> | Select-Object Name, Generation</code></p>
 
 <li>Запустить виртуальную машину
 <p><code>start-vm Имя_Машины</code></p>
