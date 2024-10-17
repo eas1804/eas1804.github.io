@@ -23,6 +23,7 @@ set dd=%DATE:~0,2%
 set mm=%DATE:~3,2%
 set yyyy=%DATE:~6,4%
 set hh=%TIME:~0,2%
+if "%hh:~0,1%"==" " set hh=0%hh:~1,1%
 set min=%TIME:~3,2%
 set curdate=%dd%-%mm%-%yyyy%_%hh%-%min%
 
@@ -32,9 +33,6 @@ set curdate=%dd%-%mm%-%yyyy%_%hh%-%min%
 
 <p>-mx1: Этот параметр задает уровень сжатия.начение 1 означает минимальное сжатие, что приводит к более быстрому архивированию, но файлы будут занимать больше места. Возможные значения варьируются от 0 (без сжатия) до 9 (максимальное сжатие).
 <p>-ssw: Этот параметр указывает, что 7-Zip будет создавать резервные копии открытых файлов (например, если файл открыт в приложении, он будет заархивирован, чтобы сохранить его состояние).
-
-<p>Параметр -r0 в команде 7-Zip указывает на рекурсивное архивирование с определённой настройкой. 
-
 
 <h3> Удалить старыве файлы</h3>
 <pre>
@@ -65,6 +63,70 @@ endlocal
 <li>/W:10: Время ожидания между попытками в секундах.
 <li>/LOG:C:\backup\log.txt Запись лога.
 <li>/NFL /NDL /NP: Отключение вывода информации о файлах и прогрессе.
+
+<h2> UNAC. Запаковать каждую  базу в отдельный каталог/h2>
+<pre>
+@echo off
+
+taskkill /F /FI "ImageName eq 1c*"
+set DRIVE=D:
+set FROM=\Bace_1c
+set OUT=H:\backup_base
+set COUNT_FOLDER=10
+
+	rem DRIVE= 	имя диска,ОТКУДА будем архивировать
+	rem FROM=	каталог, который будем архивировать. БЕЗ ИМЕНИ ДИСКА
+	rem OUT=	каталог, в который будем архивировать
+	rem COUNT_FOLDER	 сколько каталогов оставить 
+	rem ---------------------Constanta------------------------------
+
+	rem Записываем текущую дату в переменную %CUR_DATE_TIME% set CUR_DATE_TIME=%DATE:~6,4%-%DATE:~3,2%-%DATE:~0,2%_%time:~0,2%-%time:~3,2%
+set CUR_DATE_TIME=%DATE:~6,4%-%DATE:~3,2%-%DATE:~0,2%
+
+	rem Переопределяем выходной каталог
+set OUT=%OUT%\%CUR_DATE_TIME%
+
+	rem For viwe test
+cls
+echo DRIVE=%DRIVE%
+echo FROM=%FROM%
+echo OUT=%OUT%
+echo -------------------------
+
+	rem Архивируем в каталог
+mkdir %OUT%
+%DRIVE%
+for /d %%X in (%FROM%\*) do "c:\Program Files\7-Zip\7z.exe" a -ssw -mx7 "%OUT%\%%X.7z" "%%X\"
+
+	rem оставить %COUNT_FOLDER% самых свежик каталога
+cd /d %OUT%
+cd ..
+dir /O-D /AD /B > files.txt
+for /f "skip=%COUNT_FOLDER% delims=" %%G in (files.txt) do rmdir /q/s "%%G"
+
+
+
+rem  backup_remote
+set OUT=H:\backup_remote\
+set COUNT_FOLDER=2
+set OUT=%OUT%\%CUR_DATE_TIME%
+
+mkdir %OUT%
+%DRIVE%
+for /d %%X in (%FROM%\*) do "c:\Program Files\7-Zip\7z.exe" a -ssw -mx7 "%OUT%\%%X.7z" "%%X\"
+
+	rem оставить %COUNT_FOLDER% самых свежик каталога
+cd /d %OUT%
+cd ..
+dir /O-D /AD /B > files.txt
+for /f "skip=%COUNT_FOLDER% delims=" %%G in (files.txt) do rmdir /q/s "%%G"
+
+
+
+exit 0
+
+</pre>
+
 </ul>
 </body>
   </html>
