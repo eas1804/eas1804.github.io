@@ -26,8 +26,6 @@ ssh_key=/root/.ssh/id_ed25519
 
 sshfs $username@$server:/home  /mnt/storagebox/   -o IdentityFile=/root/.ssh/id_ed25519  -o port=23
 
-
-
 folder_sync () {
     ssh -p $ssh_port -i $ssh_key $username@$server ls ${target_directory}increment/ >/dev/null || \
     ssh -p $ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}increment/

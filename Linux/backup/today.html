@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>В каталоге  нет файлов, которые были созданы сегодня!</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Уведомление. В каталоге $DIR нет файлов, которые были созданы сегодня!</h2>
+<p>заменить  eth0  на свой в IP_local
+<pre>
+#!/bin/bash
+
+# telegramm
+    BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+    CHAT_ID="33109821804"
+
+# тескт сообщений
+IP_local=$(ip -4 a | grep inet | grep eth0 |  awk '/inet/ {print $2}')
+IP_global=$(curl 2ip.com.ua)
+clear
+
+# Получение текущей даты в формате YYYY-MM-DD
+TODAY=$(date +%Y-%m-%d)
+
+fun_today () {
+# Поиск файлов, созданных сегодня
+FILES=$(find "$DIR" -type f -newermt "$TODAY 00:00:00" ! -newermt "$TODAY 23:59:59")
+
+# Проверка, есть ли файлы
+if [ -z "$FILES" ]; then
+MESS="Проблема $0
+LAN: $IP_local
+WAN: $IP_global
+
+$(echo "В каталоге $DIR нет файлов, которые были созданы сегодня!")"
+    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESS" > /dev/null
+else
+    echo "Файлы, созданные сегодня, найдены в каталоге $DIR."
+fi
+}
+
+# Установка пути к каталогу
+DIR="/mnt/medoc/base/"
+fun_today
+
+DIR="/mnt/medoc/db/"
+fun_today
+</pre>
+</body>
+  </html>

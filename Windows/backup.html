@@ -13,10 +13,12 @@
 <a href=https://freefilesync.org/>FreeFileSync</a>
 <h3> Упаковать каталог </h3>
 <pre>
+@echo off
 taskkill /F /FI "ImageName eq 1c*"
 
-set source="C:\ProgramData\Medoc\MedocSRV\db"
-set destination="D:\Medoc_backup\db"
+set source="d:\Base"
+set destination="E:\Backup\1c"
+set name=Company_1c 
 
 rem Ниже ничего не трогать
 set dd=%DATE:~0,2%
@@ -27,9 +29,13 @@ if "%hh:~0,1%"==" " set hh=0%hh:~1,1%
 set min=%TIME:~3,2%
 set curdate=%dd%-%mm%-%yyyy%_%hh%-%min%
 
+"C:\Program Files\7-Zip\7z.exe" a -t7z -ssw -mx5   %destination%\%curdate%_%name% %source%
 
-"C:\Program Files\7-Zip\7z.exe" a -t7z -ssw -mx5  xr@exclude.txt   %destination%\backup_%curdate% %source%
+copy  %destination%\%dd%-%mm%*  E:\Backup_in_Cloud
+
+exit /b 0
 </pre>
+
 <p>-x	Исключить файлы или папки из архива по имени или маске.
 <br> -xr@exclude.txt 
 <p> В файле exclude.txt  прописываем
