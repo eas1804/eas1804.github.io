@@ -24,6 +24,8 @@ echo '#!/usr/sbin/nft -f' > /etc/nftables.conf
 echo "flush ruleset" >> /etc/nftables.conf
 /sbin/nft  -s list ruleset >> /etc/nftables.conf
 
+systemctl  enable nftables.service
+systemctl  start  nftables.service
 
 /sbin/nft list ruleset
 
