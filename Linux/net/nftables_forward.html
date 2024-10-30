@@ -40,11 +40,13 @@
 <pre>
         chain forward {
                 type filter hook forward priority filter; policy drop;
-                ct state invalid counter packets 0 bytes 0 drop
-                ct state established,related counter packets 222 bytes 24208 accept
-                iifname "vmbr1" oifname "vmbr0" counter packets 4 bytes 304 accept
-                tcp dport 22 accept
-                tcp dport { 25, 110, 465, 587, 993 } accept
+                ct state invalid counter drop
+                ct state established,related counter accept
+
+                iifname "vmbr1" oifname "vmbr0" counter accept
+                udp dport 1194 counter accept
+                tcp dport 22 counter accept
+                tcp dport { 25, 110, 465, 587, 993 } counter accept
         }
 </pre>
 

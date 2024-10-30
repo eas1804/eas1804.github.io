@@ -31,6 +31,19 @@ systemctl start nftables</code></p>
 <p><code>iptables-translate</code></p>
 Например
 <p><code>iptables-translate -A FORWARD -i vmbr1 -o vmbr0 -j ACCEPT -m comment --comment "Lan->WAN"</code></p>
+<li>Перечитать правила при поднятии интерфейса
+<p><code>systemctl edit nftables.service</code></p>
+Добавляем
+<pre>
+[Unit]
+After=network-online.target
+Wants=network-online.target
+</pre>
+<p>Перезапускаем
+<p><code>systemctl daemon-reload</code></p>
+<p><code>systemctl restart nftables</code></p>
+
+
 </ol>
 </body>
   </html>

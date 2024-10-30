@@ -20,6 +20,11 @@ echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 /sbin/nft add rule ip nat postrouting oif $ETH masquerade 
 
 
+echo '#!/usr/sbin/nft -f' > /etc/nftables.conf
+echo "flush ruleset" >> /etc/nftables.conf
+/sbin/nft  -s list ruleset >> /etc/nftables.conf
+
+
 /sbin/nft list ruleset
 
 echo "part 2. create congif server"
@@ -59,9 +64,9 @@ echo "management /run/ovpn-mgmt unix" >>$FILE_SRV
 echo "tls-server" >>$FILE_SRV
 
 
-echo 'push "redirect-gateway def1 bypass-dhcp"' >>$FILE_SRV
-echo 'push "dhcp-option DNS 208.67.222.222"' >>$FILE_SRV
-echo 'push "dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
+echo 'push "#redirect-gateway def1 bypass-dhcp"' >>$FILE_SRV
+echo 'push "#dhcp-option DNS 208.67.222.222"' >>$FILE_SRV
+echo 'push "#dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
 
 cat $FILE_SRV
 

@@ -28,19 +28,19 @@
 
 <h3>DNAT. Проброс порта</h3>
 <p><code>nft add rule ip nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 172.16.2.2</code></p>
-<p><code>nft add rule ip nat PREROUTING tcp dport 2222 dnat to 172.16.2.2:22</code></p>
+<p><code>nft add rule ip nat PREROUTING iif vmbr0 tcp dport 2222 dnat to 172.16.2.2:22</code></p>
 
 <h3>Пример</h3>
-<pre>table ip nat {
+<pre>
+table ip nat {
         chain POSTROUTING {
                 type nat hook postrouting priority filter; policy accept;
-                oifname "vmbr0" ip saddr 172.16.2.0/24 counter packets 4 bytes 304 snat to 88.99.245.49
+                oifname "vmbr0" ip saddr 172.16.16.0/24 counter masquerade
         }
 
         chain PREROUTING {
                 type nat hook prerouting priority filter; policy accept;
-                iif "vmbr0" tcp dport 2222 dnat to 172.16.2.2:22
-                iif "vmbr0" tcp dport { 25, 110, 465, 587, 993 } dnat to 172.16.2.2
+                iif "vmbr0" udp dport 1194 counter dnat to 172.16.16.2
         }
 }
 

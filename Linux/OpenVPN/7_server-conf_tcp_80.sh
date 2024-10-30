@@ -3,7 +3,7 @@
 # create congif server
 mkdir /etc/openvpn/ccd
 FILE_SRV=/etc/openvpn/server_tcp.conf
-PORT=80
+PORT=1194
 
 
 echo "port $PORT"  >$FILE_SRV
@@ -36,9 +36,9 @@ echo "management /run/ovpn-mgmt unix" >>$FILE_SRV
 echo "tls-server" >>$FILE_SRV
 
 
-echo 'push "redirect-gateway def1 bypass-dhcp"' >>$FILE_SRV
-echo 'push "dhcp-option DNS 208.67.222.222"' >>$FILE_SRV
-echo 'push "dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
+echo '#push "redirect-gateway def1 bypass-dhcp"' >>$FILE_SRV
+echo '#push "dhcp-option DNS 208.67.222.222"' >>$FILE_SRV
+echo '#push "dhcp-option DNS 208.67.220.220"' >>$FILE_SRV
 
 cat $FILE_SRV
 
