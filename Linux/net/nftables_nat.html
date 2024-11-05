@@ -30,6 +30,13 @@
 <p><code>nft add rule ip nat PREROUTING iif vmbr0 tcp dport { 80, 443 } dnat to 172.16.2.2</code></p>
 <p><code>nft add rule ip nat PREROUTING iif vmbr0 tcp dport 2222 dnat to 172.16.2.2:22</code></p>
 
+<p>Все, что приходит на vmbr0 с  моих IP на порт 22 пробросить 172.16.16.4:22
+
+ <p><code>nft add rule ip nat PREROUTING iifname "vmbr0" ip saddr 178.150.69.156 tcp dport 2222 dnat to 172.16.16.4:22</code></p>
+<p>Прописать в файл /etc/nftables.conf
+ <p><code>iifname "vmbr0" ip saddr { 178.150.69.156, 176.37.155.208}  tcp dport 2222 dnat to 172.16.16.4:22</code></p>
+
+
 <h3>Пример</h3>
 <pre>
 table ip nat {
