@@ -73,6 +73,11 @@ chain PREROUTING {
 и перечитать файл
 <p><code> nft -f  /etc/nftables.conf</code></p>
 
+
+<h3>Запретить сохранять пароль на клиенте</h3>
+<p><code>REG ADD "HKLM\Software\OpenVPN" /v "disable_save_passwords" /t REG_DWORD /d 1 /f</code></p>
+0 - резрешить сохранять пароль
+1 - запретить сохранять пароль
 <h3>Expamle config</h3>
 <a href="server_udp.txt">Server UDP</a> |
 <a href="server_tcp.txt">Server TCP</a> |
@@ -80,5 +85,6 @@ chain PREROUTING {
 <hr>
 <p><a href=Client_Debain.html>Client Debain</a>
 <p><a href=OpenVPN_add.html> Add info</a>
+
 </body>
   </html>
