@@ -41,7 +41,7 @@ tar -vczf $TO`date "+%d-%m-%g_%H-%M-%S"`-COMPANY_1c.tar.gz   $FROM
 }
 
 del_old_files () {
-cd $TO"
+cd $TO
 ls -t  | tail -n +$((COUNT+1)) | xargs -I {} rm -- "{}"
 }
 
