@@ -36,6 +36,30 @@ force user = root
 browsable = yes
 writable = yes
 </pre>
+
+<li>Ограничить доступ по IP
+<pre>
+[global]
+workgroup = WORKGROUP
+security = user
+map to guest = bad user
+wins support = no
+dns proxy = no
+
+[1c_backup]
+path = /mnt/1c/backup_1c
+guest ok = yes
+force user = nobody
+#force user = root
+browsable = yes
+writable = yes
+create mask = 0777
+directory mask = 0777
+hosts allow = 192.168.18.103
+hosts deny = ALL
+
+</pre>
+
 <li>private access
 <pre>
 [private]
@@ -46,6 +70,9 @@ browsable = yes
 writable = yes
 </pre>
 </ol>
+
+
+
 <ul>
 <li>Добавляем пользователя:
 <p><code>useradd dmitry -m -G users</code></p>
