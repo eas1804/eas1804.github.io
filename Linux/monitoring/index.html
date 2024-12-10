@@ -22,20 +22,17 @@
 <p>Запускаем проверку:</p>
 
 <p><code>nrich ip.list</code>
-<h2>Модель материнской платы</h2>
-<p><code>cat /sys/devices/virtual/dmi/id/board_{vendor,name,version}</code></p>
 
 <h2>отобразить только IP адрес</h2>
 <p><code>IP=$(ip addr show eno1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')</code></p>
 
-
   <h2>Monitoring Scrypts </h2>
 <ol>
-<li><a href=Scrypts/raid1.sh> test Raid</a>
+<li><a href=Scrypts/raid1.sh> test raid mdadm</a>
 <li><a href=Scrypts/smartd_test.sh> test Smart journal HDD SSD</a>
 <li><a href=Scrypts/size_local_drive.sh>size_local_drive</a>
-<li><a href=Scrypts/refresh_home_mlp_pp_ua.sh>refresh home.mlp.pp.ua in iptables</a>
-<li><a href=Scrypts/iptables_rule.sh>iptables rules</a>
+<li><a href=Scrypts/nftables.conf>nft rules (nftables.conf)</a>
+<li><a href=Scrypts/refresh_home_mlp_pp_ua.sh>refresh home.mlp.pp.ua</a>
 </ol>
 </body>
   </html>

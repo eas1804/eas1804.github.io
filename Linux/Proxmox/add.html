@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Дополнения proxmox</h2>
+<h3>Добавить репозиторий</h3>
+ в  /etc/apt/sources.list
+<p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</p></code>
+
+<h3>Установить агент</h3>
+<p><code>apt install qemu-guest-agent -y</p></code>
+<p><code>systemctl start qemu-guest-agent</p></code>
+<p><code>systemctl status qemu-guest-agent</p></code>
+<p><code>systemctl enable qemu-guest-agent</p></code>
+Проверить результат на гипервизоре
+<p><code>qm agent vmid ping</p></code>
+<h3>Образы virtio</h3>
+<p>https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/
+
+</ul>
+</body>
+  </html>
