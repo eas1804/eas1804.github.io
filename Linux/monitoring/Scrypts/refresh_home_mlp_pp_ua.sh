@@ -4,8 +4,8 @@ DOMEN=home.mlp.pp.ua
 
 RESULT=$(dig $DOMEN A +short)
 
-nft -f /etc/nftables.conf
-nft add    rule inet filter input ip saddr $RESULT accept
+/usr/sbin/nft -f /etc/nftables.conf
+/usr/sbin/nft add    rule inet filter input ip saddr $RESULT accept
 
 
 
