@@ -16,11 +16,16 @@
 <li> <a href="2_srv_crt.sh">Easy-rsa</a> 
 
 <li> <a href="3_server-conf.sh">Config Server</a> 
-<p> Указать <b>имя сетевой карты</b> WAN, например eth0 (по умолчанию ens18) и номер порта udp (по умолчанию 1194)
-<br> Определиться с 
+<ul>
+<li>Указать <b>имя сетевой карты</b> WAN, например eth0 (по умолчанию ens18) 
+<li>Задать номер порта udp (по умолчанию 1194)
+<b>У ВСЕХ КЛИЕНТОВ ИСПОЛЬЗОВАТЬ РАЗНЫЕ ПОРТЫ!!!</B></p>
+<li>Определиться с 
+<br>
 <br><code>push "redirect-gateway def1 bypass-dhcp"</code></p>
 <br><code>push "dhcp-option DNS 208.67.222.222"</code></p>
 <br><code>push "dhcp-option DNS 208.67.220.220"</code></p>
+</ul>
 <H3>Доступ к сетям </h3>
 <p>Сеть за сервером Ubuntu: 10.0.0.0 255.255.255.0
 <p>Сеть за клиентом: 192.168.1.0 255.255.255.0
