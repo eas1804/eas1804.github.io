@@ -92,6 +92,9 @@ nameserver 1.1.1.1
 <p><code>ifreload  -a</code></p>
 
 <hr>
+<h3> вывести только IP адрес </h3>
+<p><code> ip -4 addr show vmbr0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' </code></p>
+
 <h3>Показать сетевые интерфейсы</h3>
 <p><code>ip link show</code></p>	
 <p><code>ip link show eno1</code></p>
@@ -111,12 +114,11 @@ nameserver 1.1.1.1
 <h3>Удалить маршрут по умолчанию</h3>
 <p><code>ip route delete default </code></p>
 
-
-<hr>
 <hr>
 <h3>Перезапуск службы сети:</h3>
 Эта команда перезапустит службу сети, что приведет к перезагрузке всех сетевых интерфейсов и применению изменений
 <p><code>systemctl restart networking.service</code></p>
+
 
 
 </body>
