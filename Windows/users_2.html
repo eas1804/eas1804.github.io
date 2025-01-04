@@ -44,6 +44,13 @@
 
 <li><h3>Отобразить время последнего входа пользователей на сервер</h3>
 <p><code>Get-LocalUser | Select-Object Name, LastLogon</code></p>
+<p> file.cmd
+<br>Отсортировать по времени
+<pre>
+@echo off
+PowerShell -NoProfile -Command "Get-LocalUser | Select-Object Name, LastLogon | Sort-Object LastLogon  -Descending"
+pause
+</pre>
 <li><h3>Отобразить список активных пользователей  </h3>
 <p><code>chcp 1252</code></p>
 <p><code>query session | findstr Active</code></p>
