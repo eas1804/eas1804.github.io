@@ -153,6 +153,40 @@ exit 0
 
 </pre>
 
+<h3> Упаковать каждый файл в отдельный архзив. SQL базы Him</h3>
+<p>Удалить оригинальные файлы после упаковки <code>-sdel</code>
+<pre>
+@echo off
+setlocal enabledelayedexpansion
+
+REM Определяем пути к исходному и целевому каталогам
+set "source_dir=B:\SQLBackup"
+set "target_dir=B:\Backup"
+
+REM Получаем текущую дату и время
+for /f "tokens=2 delims==" %%I in ('"wmic OS Get localdatetime /value"') do set datetime=%%I
+set "date_time=!datetime:~0,4!-!datetime:~4,2!-!datetime:~6,2!_!datetime:~8,2!-!datetime:~10,2!-!datetime:~12,2!"
+
+REM Архивируем каждый файл в каталоге source_dir
+for %%f in ("%source_dir%\*") do (
+    set "file_name=%%~nf"
+    set "file_ext=%%~xf"
+    set "archive_name=!file_name!_!date_time!.7z"
+
+    REM Архивируем файл с удалением исходного
+    "c:\Program Files\7-Zip\7z.exe" a <b> -sdel </b> "!target_dir!\!archive_name!" "%%f"
+    if errorlevel 1 (
+        echo Ошибка при архивации файла %%f
+        exit /b 1
+    )
+)
+
+echo Все файлы успешно архивированы.
+exit /b 0
+
+</pre>
+
+
 </ul>
 </body>
   </html>

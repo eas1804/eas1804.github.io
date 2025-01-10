@@ -16,6 +16,10 @@
 <li><h3>Добавление пользователя Prtro c sudo </h3>
 <p><code>useradd Prtro -s /bin/bash -m -G sudo</code></P>
 
+<li><h3> Разрешить ssh для root </h3>
+ <p><code>echo "PermitRootLogin yes" >>  /etc/ssh/sshd_config && systemctl restart ssh </code></P>
+
+
 <li><h3>Добавление пользователя, с указанием каталога и оболочки</h3>
 <p><code>name=Prtro</code></P>
 <p><code>useradd -m -d /mnt/raid_md127/$name -s /bin/bash $name</code></P>
