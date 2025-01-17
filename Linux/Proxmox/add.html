@@ -15,15 +15,11 @@
 <p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</p></code>
 
 <h3>Установить агент</h3>
-<p><code>apt install qemu-guest-agent -y</p></code>
-<p><code>systemctl start qemu-guest-agent</p></code>
-<p><code>systemctl status qemu-guest-agent</p></code>
-<p><code>systemctl enable qemu-guest-agent</p></code>
+<p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</p></code>
 Проверить результат на гипервизоре
 <p><code>qm agent vmid ping</p></code>
-<h3>Образы virtio</h3>
-<p>https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/
-
+<p>Образы virtio: <a href=https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/>Download</a>
+<p>nftables.conf <a href=nftables.conf>Download </a>
 </ul>
 </body>
   </html>
