@@ -9,6 +9,12 @@
   </head>
 
 <body>
+<h1>ssh. Проброс порта</h1>
+<p><code>ssh -L 8080:10.10.12.2:8007 root@pbs.mlp.pp.ua</code>
+или <code>ssh -L 8080:172.16.2.2:80 root@pbs.mlp.pp.ua</code>
+<p><code>http://localhost:8080/postfixadmin/public/login.php</code>
+<p>Если требуется долгое подключение, используйте флаг -f (фоновый режим) и -N (не выполнять команд на сервере):
+<p><code>ssh -f -N -L 8080:172.16.2.2:80 root@pbs.mlp.pp.ua</code>
 
 <h1>Disk, Folder info</h1>
 <h2>duf</h2>
