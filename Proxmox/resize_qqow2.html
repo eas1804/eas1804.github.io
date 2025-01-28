@@ -5,49 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>proxmox</title>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../style.css">
   </head>
 
 <body>
-<h2>proxmox</h2>
-<ul>
-<li><a href=ProxmoxVE-Hetzner.pdf>Установка Proxmox VE на ZFS на примере Hetzner</a>
-<li><a href=add.html>Дополнения </a>
-</ul>
-
-<ul>
-<li>Oтобразить список виртуальных машин:
-<p><code>/usr/sbin/qm list</code>
-или
-<code>cat /etc/pve/.vmlist</code></p>
-
-<li>выключить VM:
-<p><code>qm shutdown "ID" </code> или 
-<code>qm stop "ID" </code></p>
-
-<li>Запуск VM
-<p><code>qm start "ID"</code></p>
-
-
-<li>Удалить VM
-<p><code>qm destroy "ID"</code></p>
-
-<li>Инфлрмация о диске
-<p><code>qemu-img info  vm-101-disk-0.qcow2</code></p>
-
-<li>Конфиг VM здесь:
-  <p><code>/etc/pve/qemu-server</code></p>
-
-<li>Диски VM здесь:
-<p><code>/var/lib/vz/images/</code></p>
-
-<li>Перезапустите службу pvedaemon, чтобы освежить управление VM
-<p><code>systemctl restart pvedaemon</code></p>
-
-
-<li>Перосмотр журнала  pvedaemon
-<p><code>journalctl -u pvedaemon -f</code></p>
-
 <h2>Уменьшение размера qqow2</h2>
 <ol>
 <li>Указать тип дискового контроллера <b>Virtio-SCSI</b>, 
@@ -85,9 +46,7 @@ Child node '/file':
 
 <p>Для успешной работы этой команды, на диске гипервизора должно быть место для создания копии образа диска, так как по факту команда делает копию, работает с ней и потом заменяет основной файл. 
 
-<hr>
-<li><a href="https://pbs.proxmox.com/docs/prune-simulator/index.html">PBS Simulator </a> 
-<li><a href=https://www.youtube.com/watch?v=0XKFPhnLu3k>from youtube </a> 
+
 
 </ul>
 </body>

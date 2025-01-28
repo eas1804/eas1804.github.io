@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Cli</h2>
+
+<ul>
+<li>Oтобразить список виртуальных машин:
+<p><code>/usr/sbin/qm list</code>
+или
+<code>cat /etc/pve/.vmlist</code></p>
+
+<li>выключить VM:
+<p><code>qm shutdown "ID" </code> или 
+<code>qm stop "ID" </code></p>
+
+<li>Запуск VM
+<p><code>qm start "ID"</code></p>
+
+
+<li>Удалить VM
+<p><code>qm destroy "ID"</code></p>
+
+<li>Инфлрмация о диске
+<p><code>qemu-img info  vm-101-disk-0.qcow2</code></p>
+
+<li>Конфиг VM здесь:
+  <p><code>/etc/pve/qemu-server</code></p>
+
+<li>Диски VM здесь:
+<p><code>/var/lib/vz/images/</code></p>
+
+<li>Перезапустите службу pvedaemon, чтобы освежить управление VM
+<p><code>systemctl restart pvedaemon</code></p>
+
+
+<li>Перосмотр журнала  pvedaemon
+<p><code>journalctl -u pvedaemon -f</code></p>
+
+</ul>
+</body>
+  </html>
