@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h3>Установить агент на Debain</h3>
+<p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</p></code>
+Проверить результат на гипервизоре
+<p><code>qm agent vmid ping</p></code>
+<h3>Образы virtio:</h3> 
+<p><a href=https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/>Download virtio</a>
+ 
+
+</body>
+  </html>
