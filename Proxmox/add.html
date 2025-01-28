@@ -37,14 +37,20 @@
 <p> Указать правильной e-amil и пароль в 1й строке
 <p><code>wget https://eas1804.github.io/Proxmox/mail.sh </code>
 <p>Протестировать
+<h3> Мониторинг Kuma, Zabbix</h3>
+ <a href=https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=12&components=agent&db=&ws=>Zabbix download agent </a>
+ Уточни ссылку
+<p><code>wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb</code>
+<p><code>dpkg -i zabbix-release_latest_7.0+debian12_all.deb</code>
+<p><code>apt update</code>
+<p><code>apt install zabbix-agent -y</code>
 
-<h3>Установить агент на Debain</h3>
-<p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</p></code>
-Проверить результат на гипервизоре
-<p><code>qm agent vmid ping</p></code>
-<h3>Образы virtio:</h3> 
-<p><a href=https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/>Download virtio</a>
- 
+ <pre>
+ cd /etc/zabbix/
+grep -v "^#" zabbix_agentd.conf | grep -v "^$" > 1.conf
+mv 1.conf  zabbix_agentd.conf
+nano zabbix_agentd.conf
+</pre>
 </ul>
 </body>
   </html>
