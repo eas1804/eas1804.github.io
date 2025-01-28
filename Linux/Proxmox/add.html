@@ -16,19 +16,30 @@
 Заменить  pve-enterprise
 <p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</p></code>
 или в /etc/apt/sources.list
-<h3>Установить агент</h3>
+<p>Закомментировать содержимое 
+<p><code> nano /etc/apt/sources.list.d/ceph.list</code>
+
+<p><code>apt update && apt upgrade -y</code>
+
+<h3>nftables.conf </h3>
+<ol>
+<li><p><code>wget https://eas1804.github.io/Linux/Proxmox/nftables.conf && mv nftables.conf  /etc/</p></code>
+<li> <p><code>systemctl  restart  nftables.service &&  systemctl  enable  nftables.service && nft list ruleset</p></code>
+</ol>
+<h3>nft restart after reboot</h3>
+
+<p><code>cd /root && wget https://eas1804.github.io/Linux/Proxmox/nft_restart.sh  && chmod +x nft_restart.sh</code>
+<p><code>echo "@reboot /root/nft_restart.sh" >>  /var/spool/cron/crontabs/root</code>
+
+<h3> NVMe info</h3>
+<p><code>wget https://eas1804.github.io/Linux/Proxmox/nvme_info.sh $$ chmod +x nvme_info.sh $$ ./nvme_info.sh</code>
+
+<h3>Установить агент на Debain</h3>
 <p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</p></code>
 Проверить результат на гипервизоре
 <p><code>qm agent vmid ping</p></code>
-<p>Образы virtio: <a href=https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/>Download</a>
-<p>nftables.conf <a href=nftables.conf>Download </a>
-<ol>
-<li><p><code>wget https://eas1804.github.io/Linux/Proxmox/nftables.conf</p></code>
-<li> <p><code>mv nftables.conf  /etc/</p></code>
-<li> <p><code>systemctl  restart  nftables.service &&  systemctl  enable  nftables.service && nft list ruleset</p></code>
-</ol>
-<p><a href=nft_restart.sh>nft_restart</a>
-<p>wget https://eas1804.github.io/Linux/Proxmox/nft_restart.sh
+<h3>Образы virtio:</h3> 
+<p><a href=https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/>Download virtio</a>
  
 </ul>
 </body>
