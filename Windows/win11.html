@@ -55,6 +55,36 @@
 Тип расположения - "Личное"
 <h3>Добавить адаптер OpenVPN</h3>
 <p><code>C:\Program Files\OpenVPN\bin\tapctl.exe create --hwid ovpn-dco</code></p>
+<H3>mstsc Win11H24</H3>
+Проблема 1с7
+<p>Скопируйте оригинальные файлы mstsc.exe и mstscax.dll из каталога C:\windows\system32\ в любой каталог, например c:\temp
+<p>Станьте владельцем файлов и выдайте себе права на изменения, например так:
+<p><code>takeown /F C:\windows\system32\mstsc.exe</code>
+<p><code>takeown /F C:\windows\system32\mstscax.dll</code>
+<p><code>icacls C:\windows\system32\mstsc.exe /inheritance:d</code>
+<p><code>icacls C:\windows\system32\mstscax.dll /inheritance:d</code>
+<p><code>icacls C:\windows\system32\mstsc.exe /grant ВВЕДИТЕ ТУТ ИМЯ ПОЛЬЗОВАТЕЛЯ:F</code>
+<p><code>icacls C:\windows\system32\mstscax.dll /grant ВВЕДИТЕ ТУТ ИМЯ ПОЛЬЗОВАТЕЛЯ:F</code>
+<p>Замените файлы в каталоге C:\windows\system32\ файлами из резервной копии.
+<p>Перерегистрируйте библиотеку
+<p><code>regsvr32 C:\Windows\System32\mstscax.dll</code>
+
+<p> Список необходимых файлов
+<ol>
+<li>  C:\Windows\System32\mstsc.exe
+<li>  C:\Windows\System32\mstscax.dll
+<li>C:\Windows\SystemResources\mstsc.exe.mun
+<li>C:\Windows\SystemResources\mstscax.dll.mun
+<p> RU
+<li>C:\Windows\System32\ru-RU\mstsc.exe.mui
+<li>C:\Windows\System32\ru-RU\mstscax.dll.mui
+
+<p>или US
+<li>C:\Windows\System32\en-US\mstsc.exe.mui
+<li>C:\Windows\System32\en-US\mstscax.dll.mui
+
+
+
 
 
 </body>
