@@ -10,6 +10,29 @@
 
 <body>
 <h2> Windows 11</h2>
+<h2> Bref</h2>
+<pre>
+Set-TimeZone -Id "FLE Standard Time"
+
+net stop w32time & net start w32time
+w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update
+net stop w32time & net start w32time
+
+Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
+
+echo добавить схему Максимальная производительность
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+
+powercfg /change monitor-timeout-ac 15
+
+echo Отключить Автоматические обновления
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
+
+irm https://massgrave.dev/get | iex
+slmgr.vbs /xpr
+powercfg /list
+</pre>
+<p>
 <a href=https://www.microsoft.com/ru-ru/software-download/windows11>Download windows11 </a>
 
 <h3>Запретить обновления до Windows 11</h3>
@@ -55,6 +78,9 @@
 Тип расположения - "Личное"
 <h3>Добавить адаптер OpenVPN</h3>
 <p><code>C:\Program Files\OpenVPN\bin\tapctl.exe create --hwid ovpn-dco</code></p>
+<h3>Отключить уведомления</h3>
+<p><code>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" /v Enabled /t REG_DWORD /d 0 /f</code>
+
 <H3>mstsc Win11H24</H3>
 Проблема 1с7
 <p>Скопируйте оригинальные файлы mstsc.exe и mstscax.dll из каталога C:\windows\system32\ в любой каталог, например c:\temp

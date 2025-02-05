@@ -16,11 +16,17 @@
 <p> Если переклчателя нет, то:</p>
 <p><code>Компьютер\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device </code></p>
 <p>Значение 0</p>
+
+<p>Или
+<p><code>reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device" /v DevicePasswordLessBuildVersion /t REG_DWORD /d 0 /f</code>
+
+
 <p> или можно создать reg файл
-<p><code>Windows Registry Editor Version 5.00</code></p>
-<br>
-<p><code>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device]</code></p>
-<p><code>"DevicePasswordLessBuildVersion"=dword:00000000</code></p>
+<pre>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device]
+"DevicePasswordLessBuildVersion"=dword:00000000
+</pre>
 
 <li><h3>Не отображать имя пользователя на экране приветствия</h3>
 <p><code>set WIN_USER=Name_of_user</code></p>
