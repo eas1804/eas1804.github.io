@@ -33,6 +33,8 @@
 <li>После перезагрузки нам необходимо расширить ФС на весь раздел. 
 <p><code>e2fsck -f /dev/sdb</code></p>
 <p><code>resize2fs /dev/sdb</code></p>
+Если работали с системным диском, то
+<p><code>resize2fs /dev/sda1</code></p>
 <li><p><code>df -h</code> – проверить, что все получилось.
 </ol>
 <h2>Расширение диска в Linux (Debian, CentOS, Ubuntu). LVM</h2>

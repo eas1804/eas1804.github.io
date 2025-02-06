@@ -12,25 +12,27 @@
 <h2> Windows 11</h2>
 <h2> Bref</h2>
 <pre>
-Set-TimeZone -Id "FLE Standard Time"
+
+echo добавить схему Максимальная производительность
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /list
+powercfg /setactive 50b3fcf6-acbe-42a7-9ae4-43cfef812d75
+powercfg /change monitor-timeout-ac 15
+
 
 net stop w32time & net start w32time
 w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update
 net stop w32time & net start w32time
 
+Set-TimeZone -Id "FLE Standard Time"
 Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
+irm https://massgrave.dev/get | iex
 
-echo добавить схему Максимальная производительность
-powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-
-powercfg /change monitor-timeout-ac 15
+slmgr.vbs /xpr
 
 echo Отключить Автоматические обновления
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
 
-irm https://massgrave.dev/get | iex
-slmgr.vbs /xpr
-powercfg /list
 </pre>
 <p>
 <a href=https://www.microsoft.com/ru-ru/software-download/windows11>Download windows11 </a>
