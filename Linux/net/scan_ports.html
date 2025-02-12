@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Сканирование портов</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Сканирование портов</h2>
+<p><code>apt install nmap -y</code>
+<h3>tcp   1-65535</h3>
+<p><code>nmap -v -p 1-65535 -sS -Pn  <u>IPadres</u> | grep "open port"</code>
+<h3>udp   1-65535</h3>
+<p><code>nmap -v -p 1-65535 -sU -Pn  <u>IPadres</u> </code>
+<p>-v — режим подробного вывода (verbose). Показывает дополнительную информацию о процессе сканирования.
+<p>-p 1-65535 — сканирует все порты (от 1 до 65535).
+<p>-sSU — комбинированное сканирование TCP (-sS, SYN-сканирование) и UDP (-sU) портов.
+<p>-Pn — отключает проверку, активен ли хост (ping-сканирование не выполняется). Это полезно, если хост блокирует ICMP-запросы.
+
+<h3>Получить максимально полную информацию</h3>
+<p><code>nmap -A -Pn -v IP</code>
+<p>-A — включает расширенное сканирование, которое выполняет:
+<br>Определение ОС (OS detection).
+<br>Определение версии сервисов (Service version detection).
+<br>Трассировку маршрута (Traceroute).
+<br>Сканирование скриптами NSE, связанными с обнаружением сервисов.
+
+</body>
+  </html>
