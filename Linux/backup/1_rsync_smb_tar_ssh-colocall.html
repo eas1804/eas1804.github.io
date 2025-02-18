@@ -10,21 +10,8 @@
 
 <body>
 <h2>rsync smb ssh</h2>
-<ol>
-<li>step
-<p><code>apt install cifs-utils  -y</code></p>
 <p><code>apt install rsync -y</code></p>
-На backup.colocall.eu нет необходимости использовать sshfs
-<li>step
-<p>В файле /etc/credentials разместить данные для досупа к Windows
-<pre> cat /etc/credentials
 
-username=backup_user
-password=hs47-H7)yM
-
-</pre>
-<li>step
-</ol>
 <h2>SSH backup</h2>
 <pre>
 #!/bin/bash
@@ -35,16 +22,6 @@ password=hs47-H7)yM
     server=<b>backup12345-67.backup.colocall.eu</b>
     ssh_port=<b>22</b>
     ssh_key=<b>"/root/.ssh/colocall.key"</b>
-
-#Даные для SMB
-    <b>IP=192.168.1.248</b>
-    <b>MNT_POINT=/mnt/alena/</b>   # Точка мониторвани
-	
-	ls $MNT_POINT >/dev/null || mkdir -p $MNT_POINT
-    SMB_V=3.0                       # Версия smb источника
-    CREDENTIAL=/etc/credentials    # файл с credentials для smb
-    local_directory=$MNT_POINT
-	
 #Имя сетевого интерфейса и его IP
     <b>ETH=enp3s0</b>
 # Сколько свежих каталогов оставить
@@ -93,9 +70,8 @@ rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive "$lo
 
 
 # Удаляем старые каталоги в increment
+ ssh -p $ssh_port -i $ssh_key $username@$server "ls -dt \"${target_directory}increment\"/*/ | tail -n +$((COUNT+1)) | xargs -d '\n' rm -rf --"
 
-   ssh -p $ssh_port -i $ssh_key $username@$server ls -dt "${target_directory}increment"/*/ | \
-   tail -n +$((COUNT+1)) | xargs -I {}   rm -r -- "{}"
     }
 
 #Функция. Сравнить количество файлов локаьных и удаленных
