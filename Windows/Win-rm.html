@@ -20,6 +20,13 @@
 <p><code>Enter-PSSession -ComputerName 172.16.181.27 -Credential Администратор</code><p>
 <p>Добавить USER1 в группу Remote Management Users  (Пользователи удаленного управления) на целевом сервере, тогда он сможет подключаться по WinRM
 <p><code>Add-LocalGroupMember -Group "Remote Management Users" -Member "USER1"</code><p>
+<hr>
+<h2>Аналог telnet</h2>
+<p><code>Test-NetConnection -ComputerName 172.16.181.27 -Port 5985</code><p>
+<p><code>Test-NetConnection -ComputerName pbs.mlp.pp.ua -DiagnoseRouting</code><p>
+<h2>Аналог Tracert</h2>
+<p><code>Test-NetConnection -ComputerName 8.8.8.8 -TraceRoute</code>
 
 </body>
   </html>
+
