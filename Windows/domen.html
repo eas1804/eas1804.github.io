@@ -25,5 +25,26 @@
 <p><code>netdom join vm1 /domain:contoso.com /userd:administrator /password:*</code></p>
 и вводим пароль указанной учетной записи. Перезагружаемся.
 
+<h2>Вывести список всех пользователей домена Active Directory</h2>
+<p><code>dsquery user -limit 0</code>
+0 (ноль) означает вывести всех пользователей без ограничений. </p>
+<p>По умолчанию dsquery возвращает до 100 записей, поэтому, если пользователей больше, часть из них не отобразится без этого параметра.
+<p><code>Get-ADUser -Filter * | Select-Object SamAccountName</code></p>
+<p>более подробно. Указать заблокировнных
+<p><code>Get-ADUser -Filter * -Property Name, SamAccountName, Enabled | Format-Table Name, SamAccountName, Enabled -AutoSize</code></p>
+<h2>Сохранение в TXT (обычный текст)</h2>
+Читаемый формат, аналогичный тому, что видите в консоли
+<p><code>Get-ADUser -Filter * -Property Name, SamAccountName, Enabled | 
+Format-Table Name, SamAccountName, Enabled -AutoSize | 
+Out-File -FilePath C:\Users\Public\ADUsers.txt -Encoding UTF8</code>
+<h2>Сохранение в CSV (для работы в Excel)</h2>
+<p><code>Get-ADUser -Filter * -Property Name, SamAccountName, Enabled | 
+Select-Object Name, SamAccountName, Enabled |
+Export-Csv -Path C:\Users\Public\ADUsers.csv -NoTypeInformation -Encoding UTF8</code>
+<h2> Сохранение в JSON (если нужно для скриптов)</h2>
+<p><code>Get-ADUser -Filter * -Property Name, SamAccountName, Enabled | 
+Select-Object Name, SamAccountName, Enabled | 
+ConvertTo-Json | Out-File -FilePath C:\Users\Public\ADUsers.json -Encoding UTF8
+</code>
 </body>
   </html>
