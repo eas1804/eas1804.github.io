@@ -47,11 +47,12 @@ fun_rsync () {
     ssh -p $ssh_port -i $ssh_key $username@$server ls ${target_directory}current/ >/dev/null  ||  \
     ssh -p $ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}current/
 
-rsync -zav --progress --delete -e "ssh -p$ssh_port -i $ssh_key" --recursive "$local_directory" \
-"$username@$server:$target_directory/current/"  --backup --backup-dir="${target_directory}/increment/$(date +%Y-%m-%d)/"   \
-2>> /var/log/rsync_backup_error.log
 
-
+rsync -zav --progress --delete \
+    -e "ssh -p \"$ssh_port\" -i \"$ssh_key\"" \
+    "$local_directory" "$username@$server:$target_directory/current/" \
+    --backup --backup-dir="${target_directory}/increment/$(date +%Y-%m-%d)/" \
+    2>> /var/log/rsync_backup_error.log
 
 # Удаляем старые каталоги в increment. Количество в переменной COUNT
  ssh -p $ssh_port -i $ssh_key $username@$server "ls -dt \"${target_directory}increment\"/*/ | tail -n +$((COUNT+1)) | xargs -d '\n' rm -rf --"
