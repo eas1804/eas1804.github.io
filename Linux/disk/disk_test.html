@@ -9,6 +9,28 @@
   </head>
 
 <body>
+<h1>Серийные номера, модель</h1>
+<p><code>lsblk -o NAME,SERIAL</code>
+<p>Основные параметры
+<ol>
+<li>NAME — имя устройства (sda, sdb, nvme0n1 и т. д.).
+<li>SERIAL — серийный номер устройства.
+<li>MODEL — модель диска (например, "Samsung SSD 970 EVO").
+<li>VENDOR — производитель (например, "WDC", "Seagate").
+<li>SIZE — размер устройства (например, "1T", "500G").
+<li>UUID — уникальный идентификатор файловой системы (если есть).
+<li>FSTYPE — тип файловой системы (ext4, xfs, zfs и т. д.).
+<li>MOUNTPOINT — точка монтирования (например, /mnt/data).
+<li>RO — режим "только чтение" (0 = запись разрешена, 1 = только чтение).
+<li>RM — "съемное устройство" (0 = нет, 1 = да).
+<li>HOTPLUG — можно ли устройство отключать "на горячую".
+<li>TYPE — тип устройства (disk, part, rom, loop).
+<li>STATE — состояние устройства (например, "running", "offline").
+<li>OWNER, GROUP, MODE — владелец, группа и права доступа.
+<li>ROTA — вращающийся диск (1) или SSD (0).
+</ol>
+<p><code>lsblk -o NAME,SERIAL,MODEL, UUID</code>
+
 <h1>Test Disk</h1>
 <h2>Scrypts</h2>
 
