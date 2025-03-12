@@ -11,6 +11,7 @@
 <body>
 <h1>Серийные номера, модель</h1>
 <p><code>lsblk -o NAME,SERIAL</code>
+<p><code>lsblk -o NAME,SERIAL > /root/disk_info1.txt</code>
 <p>Основные параметры
 <ol>
 <li>NAME — имя устройства (sda, sdb, nvme0n1 и т. д.).
@@ -29,7 +30,8 @@
 <li>OWNER, GROUP, MODE — владелец, группа и права доступа.
 <li>ROTA — вращающийся диск (1) или SSD (0).
 </ol>
-<p><code>lsblk -o NAME,SERIAL,MODEL, UUID</code>
+<p><code>lsblk -o NAME,SERIAL,MODEL,UUID</code>
+<p><code>lsblk -o NAME,SERIAL,MODEL,UUID > /root/disk_info2.txt</code>
 
 <h1>Test Disk</h1>
 <h2>Scrypts</h2>
