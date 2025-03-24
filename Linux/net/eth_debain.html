@@ -79,11 +79,9 @@ iface vmbr0 inet static
         bridge-fd 0
 </pre>
 <h3>DNS</h3>
-<p><code>vi /etc/resolv.conf</code></p>
-<pre>
-nameserver 8.8.8.8
-nameserver 1.1.1.1
-</pre>
+
+<p><code>echo "nameserver 8.8.8.8" > /etc/resolv.conf</code></p>
+<p><code>echo "nameserver 1.1.1.1" >> /etc/resolv.conf</code></p>
 
 
 <h3>ifupdown2</h3>
@@ -92,10 +90,10 @@ nameserver 1.1.1.1
 <p><code>ifreload  -a</code></p>
 
 <hr>
+<h3> Отобразить только IP </h3>
+<p><code> ip -br a</code></p>
 <h3> вывести только IP адрес </h3>
 <p><code> ip -4 addr show vmbr0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' </code></p>
-<h3> Отобразить только IP </a>
-<p><code> ip -br a</code></p>
 <h3>Показать сетевые интерфейсы</h3>
 <p><code>ip link show</code></p>	
 <p><code>ip link show eno1</code></p>
