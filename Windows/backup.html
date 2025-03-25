@@ -78,9 +78,12 @@ endlocal
 <h3>Удалить поцессс</h3>
 <p><code>taskkill /F /FI "ImageName eq Open*"</code></p>
 <h3>Кирилица</h3>
-<p><code>chcp 1251</code></p>
+<ol>
+<li>Можно создать символичекую ссылку
+<p><code>mklink /j c:\intel\Vasya_link c:\Вася</code>
+<li> <p><code>chcp 1251</code></p>
 <p>Пути заключать в "кавычки"
-
+</oL>
 <h3>Резервное копирования с помощью Robocopy</h3>
 <p><code>robocopy C:\base Z:\ /MIR /R:5 /W:10  </code></p>
 <ul>
