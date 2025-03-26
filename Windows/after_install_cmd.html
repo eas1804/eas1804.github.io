@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows. After install</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Windows. After install</h2>
+
+<h3>Powershell</h3>
+<pre>
+Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
+Set-TimeZone -Id "FLE Standard Time"
+irm https://massgrave.dev/get | iex
+</pre>
+
+<h3>cmd</h3>
+<pre>
+net stop w32time
+w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"
+w32tm /config /reliable:yes
+net start w32time
+w32tm /config /update
+w32tm /resync
+powercfg -h on
+slmgr.vbs /xpr
+</pre>
+
+
+</ol>
+</body>
+</html>

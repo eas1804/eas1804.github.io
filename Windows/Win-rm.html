@@ -14,6 +14,40 @@
 <p> Порт  5985 (wsman) открыт по умолчанию
 <p>По умолчанию WinRM работает только в локальной сети и требует настройки доверенных хостов или доменного окружения.
 <p>Если хотите подключаться из другой сети, нужно включить WinRM через HTTPS (порт 5986).
+<H2>как настроить PSRemoting для удаленного подключения к компьютеру в рабочей группе</h2>
+допустим:
+Рабочая станция администратора — 192.168.18.100 |
+Компьютер пользователя — 192.168.18.222
+<p>Подключиться к клиенту локаьно или по RDP
+<ol>
+<li>Проверьте, что на компьютере запущена служба WinRM:
+<p><code>Get-Service -Name "*WinRM*" | select status</code>
+<li>Если служба не запущена, запустите ее:
+<p><code>Enable-PSRemoting</code>
+<li>Если для сетевого подключения на компьютере установлен тип сети Public (общедоступная), то при включении WinRM появится ошибка
+<p>нужно изменить тип сети на частную (private) 
+<p><code>Set-NetConnectionProfile -NetworkCategory Private</code>
+или использовать команду:
+<p><code>Enable-PSRemoting –SkipNetworkProfileCheck</code>
+<li>Откройте порт (TCP 5985) для подключения к WinRM в Windows Defender Firewall (например с 192.168.18.100)
+<p><code>Set-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)" -RemoteAddress 192.168.18.100
+Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"</code>
+</ol>
+<p> На компе админа
+<p>Чтобы работала Negotiate аутентификация через NTLM ваш компьютер должны доверять удаленному компьютеру. В домене это достигается с помощью Kerberos, а в рабочей группе придется добавить IP адреса компьютера в TrustedHosts
+<p>Добавьте компьютер пользователя в TrustedHosts на компьютере администратора
+<p><code>Set-Item wsman:\localhost\client\TrustedHosts -Value 192.168.18.222 -Force</code>
+<p>дополнительно
+<ul>
+<li>Вывести список компьютеров в TrustedHosts:
+<p><code>get-Item WSMan:\localhost\Client\TrustedHosts</code>
+<li>Чтобы очистить список TrustedHosts:
+<p><code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value "" –Force</code>
+<li>Чтобы добавить новый компьютер в список TrustedHosts, используйте параметр -Concatenate:
+<p><code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value 192.168.13.200 -Concatenate</code>
+</ul>
+link https://winitpro.ru/index.php/2022/01/11/psremoting-udalennoe-podklyuchenie-workgroup/
+<hr>
 <h2>Работает ли WinRM</h2>
 <p><code>Test-WsMan "SERVER_IP"</code><p>
 <h2>Подключиться удаленно через PowerShell Remoting</h2>

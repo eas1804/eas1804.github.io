@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows ssh</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<ol>
+<li>Проверкить источник синхронизации времени
+<p><code>w32tm /query /source</code>
+
+<li>Проверить доступ к  NTP серверам  (и порт 123/UDP не блокируется файерволами)
+<p><code>w32tm /stripchart /computer:0.ua.pool.ntp.org</code>
+<p><code>w32tm /stripchart /computer:1.ua.pool.ntp.org</code>
+<p><code>w32tm /stripchart /computer:2.ua.pool.ntp.org</code>
+<p><code>w32tm /stripchart /computer:3.ua.pool.ntp.org</code>
+
+<li>Если вы получили ответ от NTP сервера, можно задать эти внешние сервера в качестве источников времени
+
+<p><code>net stop w32time</code>
+<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"</code>
+
+<p><code>w32tm /config /reliable:yes</code>
+<p><code>net start w32time</code>
+<p><code>w32tm /config /update</code>
+
+<li>Выполните синхронизацию времени с NTP
+<p><code>w32tm /resync</code>
+<li>Проверьте, что теперь источником времени на PDC является внешние NTP сервера:
+<p><code>w32tm /query /configuration | findstr NtpServer</code>
+</ol>
+<p> <a href=https://winitpro.ru/index.php/2017/01/06/nastrojka-sinxronizacii-vremeni-po-ntp-s-pomoshhyu-gruppovyx-politik/>link</a>

@@ -12,8 +12,8 @@
 <h2>Windows. After install</h2>
 <ol>
 <li><h3>Активация</h3>
-Powershell admin
-<p><code>irm https://massgrave.dev/get | iex</code></p>
+<p>Powershell -> admin
+<code>irm https://massgrave.dev/get | iex</code></p>
 <li><h3>Отображение даты окончания активации</h3>
 <p><code>slmgr.vbs /xpr</code></p>
 
@@ -23,6 +23,15 @@ Powershell admin
 Просмотреть коды часовых поясов <code>tzutil /l </code></p>
 <p>Разрешить корректировку времени не администратору
 <p>Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времен
+
+<li><h3>Синхронизация времени через Internet </h3>
+<p><code>net stop w32time</code>
+<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"</code>
+<p><code>w32tm /config /reliable:yes</code>
+<p><code>net start w32time</code>
+<p><code>w32tm /config /update</code>
+<p><code>w32tm /resync</code>
+<p><a href=time.html> Подробнее </a>
 
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>
@@ -37,10 +46,6 @@ Powershell admin
 <p>Get tips, tricks, and suggestions as you are use Windows 
 <p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f</code></p>
 
-
-<li><h3>Синхронизация времени через Internet </h3>
-<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:time.windows.com /reliable:YES /update</code></p>
-<p><code>net stop w32time & net start w32time</code></p>
 
 
 <li><h3>Отключить cortana</h3>
@@ -66,7 +71,8 @@ GUID схемы питания: af8fc427-54cf-4d31-920f-315be24dfd5a  (Макс�
 
 
 <li><h3>BitLocker on/off</h3>
-<p><code>Manage-bde -status</code> <code>Manage-bde -off C</code></p>
+<p><code>Manage-bde -status</code> 
+<p><code>Manage-bde -off C:</code></p>
 
 <li><h3>Выключить/Вкючить гибернацию</h3>
 <p><code>powercfg -h off</code> или включить <code>powercfg -h on</code></p>
