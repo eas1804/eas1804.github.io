@@ -17,6 +17,8 @@
 <li><h3>Ошибка RDP подключения: CredSSP encryption oracle remediation</h3>
 <p><code>REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d 2</code></p>
 
+<li><h3>Credential Guard будет отключен</h3>
+<p><code>REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v LsaCfgFlags /t REG_DWORD /d 0 /f</code></p>
 </ol>
 
 </body>

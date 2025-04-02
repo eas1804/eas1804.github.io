@@ -35,8 +35,10 @@
 
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>
-<p>Отключите опцию "Suggest ways I can finish setting up my device to get the most out of Windows" 
-<br>(Предложить способы завершения настройки устройства для наиболее эффективного использования Windows).
+<p>Дополнительные параметры -> Отключите опцию 
+<br>Предложить способы завершения настройки устройства для наиболее эффективного использования Windows
+<br>Suggest ways I can finish setting up my device to get the most out of Windows
+
 <p>или через реестр
 <p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v ScoobeSystemSettingEnabled /t REG_DWORD /d 0 /f</code></p>
 
@@ -57,30 +59,33 @@ Powershell -> admin ->
 <li><h3>Электропитание</h3>
 <p>Отобразить схемы электропитания</P>
 <p><code>powercfg /list</code></p>
-<p> Активирвать схему "максимальная производительность"</P>
-<p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
+<p> Активирвать схему "Высокая производительность"</P>
+<p><code>powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c</code></p>
 <p>Задать схему </P>
-<p><code>powercfg /setactive <идентификатор схемы</code></p>
-<p><code>powercfg /setactive 2d701401-90cb-4798-a5b4-89bc64f7f2aa</code></p>
+<p><code>powercfg /setactive "идентификатор схемы"</code></p>
+<p><code>powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c</code></p>
 <p>Измените тайм-аут монитора:</P>
 <p><code>powercfg /change monitor-timeout-ac 15</code></p>
 
 <pre>
+
 GUID схемы питания: 381b4222-f694-41f0-9685-ff5bb260df2e  (Сбалансированная)
 GUID схемы питания: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (Высокая производительность) *
 GUID схемы питания: a1841308-3541-4fab-bc81-f71556f20b4a  (Экономия энергии)
+
+win 10
 GUID схемы питания: af8fc427-54cf-4d31-920f-315be24dfd5a  (Максимальная производительность)
+win11
+GUID схемы питания: e9a42b02-d5df-448d-aa00-03f14749eb61  (Максимальная производительность)
 </pre>
 
-
 <li><h3>BitLocker on/off</h3>
-<p><code>Manage-bde -status</code> 
-<p><code>Manage-bde -off C:</code></p>
+<p><code>Manage-bde -status</code>  <code>Manage-bde -off C:</code></p>
 
 <li><h3>Выключить/Вкючить гибернацию</h3>
 <p><code>powercfg -h off</code> или включить <code>powercfg -h on</code></p>
-<h4> Отобразить кнопку "Гибернация" в меню кнопки Пуск </h4> 
-<p>Панель управления->Электропитание->слева - Действие кнопок питания
+<p> Отобразить кнопку "Гибернация" в меню кнопки Пуск: 
+Панель управления->Электропитание->слева - Действие кнопок питания
 <li><h3>Автозагрузка</h3>
 <p><code>shell:startup</code></p>
 <li><h3>Включить «Просмотр фотографий» Win 10/11 LTSC</h3>
