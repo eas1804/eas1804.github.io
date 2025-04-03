@@ -14,21 +14,22 @@
 
 <h2>SSH backup</h2>
 <pre>
+
 #!/bin/bash
 
 ########################### Constants ###########################
 #### Данные для подключения по SSH
-    username=<b>backup12345-67</b>
-    server=<b>backup12345-67.backup.colocall.eu</b>
-    ssh_port=<b>22</b>
-    ssh_key=<b>"/root/.ssh/colocall.key"</b>
+    username=root
+    server=pbs.mlp.pp.ua
+    ssh_port=2222
+    ssh_key=/root/.ssh/pbs_mlp_pp_ua.key
 #Имя сетевого интерфейса и его IP
-    <b>ETH=enp3s0</b>
+    ETH=eth0
 # Сколько свежих каталогов оставить
     COUNT=15
 # telegramm
-    BOT_TOKEN="18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
-    CHAT_ID="33109821804"
+    BOT_TOKEN="5447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w"
+    CHAT_ID="3310982"
 # тескт сообщений
 IP_local=$(ip -4 a | grep inet | grep $ETH |  awk '/inet/ {print $2}')
 IP_global=$(curl 2ip.com.ua)
@@ -39,14 +40,13 @@ WAN: $IP_global"
 
 ########################### Функции ###########################
 
-# Rsync 
+# Rsync
 fun_rsync () {
     ssh -p $ssh_port -i $ssh_key $username@$server ls ${target_directory}increment/ >/dev/null || \
     ssh -p $ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}increment/
 
     ssh -p $ssh_port -i $ssh_key $username@$server ls ${target_directory}current/ >/dev/null  ||  \
     ssh -p $ssh_port -i $ssh_key $username@$server mkdir -p ${target_directory}current/
-
 
 rsync -zav --progress --delete \
     -e "ssh -p \"$ssh_port\" -i \"$ssh_key\"" \
@@ -55,59 +55,22 @@ rsync -zav --progress --delete \
     2>> /var/log/rsync_backup_error.log
 
 # Удаляем старые каталоги в increment. Количество в переменной COUNT
- ssh -p $ssh_port -i $ssh_key $username@$server "ls -dt \"${target_directory}increment\"/*/ | tail -n +$((COUNT+1)) | xargs -d '\n' rm -rf --"
+ ssh -p $ssh_port -i $ssh_key $username@$server \
+"ls -dt \"${target_directory}increment\"/*/ | tail -n +$((COUNT+1)) | xargs -d '\n' rm -rf --"
     }
 
-#Функция. Сравнить количество файлов локаьных и удаленных
-fun_count () {
-REMOTE_COUNT=$(ssh  -p$ssh_port -i $ssh_key  $username@$server find $target_directory/current/ | wc -l)
-LOCAL_COUNT=$(find  "$local_directory" | wc -l)
-echo REMOTE_COUNT $REMOTE_COUNT
-echo LOCAL_COUNT $LOCAL_COUNT
-
-if [ "$REMOTE_COUNT" -ne "$LOCAL_COUNT" ]; then
-    echo "ошибка"
-MESSAGE="Ошибка выполнения скрипта
-$echo $0
-LAN ip $IP_local
-WAN ip $WAN $IP_global
-$local_directory
-
-Remote:
-$server
-$target_directory
-
-Колличество файлов не совпадает!!!
-REMOTE_COUNT $REMOTE_COUNT
-LOCAL_COUNT  $LOCAL_COUNT
-"
-curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d "chat_id=$CHAT_ID&text=$MESSAGE" > /dev/null
-fi
-}
-
-clear
-########################Работаем##############################
-#Folder 1 desktop
-SHARA_FROM=<b>Desktop</b>         # Shara на windows
-target_directory=<b>/backup/yurist/desktop/</b> # каталог на удаленном сервере, в который проводим синхронизацию
-
-umount $MNT_POINT
-fun_mount
+#################  Локально #################################
+local_directory=/root/backup_gdrive/
+target_directory=/mnt/sli/GoogleDrive/
 fun_rsync
-fun_count
 
-#Folder 2 desktop
-SHARA_FROM=Documents        
-target_directory=/backup/yurist/doc/
+################# для SMB  ################################
+#GlBUG
+local_directory=/mnt/glbuh/Base/
+target_directory=/mnt/backup/Gl-Buh/
 
-umount $MNT_POINT
-fun_mount
-fun_rsync
-fun_count
-
-
-umount $MNT_POINT
-exit 0
+systemctl  start mnt-glbuh.mount && fun_rsync
+systemctl  stop mnt-glbuh.mount
 
 
 </pre>

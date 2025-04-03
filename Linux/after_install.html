@@ -29,7 +29,9 @@
 <p><code>sudo sed -i '/^# User privilege specification$/a exch_adm ALL=(ALL) NOPASSWD: ALL' /etc/sudoers</code></p>
 <p><code>source ~/.bashrc</code></p>
 
-
+<h3>login root in SSH</h3>
+<p><code>echo "PermitRootLogin yes" >>  /etc/ssh/sshd_config </code></p>
+<p><code>systemctl restart ssh</code></p>
 
 <h3>History </h3>
 <p><code>echo 'export HISTSIZE=10000' >> ~/.bashrc</code></p>
