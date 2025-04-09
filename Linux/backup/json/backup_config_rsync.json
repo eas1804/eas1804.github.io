@@ -1,0 +1,18 @@
+{
+    "backup-Plan": "v1.0",
+    "autor"      : "SEA",
+    "backups"    : [
+      {
+        "backup_name"  : "GoogleDrive",
+        "source_folder": "/mnt/gdrive",
+        "target_folder": "/rpool/Gdrive",
+        "count"    : "15"
+      },
+      {
+        "backup_name"  : "Constanta",
+        "source_folder": "/mnt/constanta",
+        "target_folder": "/rpool/constanta",
+        "count"    : "15"
+      }
+    ]
+}
