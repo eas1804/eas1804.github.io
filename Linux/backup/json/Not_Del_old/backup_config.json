@@ -1,0 +1,21 @@
+{
+    "backup-Plan": "v1.0",
+    "autor"      : "SEA",
+    "backups"    : [
+      {
+        "backup_name"  : "1c_Diol",
+        "source_folder": "/var/log/apt",
+        "target_folder": "/tmp"
+      },
+      {
+        "backup_name"  : "1c_Solvent",
+        "source_folder": "/var/log/installer",
+        "target_folder": "/tmp"
+      },
+      {
+        "backup_name"  : "1c_bufhim",
+        "source_folder": "/var/log/runit",
+        "target_folder": "/tmp"
+      }
+    ]
+}

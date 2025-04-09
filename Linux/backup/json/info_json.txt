@@ -1,0 +1,27 @@
+apt install jq -y
+
+в json файле не использовать TAB, только пробелы 4 или 2
+
+Нужны  запятые между полями объекта
+
+Проверить файл на ошибки:
+cat backup_config.json  | jq
+
+Прочиатть все в моем json файле
+jq -r '' backup_config.json
+
+Прочитать ключ autor
+jq -r '.autor' backup_config.json
+
+Прочитать ключ backups
+jq -r '.backups' backup_config.json
+
+Прочитать 1й backups (Начинается с 0)
+jq -r '.backups[0]' backup_config.json
+
+Прочитать 2й backups
+jq -r '.backups[1]' backup_config.json
+
+Сколько всего записей в backups
+
+jq -r '.backups | length' backup_config.json

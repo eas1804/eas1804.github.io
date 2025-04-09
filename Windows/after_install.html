@@ -11,11 +11,14 @@
 <body>
 <h2>Windows. After install</h2>
 <ol>
+
+
 <li><h3>Активация</h3>
 <p>Powershell -> admin
-<code>irm https://massgrave.dev/get | iex</code></p>
+<code>irm https://massgrave.dev/get | iex</code> или <code>irm https://get.activated.win | iex </code></p>
 <li><h3>Отображение даты окончания активации</h3>
 <p><code>slmgr.vbs /xpr</code></p>
+
 
 <li><h3>Задать часовой пояс Украина/Киев</h3>
 <p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
@@ -32,6 +35,13 @@
 <p><code>w32tm /config /update</code>
 <p><code>w32tm /resync</code>
 <p><a href=time.html> Подробнее </a>
+
+
+<li><h3>winget</h3>
+<p><code>winget upgrade --all</code> - Обновляет все установленные программы
+<p>winget позволяет устанавливать, обновлять, удалять и находить программы через командную строку, аналогично apt на Debian
+<p><code>winget install vlc</code> - Установить программу
+
 
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>
@@ -52,6 +62,8 @@
 
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
+
+
 <li><h3>Добавить Microsoft Store</h3>
 Powershell -> admin ->
 <code>wsreset -i</code></p>
@@ -61,6 +73,9 @@ Powershell -> admin ->
 <p><code>powercfg /list</code></p>
 <p> Активирвать схему "Высокая производительность"</P>
 <p><code>powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c</code></p>
+<p> добавить "Максимальная производительность"
+<p><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></p>
+
 <p>Задать схему </P>
 <p><code>powercfg /setactive "идентификатор схемы"</code></p>
 <p><code>powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c</code></p>
@@ -95,5 +110,6 @@ GUID схемы питания: e9a42b02-d5df-448d-aa00-03f14749eb61  (Макс�
 <a href=reg/Windows_10_Photo_Viewer.zip>Download reg</a> | 
 
 </ol>
+
 </body>
 </html>
