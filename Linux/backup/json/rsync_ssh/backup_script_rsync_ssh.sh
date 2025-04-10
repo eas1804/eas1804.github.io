@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /root/sh/
+
 CONFIG_FILE_JSON="config_backup_rsync.json"  # Мой конфигурационный файл
 
 # telegramm
@@ -51,7 +53,8 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
     TIMESTAMP=$(/usr/bin/date +%Y%b%d)
 
     echo -------------------------- [$i]------------------------------------------
-    echo "[$BACKUP_NAME] Копируем из SOURCE_FOLDER=$SOURCE_FOLDER в TARGET_FOLDER=$TARGET_FOLDER"
+    echo "[$BACKUP_NAME] Копируем из SOURCE_FOLDER=$SOURCE_FOLDER"
+    echo "на SERVER=$SERVER в TARGET_FOLDER=$TARGET_FOLDER"
     echo Оставляем копий: "$COUNT"
     echo Монтируем $MOUNT
     sleep 2  # дать время на монтирование
