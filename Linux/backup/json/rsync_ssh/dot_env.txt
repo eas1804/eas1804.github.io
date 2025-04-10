@@ -1,0 +1,13 @@
+Cоздай файл  в том же каталоге, где лежит твой скрипт:
+
+BOT_TOKEN=18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w
+CHAT_ID=33109821804
+
+А в скрипте вписать
+# telegramm
+if [ -f .env ]; then
+    source .env
+else
+    echo "Файл .env не найден!"
+    exit 1
+fi

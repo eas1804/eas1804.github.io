@@ -11,19 +11,26 @@
 <body>
 <h2>backup</h2>
 <ol>
-<li>tar+json: <a href=json/backup_script_tar.sh>tar backup</a> | 
-<a href=json/backup_config_tar.json> backup_config_tar.json </a> |
+<li>tar+json: <a href=json/tar/backup_script_tar.sh>tar backup</a> | 
+<a href=json/tar/backup_config_tar.json> backup_config_tar.json </a> |
 <a href=json/info_json.txt>info_json.txt</a>
-<li>rsync+json. Local. <a href=json/backup_script_rsync.sh>rsync backup</a> | 
-<a href=json/backup_config_rsync.json> backup_config_rsync.json </a> |
 
+<li>rsync+json. Local. 
+<a href=json/rsync_local/backup_script_rsync.sh>rsync backup</a> | 
+<a href=json/rsync_local/backup_config_rsync.json> backup_config_rsync.json </a> |
+<a href=json/rsync_local/dot_env.txt>Telegramm переменные</a>
 
-<li><a href=1_rsync_smb_tar_ssh-colocall.html>rsync  in SSH</a>
+<li>rsync+json. SSH. 
+<a href=json/rsync_ssh/backup_script_rsync_ssh.sh>rsync  ssh backup</a> | 
+<a href=json/rsync_ssh/backup_config_rsync.json> backup_config_rsync.json </a> |
+<a href=json/rsync_local/dot_env.txt>Telegramm переменные</a>
 <li><a href=2_rsync_smb_tar_ssh-your-storagebox.de.html>rsync in SSH for storagebox.de</a>
-<li><a href=Backup_1c.html>Backup 1c</a>
-<li><a href=tar.html>tar</a>
+
+
+<li>Old <a href=1_rsync_smb_tar_ssh-colocall.html>rsync  in SSH</a> |
+<a href=Backup_1c.html>Backup 1c</a> |
+<a href=tar.html>tar</a>|
 <li><a href=Dell_old_file_folder.html>Удаление старых файлов и каталогов</a>
-<li><a href=rsync_info.html>rsync_info</a>
 <li><a href=disk_size_info.html>a. Тест  mdadm b. тест свободного места c. Отправить размер удаленного каталога</a>
 <li><a href=today.html>Уведомление. В каталоге $DIR нет файлов, которые были созданы сегодня!</a>
 </ol>
