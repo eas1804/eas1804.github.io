@@ -4,8 +4,8 @@
   "backups": [
     {
       "backup_name": "GoogleDrive",
-      "source_folder": "/mnt/gdrive",
-      "target_folder": "/mnt/sli/Gdrive",
+      "source_folder": "/mnt/gdrive/",
+      "target_folder": "/mnt/sli/Gdrive/",
       "count": "150",
       "mount": "mnt-gdrive.mount",
       "user_ssh": "",
@@ -15,8 +15,8 @@
     },
     {
       "backup_name": "RemoteServer",
-      "source_folder": "/mnt/data",
-      "target_folder": "/mnt/backup",
+      "source_folder": "/mnt/data/",
+      "target_folder": "/mnt/backup/",
       "count": "60",
       "mount": "",
       "user_ssh": "backupuser",

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rsync in SSH. Help</title>
-    <link rel="stylesheet" href="../../../../style.css">
+    <link rel="stylesheet" href="../../../style.css">
   </head>
 
 <body>
@@ -30,6 +30,13 @@
 <p><code>            "server": "",</code>
 <p><code>            "port_ssh": "",</code>
 <p><code>            "ssh_key": ""</code>
+
+<li> Путь к каталогу заканчивать /
+<p><code>     "source_folder": "/mnt/gdrive/",</code>
+<p><code>     "target_folder": "/mnt/sli/Gdrive/",</code>
+<li> Внутри карычек не должно быть пробелов. 
+<p>Так <b>НЕПРАВИЛЬНО</b>
+<p><code>     "source_folder": <b>" /mnt/gdrive/",</b></code>
 
 <li>После редактиррования json, выполнить тест
 <p><code> cat  local_config_rsync.json | jq</code>
