@@ -25,6 +25,16 @@ for CMD in jq rsync curl; do
     fi
 done
 
+#### Проверим конфиг json
+cat $CONFIG_FILE_JSON | /usr/bin/jq
+ JSON_STATUS=$?
+    if [[ $JSON_STATUS -ne 0 ]]; then
+        MESS_JSON=" Ошибка в $CONFIG_FILE_JSON"
+        curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+            -d "chat_id=$CHAT_ID&text=$MESS_JSON" > /dev/null
+        exit 0
+    fi
+
 # Количество задач
 BACKUP_COUNT=$(/usr/bin/jq -r '.backups | length' "$CONFIG_FILE_JSON")
 
