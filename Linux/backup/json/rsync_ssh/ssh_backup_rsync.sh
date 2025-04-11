@@ -1,8 +1,7 @@
 #!/bin/bash
 
-cd /root/sh/
-
-CONFIG_FILE_JSON="config_backup_rsync.json"  # Мой конфигурационный файл
+cd /root/sh/bakup_jscon/
+CONFIG_FILE_JSON="ssh_config_rsync.json"  # Мой конфигурационный файл
 
 # telegramm
 if [ -f .env ]; then
@@ -47,7 +46,9 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
     SSH_KEY=$(/usr/bin/jq -r ".backups[$i].ssh_key" "$CONFIG_FILE_JSON")
 
     # Монтируем сетевой диск
+if [[ -n "$MOUNT" ]]; then
     /usr/bin/systemctl start "$MOUNT"
+fi
 
     # Выясняем текущее время
     TIMESTAMP=$(/usr/bin/date +%Y%b%d)
@@ -95,7 +96,9 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
     cd "$CURENT_FOLDER"
 
     # Отмонтируем сетевой диск
-    /usr/bin/systemctl stop ${MOUNT}
+if [[ -n "$MOUNT" ]]; then
+    /usr/bin/systemctl stop "$MOUNT"
+fi
 
 done
 

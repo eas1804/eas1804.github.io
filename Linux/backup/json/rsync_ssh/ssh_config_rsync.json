@@ -1,0 +1,41 @@
+{
+    "backup-Plan": "v1.3",
+    "autor"      : "SEA",
+    "backups"    : [
+{
+        "backup_name"  : "Home Photo",
+        "source_folder": "/rpool/Slivak/1-Constanta/1-Foto/",
+        "target_folder": "/mnt/sli/photo/",
+        "count"        : "10",
+        "mount"        : "",
+        "user_ssh"     : "root",
+        "server"       : "pbs.mlp.pp.ua",
+        "port_ssh"     : "2222",
+        "ssh_key"      : "/root/.ssh/bps_mlp_pp_ua.key"
+      },
+
+ {
+        "backup_name"  : "GoogleDrive",
+        "source_folder": "/mnt/gdrive",
+        "target_folder": "/mnt/sli/Gdrive",
+        "count"        : "15",
+        "mount"        : "mnt-gdrive.mount",
+        "user_ssh"     : "root",
+        "server"       : "pbs.mlp.pp.ua",
+        "port_ssh"     : "2222",
+        "ssh_key"      : "/root/.ssh/bps_mlp_pp_ua.key"
+      },
+{
+        "backup_name"  : "Constanta",
+        "source_folder": "/mnt/constanta",
+        "target_folder": "/mnt/sli/Const",
+        "count"        : "150",
+        "mount"        : "mnt-constanta.mount",
+        "user_ssh"     : "root",
+        "server"       : "pbs.mlp.pp.ua",
+        "port_ssh"     : "2222",
+        "ssh_key"      : "/root/.ssh/bps_mlp_pp_ua.key"
+      }
+
+    ]
+}

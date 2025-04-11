@@ -1,0 +1,28 @@
+{
+  "backup-Plan": "v1.0",
+  "autor": "SEA",
+  "backups": [
+    {
+      "backup_name": "GoogleDrive",
+      "source_folder": "/mnt/gdrive",
+      "target_folder": "/mnt/sli/Gdrive",
+      "count": "150",
+      "mount": "mnt-gdrive.mount",
+      "user_ssh": "",
+      "server": "",
+      "port_ssh": "",
+      "ssh_key": ""
+    },
+    {
+      "backup_name": "RemoteServer",
+      "source_folder": "/mnt/data",
+      "target_folder": "/mnt/backup",
+      "count": "60",
+      "mount": "",
+      "user_ssh": "backupuser",
+      "server": "192.168.1.100",
+      "port_ssh": "22",
+      "ssh_key": "/root/.ssh/id_rsa"
+    }
+  ]
+}

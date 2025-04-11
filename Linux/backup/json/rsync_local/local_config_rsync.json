@@ -1,0 +1,28 @@
+{
+    "backup-Plan": "v1.4",
+    "autor": "SEA",
+    "backups": [
+        {
+            "backup_name": "GoogleDrive",
+            "source_folder": "/mnt/gdrive",
+            "target_folder": "/rpool/googe_drive/",
+            "count": "150",
+            "mount": "mnt-gdrive.mount",
+            "user_ssh": "",
+            "server": "",
+            "port_ssh": "",
+            "ssh_key": ""
+        },
+        {
+            "backup_name": "Constanta",
+            "source_folder": "/mnt/constanta",
+            "target_folder": "/rpool/constanta/",
+            "count": "150",
+            "mount": "mnt-constanta.mount",
+            "user_ssh": "",
+            "server": "",
+            "port_ssh": "",
+            "ssh_key": ""
+        }
+    ]
+}

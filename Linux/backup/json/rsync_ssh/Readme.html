@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rsync in SSH. Help</title>
+    <link rel="stylesheet" href="../../../../style.css">
+  </head>
+
+<body>
+
+<ol>
+<li>Путь к каталогу со скриптом
+<p> В файйле ssh_backup_rsync.sh
+2й строкой указать путь к каталогу со скриптом
+
+<p><code>cd /root/sh/bakup_jscon/</code>
+
+
+<li>Telegram .env
+<p>Cоздай файл .env  в том же каталоге, где лежит твой скрипт:
+<p><code>BOT_TOKEN=18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w</code>
+<p><code>CHAT_ID=33109821804</code>
+
+<li> Если не нужно монитровать по SMB, то в ssh_config_rsync.json указываем
+<p><code>  "mount"        : "", </code>
+<li> Если не нужно использовать ssh
+<p><code>            "user_ssh": "",</code>
+<p><code>            "server": "",</code>
+<p><code>            "port_ssh": "",</code>
+<p><code>            "ssh_key": ""</code>
+
+<li>После редактиррования json, выполнить тест
+<p><code> cat  local_config_rsync.json | jq</code>
+
