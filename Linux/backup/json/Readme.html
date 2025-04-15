@@ -14,10 +14,7 @@
 <li>Путь к каталогу со скриптом
 <p> В файйле ssh_backup_rsync.sh
 2й строкой указать путь к каталогу со скриптом
-
 <p><code>cd /root/sh/bakup_jscon/</code>
-
-
 <li>Telegram .env
 <p>Cоздай файл .env  в том же каталоге, где лежит твой скрипт:
 <p><code>BOT_TOKEN=18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w</code>
@@ -34,10 +31,10 @@
 <li> Путь к каталогу заканчивать /
 <p><code>     "source_folder": "/mnt/gdrive/",</code>
 <p><code>     "target_folder": "/mnt/sli/Gdrive/",</code>
-<li> Внутри карычек не должно быть пробелов. 
+<li> Внутри кавычек не должно быть пробелов. 
 <p>Так <b>НЕПРАВИЛЬНО</b>
 <p><code>     "source_folder": <b>" /mnt/gdrive/",</b></code>
 
 <li>После редактиррования json, выполнить тест
-<p><code> cat  local_config_rsync.json | jq</code>
+<p><code> cat  config_rsync.json | jq</code>
 
