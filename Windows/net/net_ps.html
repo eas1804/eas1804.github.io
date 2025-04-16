@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Net Powershell</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Test-NetConnection</h2>
+<p>Test-NetConnection или tnc — готовый к использованию командлет для проверки сетевого подключения появился в PowerShell 4.0 (Windows 2012 R2, Windows 8.1)
+<ol>
+<li> Проверить интернет соединение
+<p><code>tnc</code> Оторазит ip и имя сетевой карты, черз коорую идет подключение</p>
+<li> Проверить tcp порт
+<p><code>tnc i.ua -p 443</code></p>
+Не выполнять ping  -InformationLevel Quiet
+<p><code>tnc i.ua -port 443 -InformationLevel Quiet</code></p>
+<li> Можно указать имя службы (HTTP, RDP, SMB, WINRM)
+<p><code>tnc unac.mlp.pp.ua -CommonTCPPort RDP</code></p>
+<li>TraceRoute
+<p><code>tnc  i.ua   -TraceRoute
+
+
+
+</body>
+  </html>
