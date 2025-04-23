@@ -40,18 +40,19 @@
 <p> Указать правильной e-amil и пароль в 1й строке
 <p><code>wget https://eas1804.github.io/Proxmox/mail.sh </code>
 <p>Протестировать
+<p><code>Datacenter-Notoficcations-Notifications Targets-Modyfy</code>
 <h3> Мониторинг Kuma, Zabbix</h3>
  <a href=https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=12&components=agent&db=&ws=>Zabbix download agent </a>
  Уточни ссылку
 <p><code>wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb</code>
 <p><code>dpkg -i zabbix-release_latest_7.0+debian12_all.deb</code>
 <p><code>apt update</code>
-<p><code>apt install zabbix-agent -y</code>
+<p><code>apt install zabbix-agent2 -y</code>
 
  <pre>
  cd /etc/zabbix/
-grep -v "^#" zabbix_agentd.conf | grep -v "^$" > 1.conf
-mv 1.conf  zabbix_agentd.conf
+grep -v "^#" zabbix_agent2.conf | grep -v "^$" > 1.conf
+mv 1.conf  zabbix_agent2.conf
 nano zabbix_agentd.conf
 </pre>
 </ul>
