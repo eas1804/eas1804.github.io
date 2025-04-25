@@ -24,9 +24,16 @@
 
 <h3>Прямое копирование ZFS тома (ZVOL)</h3>
 <p>Используйте команду zfs send для передачи тома виртуального диска на другой сервер:	
+<p><code>zfs snapshot rpool/data/vm-101-disk-0@snapshot_name</p></code>
 <p>Создть моментальный снимок и отправить его через SSH на целевой сервер.
-<p><code>zfs snapshot rpool/data/vm-101-disk-0@snapshot_name</code></p>
 <p><code>zfs send rpool/data/vm-101-disk-0@snapshot_name | ssh user@remote-server zfs receive rpool/data/vm-101-disk-0</code></p>
+
+<h3>нагрузка на pool</h3>
+<p><code>zpool iostat rpool</code> 
+<code>zpool iostat rpool  5</code> обновлять каждые 5 секунд
+ 
+<h3>проверки целостности данных и устранения ошибок</h3>
+<p><code>zpool scrub rpool </p></code>
 
 <p><a href=https://habr.com/ru/articles/742286/>Dedup Windows vs Linux, MS снова “удивит”?</a>
 </body>
