@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Timer systemctl</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Timer systemctl</h2>
+<h2>Создать собственный юнит сервиса</h2>
+<p><code>nano /etc/systemd/system/send_ip.service</code></P>
+<pre>
+[Unit]
+Description=Send Ip This server
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/rpool/Slivak_500x10/info_server/send_ip.sh
+WorkingDirectory=/rpool/Slivak_500x10/info_server/
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<p>Перезагружаем службу systemd:
+<p><code>systemctl daemon-reload</code>
+<p>И пробуем запустить наш сервис:
+
+<p><code>systemctl start send_ip.service</code>
+<p><code>systemctl status send_ip.service</code>
+<p><code>journalctl -u send_ip.service</code>
+<h3> Unit</h3>
+<p>В [Unit] – можно указать зависимомти
+<p>Для указания строгой зависимости используйте Requires, например:
+<p><code>Requires=mysql.service</code>
+<p>В случае если указанные в этой опции службы не получится запустить, запуск нашего сервиса также завершится неудачей. 
+<p>Более мягкую зависимость предполагает директива Wants:
+<p><code>Wants=nginx.service</code>
+<p>Если указанные службы не будут найдены или не смогут запуститься, то это никак не повлияет на работу нашего сервиса.
+<p>Обе директивы предусматривают параллельный запуск указанных в них служб. 
+<p>Если к моменту запуска собственной службы какие-то сервисы уже должны быть запущены, то следует воспользоваться директивой After, скажем если нам нужно запускать службу после того, как будет поднята сеть, следует указать:
+<p><code>After=network.target</code>
+
+<h3>Service</h3>
+<p>Pдесь мы описываем нашу службу. 
+Обязательно указываем тип, в нашем случае oneshot - одноразовый запуск и выполняемое действие в директиве ExecStart, для служб с типом oneshot таких директив можно указать несколько.
+<p>WorkingDirectory - для указания рабочей директории
+<p>Environment для задания переменных окружения 
+<p>User, Group чтобы запустить сервис от указанного пользователя или группы
+<pre>
+WorkingDirectory=/var/www
+User=www-data
+Group=www-data
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+</pre>
+
+<h3>Install</h3>
+<p>И завершает юнит секция [Install] в которой укажем уровень запуска сервиса:
+<pre>
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p>lti-user.target соответствует runlevel=3 или многопользовательский режим без графики.
+<hr>
+<h2>Создать таймер</h2>
+<p><code>nano /etc/systemd/system/send_ip.timer</code>
+<pre>
+[Unit]
+Description= Send Ip This server
+[Timer]
+OnBootSec=1m
+OnCalendar=*:37:00
+
+[Install]
+WantedBy=timers.target
+</pre>
+<p>Обратите внимание, что его название соответствует файлу юнита сервиса, но имеет другое расширение.
+<p<>В секции [Timer]  указываем условия запуска. Таймеры могут быть двух типов, событийные и монотонные. 
+<P>Первые активируются по событию, вторые выполняются периодически. Из событийных таймеров нас будет интересовать OnBootSec, срабатывающий через указанное время после старта системы. 
+<p>Из монотонных следует выделить:
+<ul>
+<li>OnUnitActiveSec - сработает через указанное время после активации целевого юнита
+<li>OnUnitInactiveSec - все тоже самое, только время будет отсчитываться с момента прекращения работы целевого юнита, хорошо подходит для "долгоиграющих" задач, скажем бекапов.
+<li>OnCalendar - сработает по условию календаря.
+</ul>
+<p>Все указанные условия можно сочетать между собой. Например, чтобы указать запуск сервиса через полчаса после загрузки системы, а затем повторять каждые 15 минут укажем:
+<pre>[Timer]
+OnBootSec=30m
+OnUnitActiveSec=15m
+</pre>
+<p>таймер OnCalendar, позволяет указать нужную дату и время срабатывания. 
+В качестве формата используется:
+<p><code>DOW YYYY-MM-DD HH:MM:SS</code>
+<p>Где DOW - Day Of Week - день недели, это необязательный параметр. За ним следует указание года, месяца и дня через дефис и час, минута, секунда через двоеточие. Для указания любого значения можно использовать *, перечисления делаются через запятую, а диапазоны разделяются .. (двумя точками). Знак тильды ~ можно использовать для указания количества интервалов от конца диапазона, а косую черту / в качестве модификатора. 
+<pre>
+*:*:00 - каждую минуту
+*:15:00 - в 15 минут каждого часа
+*-*-1,5,7 *:00:00 каждый час 1, 5 и 7 числа
+Mon *-*~1 если последний день месяца понедельник
+Mon *-*~7/1 последний понедельник месяца
+</pre>
+<p>Также можно использовать следующие алиасы:
+<pre>
+minutely - ежеминутно
+hourly - каждый час
+daily - каждый день
+monthly - каждый месяц 
+weekly - еженедельно
+yearly - ежегодно
+quarterly - ежеквартально
+semiannually - раз в полгода
+</pre>
+<p>systemd предоставляет удобный инструмент для проверки таких конструкций, чтобы проверить ваше условие выполните, заключив анализируемые данные в кавычки:
+<p><code>systemd-analyze calendar "Mon *-*~7/1"</code>
+<p>И завершает юнит секция [Install] со следующим содержимым:
+<pre>
+[Install]
+WantedBy=timers.target
+</pre>
+
+<p><code>systemctl daemon-reload</code>
+<p><code>systemctl start send_ip.timer</code>
+<p><code>systemctl status  send_ip.timer</code>
+<p><code>journalctl -u  send_ip.timer</code>
+<p><code>systemctl enable send_ip.timer</code>
+
+
+
+
+<p>link: https://interface31.ru/tech_it/2021/04/nastraivaem-taymery-systemd-vmesto-zadaniy-cron.html
+</body>
+  </html>
+
