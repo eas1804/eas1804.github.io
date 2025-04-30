@@ -11,8 +11,8 @@ set OVPN_GUI="C:\Program Files\OpenVPN\bin\openvpn-gui.exe"
 
 setlocal enabledelayedexpansion
 
-for /l %%i in (1,1,10) do (
-    ping -n 1 -w 1000 10.10.10.3 >nul
+for /l %%i in (1,1,20) do (
+    ping -n 1 -w 1000 %RDP_SERVER% >nul
     if !errorlevel! == 0 (
         echo Attempt %%i: Server is UP
         start /wait mstsc /v:%RDP_SERVER% /f
