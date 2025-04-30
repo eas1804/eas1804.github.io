@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OpenVPN_connect</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>OpenVPN_connect</h2>
+<P> Поднять VPN канал и подключиться по RDP
+<p><a href=OpenVPN_connect.cmd>Скрипт OpenVPN_connect</a>
+<ol>
+<li>задать переменные:
+<br> OVPN_PROFILE 
+<br>RDP_SERVER
+<li> Разрешить на %RDP_SERVER% ping
+<p> <code>netsh advfirewall firewall add rule name="All ICMP V4" dir=in action=allow protocol=icmpv4</code>
+</ol>
+</body>
+  </html>

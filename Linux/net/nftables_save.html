@@ -36,6 +36,11 @@
 
 <h3>Показать порядковые номера правил</h3>
 <p><code>nft -a list ruleset</code></p>
+<h3>Показать правила в таблице PREROUTING</h3>
+<p><code>nft list chain ip nat PREROUTING</code></p>
+<h3>Показать правила в таблице PREROUTING с номером 14</h3>
+<p><code>nft -a list chain ip nat PREROUTING | grep  '# handle 14'</code></p>
+
 <h3>Удаление правила по номеру</h3>
 <p><code>nft delete rule inet filter input handle 9</code></p>
 <h3>Добавление правила в конкретное место с номером в списке</h3>
