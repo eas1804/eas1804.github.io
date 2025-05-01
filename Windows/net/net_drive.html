@@ -11,6 +11,9 @@
 <body>
 <h3>Netdrive</h3>
 <ol>
+<li><h3>Отключит все подключения к  серверу</h3>
+<p><code>net use * /delete /yes</code></p>
+<P>Это отключит все сетевые подключения, включая скрытые (например, \\192.168.18.110).
 <li><h3>Открытие общего доступа к папке Read only</h3>
 <p><code>net share obmen=d:\public</code></p>
 
@@ -29,13 +32,12 @@
 
 <li><h3>Подключение сетевого диска </h3>
 <p><code>net use z: \\ubuntu\backup</code></p>
-<h3>storagebox.de</h3>
-<p><code>net use Z: \\u412345.your-storagebox.de\backup /user:u412345 "password" </code></p>
-
-
-<li><h3>добавить аутентификацию пользователя с логином и паролем</h3>
-<p><code>net use z:\\ubuntu\backup /user:Vasya P@$$W0rd</code></p>
-
+<li><h3>Добавить аутентификацию пользователя с логином и паролем</h3>
+<p><code>net use Z: \\192.168.18.110\common /user:Olga P@SSWord</code></p>
+<p> Диск можно не добавлять
+<p><code>net use  \\192.168.18.110\common /user:Olga P@SSWord</code></p>
+<li><h3>storagebox.de</h3>
+<p><code>net use Z: \\u412345.your-storagebox.de\backup /user:u412345 P@SSWord </code></p>
 <li><h3>Отключение сетевого диска</h3>
 <p><code>net use z: /delete</code></p>
 </ol>
