@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RemoteApp</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Запуск произвольного приложения в виде RemoteApp в Windows</h2>
+<h3>Сервер </h3>
+<p>Нужен Windows server или win10/11  Pro или Enterprise 
+<p>На сервере выполнить. После чего серервер перезагрузить
+<p><code>reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" /v fAllowUnlistedRemotePrograms /t REG_DWORD /d 1</code>
+<h3>Клиент </h3>
+<p> На клиенте содать файл rdp.
+<p> Открыть его в болкноте и диписать:
+<pre>
+remoteapplicationmode:i:1
+RemoteApplicationName:s:<b>КАК ДОЛЖЕН НАЗЫВАТЬСЯ ЗАГОЛОВОК ОКНА ПРОГРАММЫ В ПАНЕЛИ</b>
+RemoteApplicationProgram:s:<b>"ПУТЬ К ИСПОЛЬНЫЕМОМУ ФАЙЛУ ПРИЛОЖЕНИЯ НА RDP СЕРВЕРЕ"</b>
+DisableRemoteAppCheck:i:1
+Prompt for Credentials on Client:i:0
+Alternate Shell:s:rdpinit.exe
+</pre>
+<p> Например
+<pre>
+remoteapplicationmode:i:1
+RemoteApplicationName:s: <b>AnyDesk</b>
+RemoteApplicationProgram:s:<b>C:\Users\exch_adm\Desktop\AnyDesk.exe</b>
+DisableRemoteAppCheck:i:1
+Prompt for Credentials on Client:i:0
+Alternate Shell:s:rdpinit.exe
+</pre>
+<p>link: https://winitpro.ru/index.php/2024/12/09/zapusk-remoteapp-v-windows/
+</body>
+  </html>

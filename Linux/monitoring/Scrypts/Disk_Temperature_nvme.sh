@@ -1,11 +1,9 @@
 #!/bin/bash
 
-cd=/root/sh/
-
 INFO="MTIR PVE"
-TEMP_RESURS=70
 
 #### Ниже ничего не трогать
+TEMP_RESURS=70
 LOG=/var/log/nvme_info.txt
 date > $LOG
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

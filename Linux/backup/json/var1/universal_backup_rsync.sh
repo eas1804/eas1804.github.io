@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#cd /root/sh/backup_json
-CONFIG_FILE_JSON="config.json"
+CONFIG_FILE_JSON="universal_config_rsync.json"
 
 # Telegram: загружаем переменные окружения
 if [ -f .env ]; then
@@ -67,18 +66,7 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
     if [[ -n "$MOUNT" ]]; then
         /usr/bin/systemctl start "$MOUNT"
         sleep 2
-
-        if ! /usr/bin/systemctl is-active --quiet "$MOUNT"; then
-            MESS_M="[$BACKUP_NAME] Ошибка монтирования: $MOUNT"
-            curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
-                -d "chat_id=$CHAT_ID&text=$MESS_M" > /dev/null
-            echo "[$BACKUP_NAME] Монтирование не удалось: $MOUNT. Пропускаем..."
-            continue
-        fi
-        ### <-- КОНЕЦ ДОБАВЛЕНИЯ
-
     fi
-
 
     # Проверка источника
     if [ ! -d "$SOURCE_FOLDER" ]; then
@@ -91,7 +79,6 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
     fi
 
     TIMESTAMP=$(/usr/bin/date +%Y%b%d)
-
 
     # --- Локальный режим ---
     if [[ -z "$SERVER" ]]; then
@@ -119,7 +106,6 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
 
         RSYNC_STATUS=$?
 
-        # Очистка старых инкрементов
         ssh -i "$SSH_KEY" -p "$PORT_SSH" "$USER_SSH@$SERVER" "
             cd '$TARGET_FOLDER' &&
             ls -dt increment/*/ | tail -n +$((COUNT + 1)) | xargs -r rm -rf --

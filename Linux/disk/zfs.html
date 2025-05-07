@@ -32,9 +32,14 @@
 <p><code>zpool iostat rpool</code> 
 <code>zpool iostat rpool  5</code> обновлять каждые 5 секунд
  
-<h3>проверки целостности данных и устранения ошибок</h3>
-<p><code>zpool scrub rpool </p></code>
 
+<hr>
+<h3>Очистите счётчики ошибок ZFS (если уже посмотрели и сохранили)</h3>
+<p><code>zpool clear "имя пула"</code> <code>zpool clear rpool  </p></code>
+<h3>Проверки целостности данных и устранения ошибок</h3>
+<p><code>zpool scrub rpool </p></code>
+<p>если ошибки повторяются при каждом scrub — один или несколько дисков начинают "сыпаться"
+<hr>
 <p><a href=https://habr.com/ru/articles/742286/>Dedup Windows vs Linux, MS снова “удивит”?</a>
 </body>
   </html>

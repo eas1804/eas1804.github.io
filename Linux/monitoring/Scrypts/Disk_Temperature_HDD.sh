@@ -1,10 +1,8 @@
 #!/bin/bash
 
-cd /root/sh/
-
 INFO="MTIR PVE"
-TEMP_THRESHOLD=50
 #### Ниже ничего не трогать
+TEMP_THRESHOLD=50
 LOG=/var/log/hdd_info.txt
 date >$LOG
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

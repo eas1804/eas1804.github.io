@@ -1,5 +1,4 @@
 #!/bin/bash
-cd /rpool/sh/ 
 
 # Telegram: загружаем переменные окружения
 if [ -f .env ]; then

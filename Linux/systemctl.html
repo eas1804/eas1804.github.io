@@ -9,15 +9,16 @@
   </head>
 
 <body>
-<h3>Просмотреть все активные службы</h3>
- <p><code>systemctl list-units --type=service</code></p>
-<p><code> systemctl list-units --type=service | grep open</code></p>
+<h3>Список всех unit-files, а так же их состояний:</h3>
+<p><code>systemctl list-unit-files</code></p>
 
+<p><code>systemctl list-unit-files  -t service</code> 
+<p><code>systemctl list-unit-files  -t timer</code>
+<p><code>systemctl list-unit-files  -t mount</code></p>
+<p>--type=service и -t service это разные формы одного и того же параметра, задающего тип юнитов, которые нужно отобразить.
 
 <h3>Какие службы будут запущены автоматически</h3>
 <p><code>systemctl list-unit-files --state=enabled</code></p>
-
-
 
 <h3>Просмотреть все службы, включая неактивные</h3>
 <p><code>systemctl list-units --type=service --all</code></p>
@@ -25,13 +26,11 @@
 <h3>Просмотреть все службы с подробной информацией:</h3>
 <p><code>systemctl list-units --type=service --all --full</code></p>
 
-<h3>Список всех unit-files, а так же их состояний:</h3>
-<p><code>systemctl list-unit-files</code></p>
-Список выше можно ограничить по типам:
-<p><code>systemctl -t service</code></p>
-<p><code>systemctl -t timer</code></p>
-<p><code>systemctl -t mount</code></p>
-
+<h3>Просмотреть все активные службы</h3>
+<p><code>systemctl list-units --type=service</code> 
+<p><code>systemctl list-units --type=timer</code></p>
+<p><code>systemctl list-units --type=mount </code></p>
+<p><code> systemctl list-units --type=service | grep open</code></p>
 
 <h3>Проверить статус конкретной службы</h3>
 <p><code>systemctl status название-службы</code></p>
@@ -41,8 +40,11 @@ systemctl status openvpn.servvice
 <h3>Проверить статус автозапуска:</h3>
 <p><code>systemctl is-enabled nginx</code></p>
 
-<h3>Посмотреть конфигурацию юнита:</h3>
-<p><code>systemctl cat sshd </code></p>
+<h3>Посмотреть конфигурацию юнита</h3>
+<p><code>systemctl cat postfix </code></p>
+
+<h3>Активен ли юнит</h3>
+<p><code>systemctl is-active postfix</code></p>
 
 
 <h3> Выполнить команду на удаленной системе. </h3>

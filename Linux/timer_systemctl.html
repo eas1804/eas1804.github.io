@@ -9,7 +9,11 @@
   </head>
 
 <body>
-<h2>Timer systemctl</h2>
+<h1>Timer systemctl</h1>
+<h3>отображает все systemd-таймеры на системе</h3>
+<p><code>systemctl list-timers --all</code></P>
+<p><code>systemctl list-timers --all | grep all_accsess</code></P>
+
 <h2>Создать собственный юнит сервиса</h2>
 <p><code>nano /etc/systemd/system/send_ip.service</code></P>
 <pre>
@@ -92,6 +96,12 @@ WantedBy=timers.target
 <pre>[Timer]
 OnBootSec=30m
 OnUnitActiveSec=15m
+</pre>
+<p>будет запускать .service каждые 15 минут после завершения предыдущего запуска, даже если он не был активирован ранее.
+<pre>
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=15min
 </pre>
 <p>таймер OnCalendar, позволяет указать нужную дату и время срабатывания. 
 В качестве формата используется:
