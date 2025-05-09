@@ -31,6 +31,8 @@
 Безопасность→
 <P>Устанвоить уровень шифрования для клинских подключнеий→
 Совместимый с клиентом</code>
+<li><h3>Credential Guard в Защитнике Windows не разрешает использовать сохраненные учетные данные</h3>
+<p><code>New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\LSA" -Name "LsaCfgFlags" -PropertyType "DWORD" -Value 0 -Force</code>
 
 </ol>
 </body>
