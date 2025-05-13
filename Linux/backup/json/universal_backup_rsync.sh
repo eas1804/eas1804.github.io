@@ -24,8 +24,8 @@ for CMD in jq rsync curl; do
     fi
 done
 
-IP_LAN=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-IP_WAN=$(curl 2ip.ru)
+IP_LAN=$(ip -4 -br a | grep -v lo | grep -v tun0 | awk '{print $3}')
+IP_WAN=$(curl -s ifconfig.me)
 
 #### Проверим конфиг json
 cat $CONFIG_FILE_JSON | /usr/bin/jq
