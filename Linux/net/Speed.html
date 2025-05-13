@@ -23,7 +23,9 @@
 - Гигабайт — ГБ, Гбайт (GB)
 </pre>
 <h2> Выяснить пропускную способность сетевого интерфейса </h2>
- <p><code>dmesg -T | grep  enp2s0 | grep Up</code></p>
+ <p><code>ethtool enp3s0</code></p>
+<p>apt install ethtool
+ <p><code>dmesg -T | grep  enp3s0 | grep Up</code></p>
 <h2>Мониторинг Скорости сетевого интерфейса (100 или 1000 Mbps )</h2>
 <h3>bmon</h3>
 <p><code>apt install bmon -y</code></p>

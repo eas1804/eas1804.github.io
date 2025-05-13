@@ -1,6 +1,8 @@
 #!/bin/bash
 
+#cd /root/sh/backup_json
 CONFIG_FILE_JSON="config.json"
+
 # Telegram: загружаем переменные окружения
 if [ -f .env ]; then
     source .env
@@ -23,9 +25,6 @@ for CMD in jq rsync curl; do
         exit 1
     fi
 done
-
-IP_LAN=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-IP_WAN=$(curl 2ip.ru)
 
 #### Проверим конфиг json
 cat $CONFIG_FILE_JSON | /usr/bin/jq
@@ -70,10 +69,7 @@ for ((i=0; i<BACKUP_COUNT; i++)); do
         sleep 2
 
         if ! /usr/bin/systemctl is-active --quiet "$MOUNT"; then
-            MESS_M="[$BACKUP_NAME] 
-Ошибка монтирования: $MOUNT; 
-$IP_LAN, 
-$IP_WAN"
+            MESS_M="[$BACKUP_NAME] Ошибка монтирования: $MOUNT"
             curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
                 -d "chat_id=$CHAT_ID&text=$MESS_M" > /dev/null
             echo "[$BACKUP_NAME] Монтирование не удалось: $MOUNT. Пропускаем..."
@@ -132,10 +128,7 @@ $IP_WAN"
 
     # Ошибка при копировании
     if [[ $RSYNC_STATUS -ne 0 ]]; then
-        MESS_R="[$BACKUP_NAME] 
-Ошибка при выполнении rsync;
-$IP_LAN,
-$IP_WAN"
+        MESS_R="[$BACKUP_NAME] Ошибка при выполнении rsync"
         curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
             -d "chat_id=$CHAT_ID&text=$MESS_R" > /dev/null
     fi
