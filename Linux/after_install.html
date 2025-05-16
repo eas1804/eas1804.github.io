@@ -11,36 +11,55 @@
 <body>
 
 <h2> After install</h2>
- <p><code>apt update && apt <b>-V</b> upgrade -y && apt autoremove -y</code></p>
-<br>
+ <p><code>apt update && apt upgrade -y && apt autoremove -y</code></p>
+
+<p># Install Soft
  <p><code>apt install tmux mc wget curl chrony sudo duf htop -y </code></p>
+<p># TimeZone + chrony
+<p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
+<p><code>echo 'server time.ntp.org.ua  iburst' >>/etc/chrony/chrony.conf</code></p>
+<p><code>echo 'server pool.ntp.org.ua iburst' >>/etc/chrony/chrony.conf</code></p>
+<p><code>systemctl enable --now chrony</code></p>
+<p># sudoers.d</p>
+<p><code>USER=exch_adm</code></p>
+<pre>
+echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
+chmod 0440 /etc/sudoers.d/$USER
+visudo -c -f /etc/sudoers.d/$USER
+</pre>
+
+
+<p># Colors
  <p><code>echo 'export LS_OPTIONS="--color=auto"' >> /root/.bashrc</code></p>
  <p><code>echo 'eval "$(dircolors)"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias ls="ls $LS_OPTIONS"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias ll="ls $LS_OPTIONS -l"' >> /root/.bashrc</code></p>
  <p><code>echo 'alias l="ls $LS_OPTIONS -lA"' >> /root/.bashrc</code></p>
+<p>#yeloow color dir
+<p><code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code>  </p> 
+<p>#path Add /usr/sbin
 <p><code>echo 'export PATH=$PATH:/usr/sbin' >> /root/.bashrc</code></p>
-<p><code>echo 'LS_COLORS="$LS_COLORS:di=1;33:"; export LS_COLORS' >> /root/.bashrc</code> #yeloow color dir </p> 
 
-<p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
-<p><code>echo 'server time.ntp.org.ua  iburst' >>/etc/chrony/chrony.conf</code></p>
-<p><code>echo 'server pool.ntp.org.ua iburst' >>/etc/chrony/chrony.conf</code></p>
-<p><code>systemctl start chrony && systemctl enable chrony</code></p>
-<p><code>sudo sed -i '/^# User privilege specification$/a exch_adm ALL=(ALL) NOPASSWD: ALL' /etc/sudoers</code></p>
+<p>#History </p>
+<p><code>echo 'export HISTSIZE=10000' >> ~/.bashrc</code></p>
+<p><code>echo 'export HISTTIMEFORMAT="%h %d %H:%M:%S "' >> ~/.bashrc</code></p>
+<p><code>echo 'PROMPT_COMMAND="history -a"' >> ~/.bashrc</code></p>
+<p><code>echo 'export HISTIGNORE="ls:ll:history:w:htop:pwd"' >> ~/.bashrc</code></p>
+<p># Применить ~/.bashrc
 <p><code>source ~/.bashrc</code></p>
+
 
 <h3>login root in SSH</h3>
 <p><code>echo "PermitRootLogin yes" >>  /etc/ssh/sshd_config </code></p>
 <p><code>systemctl restart ssh</code></p>
 
-<h3>History </h3>
-<p><code>echo 'export HISTSIZE=10000' >> ~/.bashrc</code></p>
-<p><code>echo 'export HISTTIMEFORMAT="%h %d %H:%M:%S "' >> ~/.bashrc</code></p>
-<p><code>echo 'PROMPT_COMMAND="history -a"' >> ~/.bashrc</code></p>
-<p><code>echo 'export HISTIGNORE="ls:ll:history:w:htop:pwd"' >> ~/.bashrc</code></p>
-
 <h3>Приглашение </h3>
-<p><code>echo "PS1='${debian_chroot:+($debian_chroot)}\u@NAME:\w\$ '" >> ~/.bashrc</code></p>
+<p><code>echo "PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '" >> ~/.bashrc</code></p>
+<p> # цвет приглашения
+<p><code>echo "PS1='\[\e[38;5;220m\]root@docker\[\e[0m\]:\w\$ '" >> ~/.bashrc</code></p>
+
+<h3>Задать имя хоста</h3>
+<p><code>hostnamectl set-hostname <b>ИМЯ</b></code></p>
 
 <h3>ssh key </h3>
 <p>C - осознаный комментарий | f - путь и имя файла с ключем 
@@ -54,12 +73,13 @@
 <p><code>cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys</code></p>
 <p><code>cat ~/.ssh/id_ed25519</code></p>
 
+<h3>Install additionas soft</h3>
+<p><code>apt install cockpit sysstat  dstat iftop ifstat gdisk -y</code></p>
+<p><code>cockpit  ip:9090</code></p>
+<p><code>apt install openssh-server -y</code></p>
+
 <h3>crontab</h3>
 <p><code>/var/spool/cron/crontabs/root</code>
-
-<h3>Install additionas soft</h3>
-<p><code>apt install cockpit sysstat  dstat  htop iftop ifstat gdisk openssh-server -y</code></p>
-<p><code>cockpit  ip:9090</code></p>
 
 
 
