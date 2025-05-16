@@ -78,12 +78,24 @@ WantedBy=multi-user.target
 Description= Send Ip This server
 [Timer]
 OnBootSec=1m
-OnCalendar=*:37:00
-
+OnCalendar=*-*-* 02:02:00
 [Install]
 WantedBy=timers.target
 </pre>
 <p>Обратите внимание, что его название соответствует файлу юнита сервиса, но имеет другое расширение.
+<p>Чтобы таймер запускался каждый день в 02:02 используем:
+<code>OnCalendar=*-*-* 02:02:00</code>
+<h3> Запустить</h3>
+<pre>
+systemctl daemon-reexec
+systemctl daemon-reload
+systemctl enable --now backup.timer
+</pre>
+
+<h3>Прверить результат для backup.timer</h3>
+<p><code>systemctl list-timers | grep backup</code>
+<p>
+
 <p<>В секции [Timer]  указываем условия запуска. Таймеры могут быть двух типов, событийные и монотонные. 
 <P>Первые активируются по событию, вторые выполняются периодически. Из событийных таймеров нас будет интересовать OnBootSec, срабатывающий через указанное время после старта системы. 
 <p>Из монотонных следует выделить:
