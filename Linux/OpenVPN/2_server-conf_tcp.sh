@@ -1,5 +1,29 @@
 #!/bin/bash
 
+ETH=ens18
+
+echo "part 1. Install soft and config networt"
+echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
+
+/sbin/nft add table inet filter
+/sbin/nft add chain inet filter input {type filter hook input priority 0\;}
+/sbin/nft add rule inet filter input udp dport $PORT counter accept
+
+/sbin/nft add table ip nat
+/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
+/sbin/nft add rule ip nat postrouting oif $ETH masquerade 
+
+echo '#!/usr/sbin/nft -f' > /etc/nftables.conf
+echo "flush ruleset" >> /etc/nftables.conf
+/sbin/nft  -s list ruleset >> /etc/nftables.conf
+
+systemctl  enable nftables.service
+systemctl  start  nftables.service
+
+/sbin/nft list ruleset
+
+
+
 # create congif server
 mkdir /etc/openvpn/ccd
 FILE_SRV=/etc/openvpn/server_tcp.conf
