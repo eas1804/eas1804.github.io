@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Настройка сетевой конфигурации с помощью systemd-networkd</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+<h2>Настройка сетевой конфигурации с помощью systemd-networkd</h2>
+<p>В составе базовых служб systemd имеется служба systemd-networkd, позволяющая унифицировать процедуры настройки сетевой конфигурации в разных современных операционных системах Linux. Функционал systemd-networkd доступен в systemd версии 210 и выше.
+<p><code>systemctl --version</code>
+<h3> Типы файлов конфигурации </h3>
+<ul>
+<li>*.link – конфигурация физических параметров интерфейсов (имя, MAC, MTU и т.д.). 
+<li>*.network – конфигурация сети (DHCP/статический IP, MAC, MTU, маршруты, DNS и т.д.). 
+<li>*.netdev – для настройки виртуальных интерфейсов (VLAN, мосты, туннели, VPN и т.п.)
+</ul>
+Настраиваемые конфигурационные файлы systemd-networkd должны размещаться в каталоге /etc/systemd/network
+<h3>Связать MAC с именем сетевого интерфейса</h3>
+<p>Файлы *.link в обязательном порядке создавать необходимости нет. Они нужны лишь в тех случаях, когда мы хотим каким-либо образом изменить физические параметры интерфейсов.
+<p><code>nano /etc/systemd/network/90-nic1-port0.link</code>
+<table> <tr> <td>
+<pre>
+[Match]
+MACAddress=00:15:5d:b5:f4:01
+ 
+[Link]
+Name=nic1-port0
+</pre>
+</td> </tr> </table>
+
+<h3> DHCP ipv4</h3>
+<p>Если мы изменили имя интерфейса с помощью *.link-файла,  то при последующей настройке этого интерфейса в *.network-файле в параметре Name должно фигурировать именно изменённое имя интерфейса. То есть не eth0 а nic1-port0
+
+<p><code>nano /etc/systemd/network/80-lan0-dhcp.network</code>
+
+<table>
+<tr>
+<td>
+<pre>
+[Match]
+Name=<b>eth0</b>
+ 
+[Network]
+DHCP=ipv4
+LinkLocalAddressing=no
+</pre>
+
+</td>
+<td style="width: 200px;">
+<pre>
+[Match]
+Name=<b>nic1-port0</b>
+ 
+[Network]
+DHCP=ipv4
+LinkLocalAddressing=no
+</pre>
+
+</td>
+
+<td style="width: 200px;">
+<pre>
+[Match]
+Name=eth*
+ 
+[Network]
+DHCP=ipv4
+DHCP=ipv6
+</pre>
+</td>
+
+
+</tr>
+</table>
+
+<p>Опция LinkLocalAddressing поможет избежать появления в системе IPv6 адреса, если есть желание отключить IPv6 в системе полностью.
+<h3>Static IP</h3>
+<p><code>nano /etc/systemd/network/50-lan0-static.network</code>
+<table> <tr> <td>
+<pre>
+[Match]
+Name=enp8s0
+ 
+[Network]
+Description=Local network
+Address=192.168.1.20/24
+Gateway=192.168.1.1
+DNS=192.168.1.1 192.168.2.1
+Domains=sub1.holding.com sub2.holding.com
+LinkLocalAddressing=no
+</pre>
+</td>
+</tr>
+</table>
+
+<h3> Отключить применение сетевых настроек из файла /etc/network/interfaces</h3>
+<p><code>mv /etc/network/interfaces /etc/network/interfaces.save</code>
+<h3> Включить systemd-networkd</h3>
+<code>systemctl enable systemd-networkd</code>
+<p><code>systemctl start systemd-networkd</code>
+<p>После этого изменения сразу всупают в силу.
+<h3>Проверка</h3>
+<p><code>journalctl -u systemd-networkd.service</code> | 
+<code>networkctl list</code> |
+<code>networkctl status</code>
+
+<h3> DNS</h3>
+<p><code>apt install systemd-resolved -y</code>
+<p><code>ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf</code>
+<p><code>systemctl enable --now systemd-resolved</code>
+<p><code>systemctl restart systemd-networkd</code>
+<p><code>resolvectl status</code>
+<h4>В случае проблем: использовать прямой DNS без systemd-resolved</h4>
+<p><code>rm -f /etc/resolv.conf</code>
+<p><code>echo "nameserver 8.8.8.8" > /etc/resolv.conf</code>
+<p><code>echo "nameserver 8.8.4.4" >> /etc/resolv.conf</code>
+
+
+<body>
+</body>
+  </html>

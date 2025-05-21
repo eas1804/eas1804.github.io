@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>docker-compose</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>docker compose</h2>
+<p>docker compose (без дефиса) — НОВЫЙ вариант. Встроен в docker CLI (начиная с Docker 20.10+)
+<p><code>docker compose up -d</code> | 
+<code>docker compose down</code>
+<p><code>docker compose --project-directory /opt/syncthing up -d</code>
+<p><code>docker compose --project-directory /opt/syncthing down</code>
+
+
+<h3> отобразить статус контейнеров</h3>
+<p><code>docker compose ps</code>
+<p><code>docker compose --project-directory /opt/syncthing ps</code>
+
+<h3>Проверяет и валидирует ваш docker-compose.yaml</h3>
+<p><code> docker compose -f /opt/syncthing/docker-compose.yml config --quiet </code>
+<p>Флаг --quiet подавляет вывод (stdout), и возвращает только код завершения:
+<br>0 — если конфигурация валидна; 1 — если есть ошибки (синтаксис, недопустимые параметры и т. д.)
+<h3> Запуск от имени служебного пользоватлея</h3>
+<p>Допустим наш служебный польтзоватле называется syncthing
+<p><code>addgroup --system --gid 3113 syncthing</code>
+
+<p><code>adduser --system --gecos "Syncthing file synchronization system" \
+    --disabled-password --uid 3113 --ingroup syncthing  \
+    --shell /sbin/nologin --home /opt/syncthing/data syncthing</code>
+<p> Добавляем  польовтеля syncthing в группу docker 
+<p><code>usermod -aG docker syncthing</code>
+<P>Проверка
+<p><code>id syncthing</code>
+<h3>service</h3>
+<p><code>nano /etc/systemd/system/syncthing.service</code>
+
+<pre>
+[Unit]
+Description=Syncthing via Docker Compose
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+<b>User=syncthing
+Group=docker</b>
+WorkingDirectory=/opt/syncthing
+ExecStart=/usr/bin/docker compose --file /opt/syncthing/docker-compose.yml up
+ExecStop=/usr/bin/docker  compose --file /opt/syncthing/docker-compose.yml down
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+<p>В файле syncthing.service описаны условия запуска контейнера syncthing такие, как: проверка запущенного демона docker, выполнение перезапуска сервиса при падении (с интервалом в 5 сек.), определение пользователя/группы от имени которого нужно запускать сервис и собственно сами команды запуска/остановки этого сервиса.
+<p><code>systemctl enable --now syncthing</code>
+
+<h3>Sudo </h3>
+<p><code>cat /etc/sudoers.d/syncthing_sudoers</code>
+
+<pre>
+Cmnd_Alias SYNC = \
+    /usr/bin/docker compose --file /opt/syncthing/docker-compose.yml up, \
+    /usr/bin/docker compose --file /opt/syncthing/docker-compose.yml down
+
+syncthing ALL = (:docker) NOPASSWD: SYNC
+</pre>
+<p>Проверяем синтаксис
+<p><code>visudo --check --file=/opt/syncthing/syncthing_sudoers</code>
+</body>
+  </html>

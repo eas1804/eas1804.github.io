@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SMTP test</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>smtp 465 port</h2>
+<ol>
+<li><p><code>openssl s_client -connect smtp.gmail.com:465</code>
+<p>Если соединение успешное, вы увидите CONNECTED, а потом много строк сертификата. В конце должна быть строчка вроде
+<br>220 smtp.gmail.com ESMTP
+<li><p><code>EHLO test</code>
+<p> Увижу
+<pre>
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>
+
+<li><p><code>AUTH LOGIN</code>
+<p> Увижу
+<pre>
+334 VXNlcm5hbWU6</pre>
+
+<li> Ввести логин и пароль в base64 
+<p> Их можно перекодировать в другой консоли
+<p># логин
+<p><code>echo -n "username@gmail.com" | base64</code>
+<p># пароль
+<p><code>echo -n "Pwssword" | base64</code>
+
+<pre>
+334 VXNlcm5hbWU6
+cmVwb3J0MS5iYWNrdXAxQGdtYWlsLmNvbQ==
+334 UGFzc3dvcmQ6
+endnZ2hrZ21ncWN6c2hqdw==
+235 2.7.0 Accepted
+</pre>
+<p>Вижу Accepted. То есть провёл успешную SMTP-аутентификацию через AUTH LOGIN на сервере Gmail
+</ol>
+<h2>STARTTLS (порт 587)</h2>	
+<p>Или проверка через STARTTLS (порт 587):
+<p><code>openssl s_client -starttls smtp -connect mail.dtz.in.ua:587</code>
+
+</body>
+  </html>
