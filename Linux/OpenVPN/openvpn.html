@@ -48,10 +48,10 @@
 <li> For tcp 1194
 
 
+<table><tr><td><pre>
 
-<pre>
 PORT=80
-ETH=ens18
+ETH=<b>ens18</b>
 PROTO=tcp
 
 /sbin/nft add table inet filter
@@ -59,37 +59,43 @@ PROTO=tcp
 /sbin/nft add table ip nat
 /sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
 
-
 /sbin/nft add rule inet filter input $PROTO dport $PORT counter accept
 /sbin/nft add rule ip nat postrouting oif $ETH masquerade 
 
-
 /sbin/nft list ruleset
-</pre>
-
+</pre></td></tr></table>
 </ol>
 <p> Проверить синтакчис конфигурационного файла
 <p><code>openvpn --config /etc/openvpn/server.conf --verb 3</code></p>
 
 <h3> Gate</h3>
 На шлюзе не забыть добавить в /etc/nftables.conf
-<pre>
+
+<table><tr><td><pre>
 chain forward {
                 udp dport  1194  counter accept
 	...
 chain PREROUTING {
                 iif "vmbr0" udp dport 1194 counter dnat to 172.16.2.5:1194
 ...
-</pre>
+</pre></td></tr></table>
+
 и перечитать файл
 <p><code> nft -f  /etc/nftables.conf</code></p>
-
+<hr>
+<h2>Windows</h2>
+<h3> Bat файл для запуска </h3>
+<p>Задать переменные
+<p><code>set OVPN_PROFILE=Osipenko_04_2025.ovpn</code>
+<p><code>set RDP_SERVER=10.10.10.3</code>
+<p><a href="start_ffrom_Windows.cmd">Download</a>
 
 <h3>Запретить сохранять пароль на клиенте</h3>
 <p><code>REG ADD "HKLM\Software\OpenVPN" /v "disable_save_passwords" /t REG_DWORD /d 1 /f</code></p>
 0 - резрешить сохранять пароль
 1 - запретить сохранять пароль
 <p> Закрыть/открыть  OpenVPN GUI
+<hr>
 <h3>Expamle config</h3>
 <a href="server_udp.txt">Server UDP</a> |
 <a href="server_tcp.txt">Server TCP</a> |
