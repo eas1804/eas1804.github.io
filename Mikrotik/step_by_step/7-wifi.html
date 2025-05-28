@@ -10,13 +10,30 @@
 
 <body>
 <h2>Wifi</h2>
-<p><code>/interface wireless security-profiles</p></code>
-<p><code>set [ find default=yes ] supplicant-identity=Esplanadnaya_2</p></code>
-<p><code>add authentication-types=wpa2-psk comment=walker12 eap-methods="" group-key-update=1h management-protection=allowed mode=dynamic-keys name=Upfk_wifi_profile supplicant-identity="" wpa2-pre-shared-key=<b>walker12</b></p></code>
+<h3> Создаем профиль безопасности </h3>
+Иия профиля безопасности: MY_wifi_profile, SSID:Esplanadnaya_2, Пароль: walker12
+<table><tr><td><pre>
+/interface wireless security-profiles
 
-<p><code>/interface wireless</p></code>
-<p><code>set [ find default-name=wlan1 ] band=<b>2ghz-onlyn</b> country=ukraine disabled=no distance=indoors frequency=auto installation=indoor mode=ap-bridge security-profile=Upfk_wifi_profile <b>ssid=Esplanadnaya_2</b> wireless-protocol=802.11</p></code>
-<p><code>set [ find default-name=wlan2 ] band=<b>5ghz-n/ac</b> country=ukraine disabled=no distance=indoors frequency=auto installation=indoor mode=ap-bridge security-profile=Upfk_wifi_profile <b>ssid=Esplanadnaya_2_5Ghz</b> wireless-protocol=802.11</p></code>
+set [ find default=yes ] supplicant-identity=<b>Esplanadnaya_2</b>
+add authentication-types=wpa2-psk comment=walker12 eap-methods="" group-key-update=1h management-protection=allowed \
+mode=dynamic-keys name=MY_wifi_profile supplicant-identity="" wpa2-pre-shared-key=<b>walker12</b>
+</pre></td></tr></table>
 
+<h3> Задаем параметры wifi интерфейсу 2.4 ГГЦ</h3>
+<table><tr><td><pre>
+/interface wireless
+set [ find default-name=wlan1 ] band=<b>2ghz-onlyn</b> country=ukraine disabled=no distance=indoors frequency=auto \
+installation=indoor mode=ap-bridge security-profile=MY_wifi_profile <b>ssid=Esplanadnaya_2</b> wireless-protocol=802.11
+</pre></td></tr></table>
+
+
+<h3> Задаем параметры wifi интерфейсу 5 ГГЦ</h3>
+<table><tr><td><pre>
+/interface wireless
+set [ find default-name=wlan2 ] band=<b>5ghz-n/ac</b> country=ukraine disabled=no distance=indoors frequency=auto \
+installation=indoor mode=ap-bridge security-profile=MY_wifi_profile <b>ssid=Esplanadnaya_2_5Ghz</b> wireless-protocol=802.11
+
+</pre></td></tr></table>
 </body>
   </html>

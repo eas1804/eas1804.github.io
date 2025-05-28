@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. Wifi гостевой</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Гостевой Wifi</h2>
+<h3> Создаем гостевой профиль безопасности </h3>
+Имя guest,Пароль 987654321
+<table><tr><td><pre>
+/interface wireless security-profiles
+add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=<b>guest</b> supplicant-identity="" wpa2-pre-shared-key=<b>987654321</b>
+</pre></td></tr></table>
+
+
+<h3>Добавить новый виртуальный интерфейс wlan-guest</h3>
+Указать MAC-адрес, который следует взять у <b> физического </b>беспроводного интерфейса.
+<table><tr><td><pre>
+/interface/wireless
+add disabled=no keepalive-frames=disabled mac-address=<b>1A:FD:74:D8:E6:8B</b> master-interface=wlan1 multicast-buffering=disabled name=<b>wlan-guest</b> \
+    security-profile=<b>guest</b> ssid=<b>SEA_Guest</b> wds-cost-range=0 wds-default-cost=1 wps-mode=disabled
+</pre></td></tr></table>
+<p>Если у вас двухдиапазоvнная точка доступа и вы желаете создать в каждом из них гостевые сети, то создайте еще один виртуальный беспроводной интерфейс и укажите в качестве Master Interface второй беспроводной адаптер. 
+<p>Рабочую частоту, ширину канала, мощность и прочие настройки виртуальный адаптер наследует от физического интерфейса. Т.е. гостевая сеть будет работать на том же канале и с такими же параметрами, как и основная.
+
+<h3>Создадать новый сетевой мост bridge-guest</h3>
+<table><tr><td><pre>
+/interface bridge
+add arp=reply-only name=bridge-guest
+</pre></td></tr></table>
+<h3>Добавить в мост bridge-guest созданный ранее виртуальный беспроводной интерфейс wlan-guest</h3>
+<table><tr><td><pre>
+/interface bridge port
+add bridge=bridge-guest interface=wlan-guest
+</pre></td></tr></table>
+<h3>Настройка базовых сетевых служб: DHCP, DNS, NAT</h3>
+<ol>
+<li>Назначить IP-адрес
+<table><tr><td><pre>
+/ip address
+add address=192.168.134.1/24 interface=wlan-guest  network=192.168.134.0
+</pre></td></tr></table>
+<li>Создать pool_guest 
+<table><tr><td><pre>
+/ip pool
+add name=pool_guest ranges=192.168.134.100-192.168.134.199
+</pre></td></tr></table>
+<li> DHCP
+<table><tr><td><pre>
+/ip dhcp-server network
+add address=192.168.134.0/24 dns-server=<b>8.8.8.8</b> gateway=192.168.134.1
+
+/ip dhcp-server
+add add-arp=yes address-pool=pool_guest disabled=no interface=bridge-guest name=dhcp_guest
+</pre></td></tr></table>
+
+<li> Добавить гостевую сеть в address-list
+<table><tr><td><pre>
+/ip firewall address-list
+add address=192.168.134.0/24 list=<b>Guest</b>
+</pre></td></tr></table>
+
+<li>NAT
+<table><tr><td><pre>
+/ip/firewall/nat 
+add action=masquerade chain=srcnat out-interface=lo out-interface-list=WAN src-address-list=<b>Guest</b>
+</pre></td></tr></table>
+<li>Фильтр
+<p>Не забыть поднять правили выше...
+<table><tr><td><pre>
+/ip/firewall/filter
+add action=accept chain=forward comment="Acsess form LAN" src-address-list=<b>Guest</b>
+</pre></td></tr></table>
+<li>Изолируем гостевую сеть при помощи брандмауэра
+<table><tr><td><pre>
+/ip firewall filter
+add action=drop chain=forward in-interface=bridge-guest out-interface=bridge_lan
+</pre></td></tr></table>
+
+</ol>
+
+</body>
+  </html>
