@@ -19,6 +19,19 @@
 <li><h3>Отображение даты окончания активации</h3>
 <p><code>slmgr.vbs /xpr</code></p>
 
+<li><h3>System Protection</h3>
+<p>Включить защиту системы 
+<p><code>Enable-ComputerRestore -Drive "C:\"</code></p>
+
+<p>Задать размер хранилища 
+<p><code>vssadmin Resize ShadowStorage /For=C: /On=C: /MaxSize=8%</code></p>
+<p><code>vssadmin Resize ShadowStorage /For=C: /On=C: /MaxSize=8GB</code></p>
+
+<p>Проверить текущее состояние:
+<p><code>vssadmin list shadowstorage</p></code>
+
+<li><h3>Отключить cortana</h3>
+<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
 
 <li><h3>Задать часовой пояс Украина/Киев</h3>
 <p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
@@ -44,22 +57,7 @@
 <p><code>winget install vlc</code> - Установить программу
 
 
-<li><h3>System Protection</h3>
-<p>Включить защиту системы 
-<p><code>Enable-ComputerRestore -Drive "C:\"</code></p>
 
-<p>Задать размер хранилища 
-<p><code>vssadmin Resize ShadowStorage /For=C: /On=C: /MaxSize=3%</code></p>
-<p><code>vssadmin Resize ShadowStorage /For=C: /On=C: /MaxSize=8GB</code></p>
-
-
-<li><h3>Отключить cortana</h3>
-<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
-
-
-<li><h3>Добавить Microsoft Store</h3>
-Powershell -> admin ->
-<code>wsreset -i</code></p>
 
 <li><h3>Электропитание</h3>
 <p>Отобразить схемы электропитания</P>
@@ -86,11 +84,20 @@ Powershell -> admin ->
 Панель управления->Электропитание->слева - Действие кнопок питания
 <li><h3>Автозагрузка</h3>
 <p><code>shell:startup</code></p>
+
+
+<hr>
 <li><h3>Включить «Просмотр фотографий» Win 10/11 LTSC</h3>
 <a href=https://g-ek.com/prosmotr-fotografij-v-windows-10>link</a> | 
 <a href=reg/ON_Windows_10_Photo_Viewer.reg>reg On</a> | 
 <a href=reg/OFF_Windows_10_Photo_Viewer.reg>reg Off</a> | 
 <a href=reg/Windows_10_Photo_Viewer.zip>Download reg</a> | 
+
+<li><h3>Добавить Microsoft Store</h3>
+Powershell -> admin ->
+<code>wsreset -i</code></p>
+
+
 
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>

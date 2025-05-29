@@ -12,14 +12,17 @@
 <h2>Windows. After install</h2>
 
 <h3>Powershell</h3>
-<pre>
+
+<table><tr><td><pre>
+Enable-ComputerRestore -Drive "C:\"
 Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
 Set-TimeZone -Id "FLE Standard Time"
 irm https://massgrave.dev/get | iex
-</pre>
+</pre></td></tr></table>
 
 <h3>cmd</h3>
-<pre>
+<table><tr><td><pre>
+vssadmin Resize ShadowStorage /For=C: /On=C: /MaxSize=8%
 net stop w32time
 w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"
 w32tm /config /reliable:yes
@@ -29,7 +32,7 @@ w32tm /resync
 powercfg -h on
 slmgr.vbs /xpr
 </pre>
-
+</pre></td></tr></table>
 
 </ol>
 </body>
