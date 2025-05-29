@@ -9,17 +9,38 @@
   </head>
 
 <body>
-<h2>Шаг 1. Пердварительные натсройки</h2>
-<p>сбрасываем настройки маршрутизатора без создания дефолтной конфигурации </p>
+<table><tr valign="top"><td>
+<h2>Бинарный файл резервной копии</h2>
+<p><code>/system backup save name=my_mikrotik_backup</code>
+<p>Преимущества:
+<ol>
+<li>Быстрое и полное восстановление.
+<li>Сохраняет пароли и чувствительную информацию.
+</ol>
+<p>Недостатки:
+<ol>
+<li>Нельзя просмотреть или отредактировать в текстовом редакторе.
+<li>Можно восстановить только на ту же или более новую версию RouterOS, и желательно на ту же модель 
+</ol>
+</td>
+<td>
+<h2>Экспорт конфигурации в виде скрипта</h2>
+<p><code>/export file=my_config</code>
+<p>Сохранить конфигурацию в отдельный файл
+</td></tr></table>
+<hr>
 
-<code>/system reset-configuration no-defaults=yes skip-backup=yes</code>
-<p>Если нужно сохранить пользоватлей - дописываем </p>
-<code>keep-users=yes</code>
-<p> Задаем пользователя, пароль. Отключаем ненужные сервисы </a>
+<h2>Шаг 1. Пердварительные настройки</h2>
+<ol>
+<li>Сбрасываем настройки маршрутизатора без создания дефолтной конфигурации </p>
+<code>/system reset-configuration no-defaults=yes skip-backup=yes keep-users=yes</code>
+<p>Cохранить пользоватлей: keep-users=yes
+<li> Задаем пользователя, пароль. 
 <p><code>/use add name=<b>USER</b> password=<b>PASSWORD!!!</B> group=full </code></p>
 <p><code>/user disable admin </code></p>
+<li>Отключаем ненужные сервисы 
 <p><code>/ip service disable api,api-ssl,ftp,telnet,www-ssl</code></p>
-<p>Задать имя компании</p>
+<li>Задать имя компании</p>
 <p><code>/system identity set name=<b>Company</B></code></p>
 
 
