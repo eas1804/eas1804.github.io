@@ -11,11 +11,12 @@
 <body>
 <h2>NAT</h2>
 <p>Добавляем интерфейсы в интерфейслисты</p>
+<h3>Внимательно c интерфейсом WAN</h3>
 <p><code>/interface list </p></code>
 <p><code>add comment=defconf name=WAN </p></code>
 <p><code>add comment=defconf name=LAN </p></code>
 <p><code>/interface list member </p></code>
-<p><code>add interface=<b><u>ether1</u></b> list=WAN</code>  Внимательно </p>
+<p><code>add interface=<b><u>ether1</u></b> list=WAN</code> </p>
 <p><code>add interface=bridge_lan list=LAN </p></code>
 
 <h3>SrcNat</h3>

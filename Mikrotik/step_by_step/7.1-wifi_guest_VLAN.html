@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik. Wifi гостевой VLAN</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Гостевой Wifi vlan</h2>
+<ol>
+<li>Создаем гостевой профиль безопасности
+Имя guest,Пароль 987654321
+<table><tr><td><pre>
+/interface wireless security-profiles
+add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=<b>guest</b> supplicant-identity="" wpa2-pre-shared-key=<b>987654321</b>
+</pre></td></tr></table>
+
+
+<li>Добавить новый виртуальный интерфейс wlan1-guest
+<P>Указать MAC-адрес, который следует взять у <b> физического </b>беспроводного интерфейса.
+<P> Указываем гостевой vlan 20
+<table><tr><td><pre>
+/interface wireless add disabled=no keepalive-frames=disabled mac-address=DE:2C:6E:2D:B8:A6 master-interface=<b>wlan1</b> \
+multicast-buffering=disabled name=wlan1_guest security-profile=guest ssid=Sli_guest_2.4GHz vlan-id=<b>20</b> wds-default-cost=1 wps-mode=disabled
+</pre><td><tr><table>
+
+<p>Если у вас двухдиапазоvнная точка доступа и вы желаете создать в каждом из них гостевые сети, то создайте еще один виртуальный беспроводной интерфейс и укажите в качестве Master Interface второй беспроводной адаптер.  Рабочую частоту, ширину канала, мощность и прочие настройки виртуальный адаптер наследует от физического интерфейса. Т.е. гостевая сеть будет работать на том же канале и с такими же параметрами, как и основная.
+<table><tr><td><pre>
+/interface wireless add disabled=no keepalive-frames=disabled mac-address=DC:2C:6E:2D:B8:A7 master-interface=wlan2 \
+multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_guest_5Ghz vlan-id=20 wds-default-cost=1 wps-mode=disabled
+</pre><td><tr><table>
+
+<li>Изоляция клиентов в гостевом Wi-Fi
+<p><code>/interface wireless set wlan1_guest default-forwarding=no</code>
+<p><code>/interface wireless set wlan2_guest default-forwarding=no</code>
+
+<li>Создаем bridge для гостевого vlan с именем bridge_guest
+<p><code>/interface bridge add name=bridge_guest vlan-filtering=yes</code>
+
+<li>Создать VLAN интерфейс
+Создадим VLAN 20 интерфейс c именем bridge_guest.20 в bridge_guest
+<p><code>/interface vlan add interface=bridge_guest name=bridge_guest.20 vlan-id=20</code>
+
+<li>Настроить порт для VLAN
+<p>Назначаем виртуальным  портам wlan1_guest, wlan2_guest метку VLAN номер 20
+<p>И добавляем этот физический порт в мост bridge_guest
+<p>Эти порты не должны входить в другие мосты
+<table><tr><td><pre>
+/interface bridge  port
+add bridge=bridge_guest interface=wlan1_guest pvid=20
+add bridge=bridge_guest interface=wlan2_guest pvid=20
+</pre><td><tr><table>
+
+<li>Определим тегированные и нетегированне порты
+Определяем wlan1_guest, wlan2_guest как нетегированные порты
+<br>А bridge_lan – тегированный
+
+<p><code>/interface bridge vlan add bridge=bridge_guest tagged=bridge_guest untagged=wlan1_guest,wlan2_guest vlan-ids=20</code>
+<p>То есть, если на bridge_lan придет кадр, помеченный vlan 10, он его примет. Трафик из любого другого VLAN будет отброшен
+
+
+<li>Назначить IP адрес
+<p><code>/ip address add address=192.168.20.1/24 interface=bridge_guest.20 network=192.168.20.0</code>
+
+<li>Создаем pool
+<p><code> /ip/ pool/ add name="pool20" ranges="192.168.20.20-192.168.20.250"</code>
+
+<li>Создаем DHCP
+<p><code>/ip dhcp-server add  address-pool=pool20 disabled=no  interface=bridge_guest.20 name=dhcp20</code>
+<p><code>/ip dhcp-server network add address=192.168.20.0/24 dns-server=8.8.8.8 gateway=192.168.20.1</code>
+
+
+
+
+
+</ol>
+
+</body>
+  </html>
