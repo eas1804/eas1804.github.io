@@ -9,18 +9,42 @@
   </head>
 
 <body>
-<h2>Безопасность</h2>
-
-
-<p><code>/ip neighbor discovery-settings set discover-interface-list=LAN </code></p>
-
+<h2>Безопасность ПОГРАНИЧНОГО устройства</h2>
+<ol>
+<li>Ограничить доступ к MAC-серверу MikroTik только с интерфейсов из списка LAN
 <p><code>/tool mac-server set allowed-interface-list=LAN </code></p>
+<p>ограничивает: Доступ по MAC-уровню ко всем MAC-сервисам
+<p>включает/разрешает: Доступ к MAC Telnet, MAC Ping, MAC API и др.
 
 <p><code>/tool mac-server mac-winbox set allowed-interface-list=LAN</code></p>
+<p>ограничивает: Доступ по MAC-адресу только для Winbox
+<p>включает/разрешает: MAC Winbox-подключения
 
 
+<p>Разница между /tool mac-server и /tool mac-server mac-winbox
+<p>/tool mac-server — общий доступ по MAC (включает MAC Telnet, MAC Ping, базовые службы).
+<p>/tool mac-server mac-winbox — конкретно доступ к Winbox по MAC-адресу, т.е. то, что ты видишь во вкладке "Neighbors" в Winbox и к чему можешь подключиться без IP.
 
+<li>Отключает встроенный Bandwidth Test Server 
 <p><code>/tool bandwidth-server set enabled=no </code></p>
+<p>это сервис, который позволяет другим устройствам запускать тест скорости (Bandwidth Test) к твоему маршрутизатору через Winbox или CLI.
+<p> Включить обратно
+<p><code>/tool bandwidth-server set enabled=yes</code></p>
+<li> Настройка, на каких интерфейсах MikroTik будет отправлять и принимать пакеты протокола обнаружения соседей (Neighbor Discovery)
+<p><code>/ip neighbor discovery-settings set discover-interface-list=LAN </code></p>
+<p>Neighbor Discovery позволяет видеть в Winbox соседние MikroTik-устройства в локальной сети (через протоколы типа MikroTik Discovery Protocol — MNDP).
+<p> На время тестирования можно включить  MNDP (MikroTik Neighbor Discovery Protocol) на всех интерфейсах
+<p><code>/ip neighbor discovery-settings set discover-interface-list=all</code></p>
+
+</ol>
+
+<h2> Вернуть натсройки по умолчанию</h2>
+<table><tr><td><pre>
+/ip neighbor discovery-settings set discover-interface-list=default
+/tool mac-server set allowed-interface-list=all
+/tool mac-server mac-winbox set allowed-interface-list=all
+/tool bandwidth-server set enabled=yes
+</pre></td></tr></table>
 
 </body>
   </html>

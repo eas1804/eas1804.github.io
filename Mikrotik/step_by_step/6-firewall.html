@@ -29,7 +29,7 @@
 <p><code>/ip firewall filter</p></code>
 <p><code>add action=accept chain=input connection-state=established,related comment="established, related connections"</p></code>
 <p><code>add action=drop chain=input   connection-state=invalid  comment="Drop invalid"</p></code>
-<p><code>add action=accept chain=input dst-port=8291,22,80 protocol=tcp src-address-list=allowed_to_router comment="Acsess from My IP (allowed_to_router)”</p></code>
+<p><code>add action=accept chain=input dst-port=8291,22,80 protocol=tcp src-address-list=allowed_to_router comment="Acsess from My IP (allowed_to_router)"</p></code>
 <p><code>add action=accept chain=input comment="icmp on" protocol=icmp src-address-list=allowed_to_router</p></code>
 <p><code>add action=drop chain=input comment="other DROP!!!!"</p></code>
 <hr>

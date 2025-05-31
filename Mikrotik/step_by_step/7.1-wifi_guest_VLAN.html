@@ -40,6 +40,9 @@ multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_gu
 <li>Создаем bridge для гостевого vlan с именем bridge_guest
 <p><code>/interface bridge add name=bridge_guest vlan-filtering=yes</code>
 
+<li>Добавляем интерфейс в список LAN
+<p><code>add interface=bridge_guest list=LAN</code>
+
 <li>Создать VLAN интерфейс
 Создадим VLAN 20 интерфейс c именем bridge_guest.20 в bridge_guest
 <p><code>/interface vlan add interface=bridge_guest name=bridge_guest.20 vlan-id=20</code>
@@ -73,9 +76,11 @@ add bridge=bridge_guest interface=wlan2_guest pvid=20
 <p><code>/ip dhcp-server network add address=192.168.20.0/24 dns-server=8.8.8.8 gateway=192.168.20.1</code>
 
 
-
-
-
+<li> Закрыть досуп из vlan 20 во vlan 10
+<p><code>/ip firewall address-list add address=192.168.10.0/24 list=Vlan10</code>
+<p><code>/ip firewall address-list add address=192.168.20.0/24 list=Vlan20</code>
+<p><code>/ip firewall firewall add action=drop chain=forward dst-address-list=Vlan10 src-address-list=Vlan20</code>
+<p>Поднимаем правило
 </ol>
 
 </body>
