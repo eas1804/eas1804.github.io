@@ -9,11 +9,8 @@
   </head>
 
 <body>
-<h2>Шаг 3. LAN vlan</h2>
-<p> !!! Подключаемся через интерфейс, который не входит во VLAN
-<p> Дано: <b>Acsess ports</b> - подключекние к конечнім устройствам: ether2,ether3,ether4
-<p> <b>Trunk port</b> - подключение к соседнему коммутатору: <b>ether5</b>
-
+<h2>Шаг 3. LAN vlan. Acsess ports</h2>
+<p> Мы подключены к роутеру через ether2. Дабавим его в vlan в самом конце
 <p> Основная сеть будет в vlan10
 <ol>
 <li>Создаем bridge для vlan с именем bridge_lan</P>
@@ -24,24 +21,23 @@
 <p><code>/interface vlan add interface=bridge_lan name=bridge_lan.10 vlan-id=10</p></code>
 
 <li>Настроить порт для VLAN
-<p>Назначаем физическом портам ether2,ether3 и ether4 метку VLAN  номер 10
+<p>Назначаем физическом портам ether3,ether4 и ether5 метку VLAN  номер 10
 <br>И добавляем этот физический порт в мост bridge_lan
 <br>Эти порты не должны входить в другие мосты
 <table><tr><td><pre>
 /interface bridge  port
-add bridge=bridge_lan interface=ether2 pvid=10
 add bridge=bridge_lan interface=ether3 pvid=10
 add bridge=bridge_lan interface=ether4 pvid=10
+add bridge=bridge_lan interface=ether5 pvid=10
 
 add bridge=bridge_lan interface=wlan1 pvid=10
 add bridge=bridge_lan interface=wlan2 pvid=10
 </pre></td></tr></table>
 <li>Определим тегированные и нетегированне порты
-<p>Определяем ether3,ether4,ether2,wlan1,wlan2 как нетегированные порты
-<p>А bridge_lan, <b>ether5</b> – тегированный
+<p>Определяем ether3,ether4,ether5,wlan1,wlan2 как нетегированные порты
+<p>А bridge_lan – тегированный
 
-<p><code>/interface bridge vlan add bridge=bridge_lan tagged=bridge_lan,ether5 untagged=ether2,ether3,ether4,wlan1,wlan2 vlan-ids=10</p></code>
-
+<p><code>/interface bridge vlan add bridge=bridge_lan tagged=bridge_lan untagged=ether3,ether4,ether5,wlan1,wlan2 vlan-ids=10</p></code>
 <p>То есть, если на bridge_lan придет кадр, помеченный  vlan 10, он его примет.
 Трафик из любого другого VLAN будет отброшен
 <li>Назначить IP адрес
@@ -61,34 +57,8 @@ add  address-pool=pool10 disabled=no  interface=bridge_lan.10 name=dhcp10
 /ip dhcp-server network
 add address=192.168.10.0/24 dns-server=8.8.8.8 gateway=192.168.10.1
 </pre></td></tr></table>
-<hr>
-<h2> На свиче, который подключен к маршрутизатору </h2>
-<pre>
-/interface bridge
-add name=bridge1 vlan-filtering=yes
-
-/interface vlan
-add interface=bridge1 name=vlan111 vlan-id=111
-
-/interface bridge port
-add bridge=bridge1 interface=ether1
-
-add bridge=bridge1 interface=ether2 pvid=30
-add bridge=bridge1 interface=ether3 pvid=30
-
-add bridge=bridge1 interface=ether4 pvid=40
-add bridge=bridge1 interface=ether5 pvid=40
+Переставляем кабель в ether3,4,5
 
 
-
-/interface bridge vlan
-add bridge=bridge1 tagged=bridge1,ether1 vlan-ids=111
-add bridge=bridge1 tagged=bridge1,ether1 untagged=ether3,ether2 vlan-ids=30
-add bridge=bridge1 tagged=bridge1,ether1 untagged=ether4,ether5 vlan-ids=40
-
-/ip dhcp-client
-add default-route-tables=main interface=vlan111
-
-</pre>
 </body>
   </html>
