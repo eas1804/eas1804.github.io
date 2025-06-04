@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Net Powershell</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<ol>
+<li>Открыть порт  3000 tcp в брандмауэре Windows
+<p><code>New-NetFirewallRule -DisplayName "Allow TCP Port 3000" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow</code>
+
+<li>Проверить правило по порту 3000 tcp в брандмауэре Windows
+ждать результат около минуты
+<table><tr><td><pre>
+Get-NetFirewallRule | Where-Object {
+   ($_ | Get-NetFirewallPortFilter | Where-Object {
+   $_.LocalPort -eq 3000 -and $_.Protocol -eq "TCP"
+     })}
+</pre></td></tr></table>
+
+<li>Ищем по части имени
+<p>Например, если ищете правила с «3000» в названии:
+<p><code>Get-NetFirewallRule | Where-Object DisplayName -like "*3000*"</code>
+
+
+<li>Быстрая проверка по имени (если создавали как "Allow TCP Port 3000")
+<p><code>Get-NetFirewallRule -DisplayName "Allow TCP Port 3000" | Get-NetFirewallPortFilter</code>
+
+<li>Отобразить  имена всех правил брандмауэра Windows
+<p><code>Get-NetFirewallRule | Select-Object DisplayName</code>
+
+
+
+</body>
+  </html>

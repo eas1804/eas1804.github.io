@@ -9,20 +9,19 @@
   </head>
 
 <body>
-<h2>Test-NetConnection</h2>
-<p>Test-NetConnection или tnc — готовый к использованию командлет для проверки сетевого подключения появился в PowerShell 4.0 (Windows 2012 R2, Windows 8.1)
-<ol>
-<li> Проверить интернет соединение
-<p><code>tnc</code> Оторазит ip и имя сетевой карты, черз коорую идет подключение</p>
-<li> Проверить tcp порт
-<p><code>tnc i.ua -p 443</code></p>
-Не выполнять ping  -InformationLevel Quiet
-<p><code>tnc i.ua -port 443 -InformationLevel Quiet</code></p>
-<li> Можно указать имя службы (HTTP, RDP, SMB, WINRM)
-<p><code>tnc unac.mlp.pp.ua -CommonTCPPort RDP</code></p>
-<li>TraceRoute
-<p><code>tnc  i.ua   -TraceRoute
 
+<h2>Показать все сетевые адаптеры</h2>
+<p><code>Get-NetAdapter</code>
+<h2>Показать все виртуальные коммутаторы Hyper-V</h2>
+<p><code>Get-VMSwitch</code>
+<h2>Показать все IP-адреса, привязанные к интерфейсам</h2>
+<ol>
+<li>Вывести только основные данные:
+<p><code>Get-NetIPAddress | Select-Object InterfaceAlias, IPv4Address, PrefixLength</code>
+<li>Фильтр только IPv4-адресов:
+<p><code>Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias, IPAddress</code>
+<li>Компактный список в строках
+<p><code>Get-NetIPAddress | Format-Table -AutoSize</code>
 
 
 </body>
