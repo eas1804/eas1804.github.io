@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -31,22 +32,36 @@ $listener = [System.Net.Sockets.TcpListener]3000; $listener.Start(); while ($tru
 </pre></td></tr></table>
 <p> Поверить
 <p><code>netstat -aont | findstr  3000</code>
-<p>var 2. Этот скрипт создаёт HTTP-сервер, который отвечает на входящие запросы на порту 3000 простым HTML-контентом. Запустите его в PowerShell с правами администратора.
+<p>var 2. Этот скрипт создаёт HTTP-сервер, который отвечает на входящие запросы на порту 3000 
+<p>PowerShell HTTP-сервер (работает на Windows Server)
 <table><tr><td><pre>
-$listener = [System.Net.HttpListener]::new()
+$listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://+:3000/")
 $listener.Start()
-Write-Host "Сервер запущен на порту 3000..."
+Write-Host "HTTP-run in tcp 3000..."
 
 while ($listener.IsListening) {
     $context = $listener.GetContext()
     $response = $context.Response
-    $responseString = "<html><body><h3>PowerShell is WORK!</h3></body></html>"
-    $buffer = [System.Text.Encoding]::UTF8.GetBytes($responseString)
+
+    $html = "<html><body><h3>Hello from PowerShell HTTP Server</h3></body></html>"
+    $buffer = [System.Text.Encoding]::UTF8.GetBytes($html)
+
+    $response.ContentLength64 = $buffer.Length
+    $response.ContentType = "text/html"
     $response.OutputStream.Write($buffer, 0, $buffer.Length)
-    $response.Close()
+    $response.OutputStream.Close()
 }
 </pre></td></tr></table>
+<p> Сохранить в файл и запутить 
+<p>	<a href=http_server_port3000.ps1>Download ps web server</a>
+Запустить от Админа
+<p><code>powershell -ExecutionPolicy Bypass -File .\http_server_port3000.ps</code>
+<h2>Проверяем</h2>
+<p><code>telnet 127.0.0.1 3000</code>
+<p><code>curl 127.0.0.1:3000</code>
+
+
 
 </body>
   </html>
