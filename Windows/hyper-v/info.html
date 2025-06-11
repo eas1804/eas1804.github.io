@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyper-v</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Просмотр  информации</h2>
+
+<ol>
+<li>Просмотр детальной информации о ВМ
+ <p><code>Get-VM -Name "Имя_ВМ" | Format-List *</code></p>
+
+<li> Информация о дисках
+ <p><code>Get-VMHardDiskDrive -VMName "Имя_ВМ"</code></p>
+
+<li> Информация о сетевых адаптерах
+<p><code>Get-VMNetworkAdapter -VMName "Имя_ВМ"</code></p>
+
+<li> Информация о памяти
+<p><code>Get-VMMemory -VMName "Имя_ВМ"</code></p>
+<li> Информация о Процессоре 
+<p><code>Get-VMProcessor -VMName "Имя_ВМ"</code></p>
+
+<li>Определить поколение в ВМ </p>
+<p><code>Get-VM Имя_ВМ | Select-Object Name, Generation</code></p>
+
+
+</ol>
+</body>
+  </html>

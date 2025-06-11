@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyper-v</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3>Backup Hyper-v</h3>
+Download 
+<p><code>https://github.com/ColiseoSoftware/hypervbackup/releases</code></p>
+<p>Нужен .Net Framework 3.5
+<table><tr><td><pre>
+SET VM=Debian_15_5
+SET IGNORE=E:\VHD\Debian_backup\Debian_backup_disk2.vhdx
+SET OUTPUT=D:\Backup_Debian
+C:\Portatable\HyperVBackup.exe -l %VM% -i %IGNORE% -o %OUTPUT% -d --outputformat {0}_{2:yyyy-MM-dd}
+</pre></td></tr></table>
+
+</body>
+  </html>

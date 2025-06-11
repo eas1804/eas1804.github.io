@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyper-v</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3>Экспорт/Импорт</h3>
+<li>Экспорт ВМ
+<p><code>Export-VM -Name SC3 -Path "D:\Hyper-V\SC3Clone"</code></p>
+
+<li>Импорт ВМ. Просто зарегистрировать ВМ по месту
+<p><code>Import-VM -Path ′D:\Hyper-V\SC3\Virtual Machines\4e782fc5-8a82-4311-8627-b69ab2e894f5.xml′</code></p>
+
+В параметре Path указываем расположение xml-файла конфигурации
+или
+<p><code>Import-VM -Path 'C:\path\2B91FEB3-F1E0-4FFF-B8BE-29CED892A95A.vmcx'</code></p>
+
+<li>	Восстановление
+Чтобы импортировать виртуальную машину, указав собственный путь для файлов виртуальной машины, выполните следующую команду, заменяя примеры собственными значениями:
+
+<p><code>Import-VM -Path 'C:\vm export path\2B91FEB3-F1E0-4FFF-B8BE-29CED892A95A.vmcx' -Copy -VhdDestinationPath 'D:\Virtual Machines\WIN10DOC' -VirtualMachinePath 'D:\Virtual Machines\WIN10DOC'</code></p>
+
+</body>
+  </html>

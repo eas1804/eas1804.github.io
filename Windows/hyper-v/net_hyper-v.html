@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyper-v</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h3>Сети </h3>
+<li>       Отбразить список сетевых адаптеров
+<p><code>Get-NetAdapter</code></p>
+
+<li>       Переименовать сетевой адаптер
+<p><code>get-netadapter -ifindex 4 | rename-netadapter -newname 'LAN_Hyper'</code></p>
+Параметр ifindex (номер адаптера) берется из Get-NetAdapter
+
+Выберите сетевой адаптер для использования с коммутатором Hyper-V и разместите экземпляр в переменной $net.
+
+<p><code>$net = Get-NetAdapter -Name 'Ethernet'</code></p>
+
+<li>       создать новый виртуальный коммутатор Hyper-V.
+<p><code>New-VMSwitch -Name "External VM Switch" -AllowManagementOS $True -NetAdapterName $net.Name</code></p>
+
+<li>       Просмотр виртуальных коммутаторв Hyper-V.
+<p><code>Get-VMSwitch</code></p>
+
+</ul>
+</body>
+  </html>
