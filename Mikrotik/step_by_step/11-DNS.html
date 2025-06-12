@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mikrotik в качестве DNS сервера</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Mikrotik в качестве DNS сервера</h2>
+<ol>
+<h3><li>Разрешить DNS запросы</h3>
+<p><code>/ip dns set servers=8.8.8.8,208.67.222.222 allow-remote-requests=<b>yes</b></code>
+<p>allow-remote-requests - разрешить/запретить DNS запросы к Mikrotik
+
+<h3><li>Разрешить запросы из Lan_Home</h3>
+<table><tr><td><pre>
+/ip/firewall
+add action=accept chain=input comment="allow LAN DNS UDP" dst-port=53 in-interface-list=LAN protocol=udp src-address-list=Lan_Home
+add action=accept chain=input comment="allow LAN DNS TCP" dst-port=53 in-interface-list=LAN protocol=tcp src-address-list=Lan_Home
+</pre></td></tr></table>
+<p> Перенести правилоа выше в списке
+<h3><li>DHCP сервер </h3>
+<p> Задать Mikrotik как DNS сервер
+<table><tr><td><pre>
+/ip dhcp-server network
+add address=172.18.111.0/24 <b>dns-server=172.18.111.1</b> gateway=172.18.111.1
+</pre></td></tr></table>
+</body>
+  </html>
