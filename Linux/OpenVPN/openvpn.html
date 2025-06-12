@@ -29,11 +29,35 @@ push "dhcp-option DNS 208.67.222.222"
 push "dhcp-option DNS 208.67.220.220"
 </pre></td></tr></table>
 
+
+
 <li>Доступ к сети Клиента 
 <p>Например, сеть у клиенов: 192.168.1.0 255.255.255.0
 <p><code>route 192.168.1.0 255.255.255.0</code>      #Сделать доступной сеть за Клиентом </p>
-
 </ul>
+
+
+<p>В Скрипте это прописано. Уточнение по nft.
+<p> For tcp 1194
+
+
+<table><tr><td><pre>
+
+PORT=1194
+ETH=<b>ens18</b>
+PROTO=tcp
+
+/sbin/nft add table inet filter
+/sbin/nft add chain inet filter input {type filter hook input priority 0\;}
+/sbin/nft add table ip nat
+/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
+
+/sbin/nft add rule inet filter input $PROTO dport $PORT counter accept
+/sbin/nft add rule ip nat postrouting oif $ETH masquerade 
+
+/sbin/nft list ruleset
+</pre></td></tr></table>
+
 
 
 <li>Downlload Config tcp: <a href="6_create_client_crt_TCP.sh">Client in 5 Files</a>  | 
@@ -48,27 +72,22 @@ push "dhcp-option DNS 208.67.220.220"
 <li> <b>Доменное имя</b> в переменной IP. По умолчанию IP адрес WAN
 </ul>
 <br>имя клиента указать после имени скрипта
-<li> For tcp 1194
 
 
+<li>Дать доступ клиенту к сетям за сервером
+
+<p><code>cat /etc/openvpn/ccd/Ivan</code>
 <table><tr><td><pre>
-
-PORT=80
-ETH=<b>ens18</b>
-PROTO=tcp
-
-/sbin/nft add table inet filter
-/sbin/nft add chain inet filter input {type filter hook input priority 0\;}
-/sbin/nft add table ip nat
-/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
-
-/sbin/nft add rule inet filter input $PROTO dport $PORT counter accept
-/sbin/nft add rule ip nat postrouting oif $ETH masquerade 
-
-/sbin/nft list ruleset
+# disable
+push "route 10.0.2.0   255.255.255.0"
+push "route 10.0.0.0   255.255.255.0"
+push "route 10.0.255.0 255.255.255.0"
 </pre></td></tr></table>
-</ol>
-<p> Проверить синтакчис конфигурационного файла
+<p>Не забыть $ETH для других сетевых карт
+<p><code>/sbin/nft add rule ip nat postrouting oif $ETH masquerade </code></p>
+<p> Шлюз на другие сетевых картах не нужно добавлять
+
+<li> Проверить синтакчис конфигурационного файла
 <p><code>openvpn --config /etc/openvpn/server.conf --verb 3</code></p>
 
 <h3> Gate</h3>
@@ -86,7 +105,7 @@ chain PREROUTING {
 и перечитать файл
 <p><code> nft -f  /etc/nftables.conf</code></p>
 <hr>
-<h2>Windows</h2>
+<h2>Windows client</h2>
 <h3> Bat файл для запуска </h3>
 <p>Задать переменные
 <p><code>set OVPN_PROFILE=Osipenko_04_2025.ovpn</code>
@@ -99,13 +118,14 @@ chain PREROUTING {
 1 - запретить сохранять пароль
 <p> Закрыть/открыть  OpenVPN GUI
 <hr>
+<p><a href=Client_Debain.html>Client Debain</a>
+<p><a href=OpenVPN_add.html> Add info</a>
+<hr>
 <h3>Expamle config</h3>
 <a href="server_udp.txt">Server UDP</a> |
 <a href="server_tcp.txt">Server TCP</a> |
 <a href="Client_udp_tcp.txt">Client UDP TCP</a>
-<hr>
-<p><a href=Client_Debain.html>Client Debain</a>
-<p><a href=OpenVPN_add.html> Add info</a>
+
 
 </body>
   </html>

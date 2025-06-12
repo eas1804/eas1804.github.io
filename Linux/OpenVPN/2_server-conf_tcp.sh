@@ -1,13 +1,15 @@
 #!/bin/bash
 
 ETH=ens18
+PORT=1194
+
 
 echo "part 1. Install soft and config networt"
 echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 
 /sbin/nft add table inet filter
 /sbin/nft add chain inet filter input {type filter hook input priority 0\;}
-/sbin/nft add rule inet filter input udp dport $PORT counter accept
+/sbin/nft add rule inet filter input tcp dport $PORT counter accept
 
 /sbin/nft add table ip nat
 /sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
@@ -27,7 +29,7 @@ systemctl  start  nftables.service
 # create congif server
 mkdir /etc/openvpn/ccd
 FILE_SRV=/etc/openvpn/server_tcp.conf
-PORT=1194
+
 
 
 echo "port $PORT"  >$FILE_SRV
@@ -68,6 +70,8 @@ cat $FILE_SRV
 
 systemctl start openvpn@server_tcp
 systemctl status openvpn@server_tcp
+systemctl enable  openvpn@server_tcp
+
 cat /var/log/openvpn/openvpn_tcp.log
 
 ip a | grep tun
