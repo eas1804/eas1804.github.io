@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ремонт</title>
+    <title>Outlook</title>
     <link rel="stylesheet" href="../style.css">
   </head>
 
 <body>
+<ol>
 <h2> Microsoft Outlook</h2>
-<h3>Перенети базу на другой диск</h3>
+<h3><li>Перенети базу на другой диск</h3>
 <p>1. Открыть консоль от имени администратора
 
 <p> 2. Перенесение папки данных MS Outlook в новое место
@@ -20,14 +21,14 @@
 <p><code>mklink /j "%USERPROFILE%\Local Settings\Application Data\Microsoft\Outlook" "d:\Mail"</code></p>
 
 
-
-<h3>Поисковая система Windows отключена. </h3>
+<h3><li>Поиск</h3>
+<p>Поисковая система Windows отключена. 
 <p>При использовании функции мгновенного поиска Outlook не сможет выводить результаты быстрого поиска, пока этот компонент Windows не будет запущен.
 
 <p>Проверить состояние службы
 <p><code>sc query WSearch</code></p>
 
-<p>если слуюжа не запущена, спуcтить ее
+<p>если служба не запущена, нужно ее запустить
 <p><code>Set-Service -Name WSearch -StartupType Automatic</code></p>
 <p><code>Start-Service -Name WSearch</code></p>
 
@@ -37,7 +38,7 @@
 <br>Если необходимо, добавьте новые места для индексирования, нажав кнопку "Изменить".
 <p>В "Параметрах индексирования" нажмите "Дополнительно", затем в разделе "Устранение неполадок" нажмите "Перестроить".
 
-<h3>Cache Outlook</h3>
+<h3><li>Cache Outlook</h3>
 <p><code>C:\Users\%user%\AppData\Local\Microsoft\Outlook</code></p>
 </body>
   </html>
