@@ -28,5 +28,143 @@ add action=accept chain=input comment="allow LAN DNS TCP" dst-port=53 in-interfa
 /ip dhcp-server network
 add address=172.18.111.0/24 <b>dns-server=172.18.111.1</b> gateway=172.18.111.1
 </pre></td></tr></table>
+<h3> Отключить рекламу</h3>
+<table><tr><td><pre>
+/ip dns static
+add address=127.0.0.1 name=ads.viber.com type=A
+add address=::1 name=ads.viber.com type=AAAA
+add address=127.0.0.1 name=ads.aws.viber.com type=A
+add address=::1 name=ads.aws.viber.com type=AAAA
+add address=127.0.0.1 name=ads-d.viber.com type=A
+add address=::1 name=ads-d.viber.com type=AAAA
+add address=127.0.0.1 name=images.taboola.com type=A
+add address=::1 name=images.taboola.com type=AAAA
+add address=127.0.0.1 name=api.taboola.com type=A
+add address=::1 name=api.taboola.com type=AAAA
+add address=127.0.0.1 name=rmp.rakuten.com type=A
+add address=::1 name=rmp.rakuten.com type=AAAA
+add address=::1 name=s-clk.rmp.rakuten.com type=AAAA
+add address=127.0.0.1 name=s-clk.rmp.rakuten.com type=A
+add address=127.0.0.1 name=s-bid.rmp.rakuten.com type=A
+add address=::1 name=s-bid.rmp.rakuten.com type=AAAA
+
+add address=127.0.0.1  type=A name=cdn.viber.com
+add address=127.0.0.1  type=A name=analytics.viber.com
+add address=127.0.0.1  type=A name=trk.viber.com
+add address=127.0.0.1  type=A name=static.viber.com
+add address=127.0.0.1  type=A name=marketing.viber.com
+add address=::1  type=AAAA name=cdn.viber.com
+add address=::1  type=AAAA name=analytics.viber.com
+add address=::1  type=AAAA name=trk.viber.com
+add address=::1  type=AAAA name=static.viber.com
+add address=::1  type=AAAA name=marketing.viber.com
+
+
+
+### IP v4
+/ip dns static
+# Microsoft telemetry & ads
+add address=127.0.0.1  type=A name=telemetry.microsoft.com 
+add address=127.0.0.1  type=A name=telemetry.appex.bing.net
+add address=127.0.0.1  type=A name=vortex.data.microsoft.com
+add address=127.0.0.1  type=A name=vortex-win.data.microsoft.com
+add address=127.0.0.1  type=A name=watson.telemetry.microsoft.com
+add address=127.0.0.1  type=A name=ads.msn.com
+add address=127.0.0.1  type=A name=a.ads1.msn.com
+add address=127.0.0.1  type=A name=a.ads2.msads.net
+add address=127.0.0.1  type=A name=ad.doubleclick.net
+add address=127.0.0.1  type=A name=adnexus.net
+add address=127.0.0.1  type=A name=adnxs.com
+add address=127.0.0.1  type=A name=msedge.net
+add address=127.0.0.1  type=A name=web.vortex.data.microsoft.com
+
+# Google ads
+add address=127.0.0.1  type=A name=pagead2.googlesyndication.com
+add address=127.0.0.1  type=A name=googleads.g.doubleclick.net
+add address=127.0.0.1  type=A name=adservice.google.com
+add address=127.0.0.1  type=A name=ad.doubleclick.net
+
+# Facebook / Instagram / Meta tracking
+add address=127.0.0.1  type=A name=graph.facebook.com
+add address=127.0.0.1  type=A name=connect.facebook.net
+add address=127.0.0.1  type=A name=ads.facebook.com
+add address=127.0.0.1  type=A name=ads.instagram.com
+
+# TikTok telemetry
+add address=127.0.0.1  type=A name=log.tiktokv.com
+add address=127.0.0.1  type=A name=mon.tiktokv.com
+add address=127.0.0.1  type=A name=api2.musical.ly
+
+# Amazon tracking / ads
+add address=127.0.0.1  type=A name=fls-na.amazon.com
+add address=127.0.0.1  type=A name=telemetry.amazon.com
+
+# Taboola & Rakuten (как у тебя уже были)
+add address=127.0.0.1  type=A name=images.taboola.com
+add address=127.0.0.1  type=A name=api.taboola.com
+add address=127.0.0.1  type=A name=rmp.rakuten.com
+add address=127.0.0.1  type=A name=s-clk.rmp.rakuten.com
+add address=127.0.0.1  type=A name=s-bid.rmp.rakuten.com
+
+# Viber Ads
+add address=127.0.0.1  type=A name=ads.viber.com
+add address=127.0.0.1  type=A name=ads.aws.viber.com
+add address=127.0.0.1  type=A name=ads-d.viber.com
+
+
+### IPv6
+/ip dns static
+# Microsoft telemetry & ads
+add address=::1 type=AAAA name=telemetry.microsoft.com
+add address=::1 type=AAAA name=telemetry.appex.bing.net
+add address=::1 type=AAAA name=vortex.data.microsoft.com
+add address=::1 type=AAAA name=vortex-win.data.microsoft.com
+add address=::1 type=AAAA name=watson.telemetry.microsoft.com
+add address=::1 type=AAAA name=ads.msn.com
+add address=::1 type=AAAA name=a.ads1.msn.com
+add address=::1 type=AAAA name=a.ads2.msads.net
+add address=::1 type=AAAA name=ad.doubleclick.net
+add address=::1 type=AAAA name=adnexus.net
+add address=::1 type=AAAA name=adnxs.com
+add address=::1 type=AAAA name=msedge.net
+add address=::1 type=AAAA name=web.vortex.data.microsoft.com
+
+# Google ads
+add address=::1 type=AAAA name=pagead2.googlesyndication.com
+add address=::1 type=AAAA name=googleads.g.doubleclick.net
+add address=::1 type=AAAA name=adservice.google.com
+add address=::1 type=AAAA name=ad.doubleclick.net
+
+# Facebook / Instagram / Meta tracking
+add address=::1 type=AAAA name=graph.facebook.com
+add address=::1 type=AAAA name=connect.facebook.net
+add address=::1 type=AAAA name=ads.facebook.com
+add address=::1 type=AAAA name=ads.instagram.com
+
+# TikTok telemetry
+add address=::1 type=AAAA name=log.tiktokv.com
+add address=::1 type=AAAA name=mon.tiktokv.com
+add address=::1 type=AAAA name=api2.musical.ly
+
+# Amazon tracking / ads
+add address=::1 type=AAAA name=fls-na.amazon.com
+add address=::1 type=AAAA name=telemetry.amazon.com
+
+# Taboola & Rakuten (как у тебя уже были)
+add address=::1 type=AAAA name=images.taboola.com
+add address=::1 type=AAAA name=api.taboola.com
+add address=::1 type=AAAA name=rmp.rakuten.com
+add address=::1 type=AAAA name=s-clk.rmp.rakuten.com
+add address=::1 type=AAAA name=s-bid.rmp.rakuten.com
+
+# Viber Ads
+add address=::1 type=AAAA name=ads.viber.com
+add address=::1 type=AAAA name=ads.aws.viber.com
+add address=::1 type=AAAA name=ads-d.viber.com
+
+</pre></td></tr></table>
+
+
+ Get-DnsClientCache | Where-Object {$_.Name -like "*viber*"} | Sort-Object Name
 </body>
   </html>
