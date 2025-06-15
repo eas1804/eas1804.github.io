@@ -16,21 +16,40 @@
 
 <h3>Показать все ZFS пулы и их файловую структуру.</h3>
 <p><code>zfs list</code></p>
-
+<h3>Показать все ZFS snapshot</h3>
+ <p><code>zfs list -t snapshot</code></p>
 
 <h3>увидеть созданные ZVOL и их путь</h3>
 <p>диски находятся в формате ZFS томов (ZVOL)
 <p><code>zfs list -t volume</code></p>
 
 <h3>Прямое копирование ZFS тома (ZVOL)</h3>
-<p>Используйте команду zfs send для передачи тома виртуального диска на другой сервер:	
+<ol>
+<li>Создть моментальный снимок
 <p><code>zfs snapshot rpool/data/vm-101-disk-0@snapshot_name</p></code>
-<p>Создть моментальный снимок и отправить его через SSH на целевой сервер.
-<p><code>zfs send rpool/data/vm-101-disk-0@snapshot_name | ssh user@remote-server zfs receive rpool/data/vm-101-disk-0</code></p>
+<li>  отправить его через SSH на целевой сервер.
+<p><code>zfs <b>send</b> rpool/data/vm-101-disk-0@snapshot_name | ssh user@remote-server zfs <b>receive</b> rpool/data/vm-101-disk-0</code></p>
+<p> отображать прогресс
+<p><code>zfs send rpool/data/vm-101-disk-0@snapshot_name | <b> pv </b> | ssh user@remote-server zfs receive rpool/data/vm-101-disk-0</code></p>
+<p><code>apt install pv</code>
+<p>Если знаешь размер снапшота (например, 20G) — укажи флаг -s, чтобы pv смог точно рассчитать ETA.
+<p>Узнать размер снапшота: zfs list -t snapshot | grep vm-101-disk-0@snapshot_name
 
-<h3>нагрузка на pool</h3>
+<p><code>zfs send rpool/data/vm-101-disk-0@snapshot_name |<b> pv  -s 20G </b>| ssh user@remote-server zfs receive rpool/data/vm-101-disk-0</code></p>
+<li> (опционально) Удалить старый снапшот:
+<p><code>zfs destroy rpool/data/vm-101-disk-0@snapshot_name</code></p>
+</oL>
+
+<p> Остановить zfs send:
+Ctrl + C — это безопасно прервёт zfs send | ssh ... zfs receive.
+<p>Если используется ssh, оно закроется, и на стороне получателя (Proxmox #2) не останется "полуслепых" zvol'ов — только временный поток.
+<p>ZFS не создаёт "частичный" том — он либо принимает снапшот полностью, либо не принимает вообще.
+<p>После прерывания: в ZFS-списке на Proxmox #2 не будет rpool/data/vm-101-disk-0, если передача не завершилась.
+
+
+<h3>Hагрузка на pool</h3>
 <p><code>zpool iostat rpool</code> 
-<code>zpool iostat rpool  5</code> обновлять каждые 5 секунд
+<p><code>zpool iostat rpool  5</code> обновлять каждые 5 секунд
  
 
 <hr>

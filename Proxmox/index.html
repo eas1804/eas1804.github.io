@@ -9,7 +9,7 @@
   </head>
 
 <body>
-<h2>proxmox</h2>
+<h2>Proxmox</h2>
 <ul>
 <li><a href=cli.html> Cli</a>
 <li><a href=add.html>Действия после установки </a>
@@ -17,6 +17,20 @@
 <li><a href=client_sys.html>На Клиенте</a>
 <li><a href=ProxmoxVE-Hetzner.pdf>Установка Proxmox VE на ZFS на примере Hetzner</a>
 </ul>
-
+<hr>
+<p> Если падает сеть: (вместо eno1 - указать свою сетевую карту)
+<p><code>/usr/sbin/ethtool -K  <b>eno1</b> tso off gso off</code>
+<p> для автоматизации, добавить это в файл <code>/etc/network/interfaces </ecode>
+<table><tr><td><pre>
+auto vmbr0
+iface vmbr0 inet static
+        address 94.130.222.29/26
+        gateway 94.130.222.1
+        bridge-ports eno1
+        bridge-stp off
+        bridge-fd 0
+<b>        post-up /usr/sbin/ethtool -K  eno1 tso off gso off</b>
+</pre></td></td></table>
+<p>link: https://docs.hetzner.com/robot/dedicated-server/troubleshooting/performance-intel-i218-nic/
 </body>
   </html>
