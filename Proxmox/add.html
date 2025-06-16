@@ -23,14 +23,25 @@
 <p><code>apt update && apt upgrade -y</code>
 
 <h3>nftables.conf </h3>
-<ol>
-<li><p><code>wget https://eas1804.github.io/Proxmox/nftables.conf && mv nftables.conf  /etc/</p></code>
-<li> <p><code>systemctl  restart  nftables.service &&  systemctl  enable  nftables.service && nft list ruleset</p></code>
-</ol>
-<h3>nft restart after reboot</h3>
+<p><code>wget https://eas1804.github.io/Proxmox/nftables.conf && mv nftables.conf  /etc/</p></code>
+<h3>Запускает nftables только после завершения настройки сети</h3>
+ <p><code>mkdir   /etc/systemd/system/nftables.service.d/</p></code>
+ <p><code>nano  /etc/systemd/system/nftables.service.d/override.conf</p></code>
+<table><tr><td><pre>
+[Unit]
+After=network-online.target
+Wants=network-online.target
+</pre></tr></td></table>
+<p>After=network-online.target — запускает nftables только после завершения настройки сети.
+<p>Wants=network-online.target — добавляет зависимость, чтобы network-online.target был также активирован.
 
-<p><code>cd /root && wget https://eas1804.github.io/Proxmox/nft_restart.sh  && chmod +x nft_restart.sh</code>
-<p><code>echo "@reboot /root/nft_restart.sh" >>  /var/spool/cron/crontabs/root</code>
+<table><tr><td><pre>
+ systemctl daemon-reexec
+ systemctl daemon-reload
+ systemctl enable nftables.service
+ systemctl restart nftables.service
+</pre></tr></td></table>
+
 
 <h3> NVMe info</h3>
 <p><code>wget https://eas1804.github.io/Proxmox/nvme_info.sh </code>
