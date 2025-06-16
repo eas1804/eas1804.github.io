@@ -20,7 +20,7 @@
 <hr>
 <p> Если падает сеть: (вместо eno1 - указать свою сетевую карту)
 <p><code>/usr/sbin/ethtool -K  <b>eno1</b> tso off gso off</code>
-<p> для автоматизации, добавить это в файл <code>/etc/network/interfaces </ecode>
+<p> для автоматизации, добавить это в файл <code>/etc/network/interfaces </code>
 <table><tr><td><pre>
 auto vmbr0
 iface vmbr0 inet static
@@ -31,6 +31,7 @@ iface vmbr0 inet static
         bridge-fd 0
 <b>        post-up /usr/sbin/ethtool -K  eno1 tso off gso off</b>
 </pre></td></td></table>
+
 <p>link: https://docs.hetzner.com/robot/dedicated-server/troubleshooting/performance-intel-i218-nic/
 </body>
   </html>

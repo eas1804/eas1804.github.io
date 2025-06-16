@@ -47,6 +47,9 @@ Ctrl + C — это безопасно прервёт zfs send | ssh ... zfs rec
 <p>После прерывания: в ZFS-списке на Proxmox #2 не будет rpool/data/vm-101-disk-0, если передача не завершилась.
 
 
+<h3>Переименовать ZFS-диск</h3>
+<p><code>zfs rename OLD NEW</code> 
+<p><code>zfs renam5e rpool/data/vm-302-disk-1 rpool/data/vm-200-disk-1</code> 
 <h3>Hагрузка на pool</h3>
 <p><code>zpool iostat rpool</code> 
 <p><code>zpool iostat rpool  5</code> обновлять каждые 5 секунд

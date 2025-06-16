@@ -13,6 +13,10 @@
 <p><code>chcp 65001</code><p>
 <h2>Версия Net-Framework</h2>
 <p><code>dir %WINDIR%\Microsoft.Net\Framework\v* /O:-N /B </code><p>
+<h2>Тип носителя Hdd/SSD</h2>
+<p>Win+R <code>dfrgui</code><p>
+<p><code>Get-PhysicalDisk</code><p>
+<p><code>Get-PhysicalDisk | Select-Object FriendlyName, MediaType, Size</code><p>
 
 
 </body>
