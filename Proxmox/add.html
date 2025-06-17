@@ -9,22 +9,12 @@
   </head>
 
 <body>
-<h3>Изменить Репозиторий</h3>
- <p><code>nano /etc/apt/sources.list.d/pve-enterprise.list</p></code>
-Заменить  pve-enterprise
-<p>PVE
-<p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</p></code>
-<p>PBS
-<p><code>deb http://download.proxmox.com/debian/pbs bookworm pbs-no-subscription</p></code>
-или в /etc/apt/sources.list
-<p>Закомментировать содержимое 
-<p><code> nano /etc/apt/sources.list.d/ceph.list</code>
+<ol>
 
-<p><code>apt update && apt upgrade -y</code>
-
-<h3>nftables.conf </h3>
+<h3><li>nftables.conf </h3>
 <p><code>wget https://eas1804.github.io/Proxmox/nftables.conf && mv nftables.conf  /etc/</p></code>
-<h3>Запускает nftables только после завершения настройки сети</h3>
+<p> Создать vmbr1 для LAN
+<h4>Запускает nftables только после завершения настройки сети</h4>
  <p><code>mkdir   /etc/systemd/system/nftables.service.d/</p></code>
  <p><code>nano  /etc/systemd/system/nftables.service.d/override.conf</p></code>
 <table><tr><td><pre>
@@ -42,30 +32,57 @@ Wants=network-online.target
  systemctl restart nftables.service
 </pre></tr></td></table>
 
-
-<h3> NVMe info</h3>
+<h3><li> NVMe info</h3>
 <p><code>wget https://eas1804.github.io/Proxmox/nvme_info.sh </code>
+<h3><li>Сохранить серйиные номера носителей </h3>
+<p><code>wget https://eas1804.github.io/Proxmox/nvme_in_file.sh</code>
+
+<h3><li>Тестирование парамертров NVME</h3>
+<p>Отправляет сообщение в случае проблемы
+<p><code>wget https://eas1804.github.io/Proxmox/nvme_send_problesm_info.sh></code>
+
+
+<h3><li>Добавить ПО</h3>
+<p><code>apt install tmux mc htop -y</p></code>
+
+
+<h3><li>Изменить Репозиторий</h3>
+ <p><code>nano /etc/apt/sources.list.d/pve-enterprise.list</p></code>
+Заменить  pve-enterprise
+<p>PVE
+<p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</p></code>
+<p>PBS
+<p><code>deb http://download.proxmox.com/debian/pbs bookworm pbs-no-subscription</p></code>
+или в /etc/apt/sources.list
+<p>Закомментировать содержимое 
+<p><code> nano /etc/apt/sources.list.d/ceph.list</code>
+<p>tmux
+<p><code>apt update && apt upgrade -y</code>
+
+
+
+
  
 
-<h3>Настройить оповещения  по email</h3>
-<p> Указать правильной e-amil и пароль в 1й строке
-<p><code>wget https://eas1804.github.io/Proxmox/mail.sh </code>
+<h3><li>Настройить оповещения  по email</h3>
 <p>Протестировать
 <p><code>Datacenter-Notoficcations-Notifications Targets-Modyfy</code>
-<h3> Мониторинг Kuma, Zabbix</h3>
- <a href=https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=12&components=agent&db=&ws=>Zabbix download agent </a>
+<h3><li> Мониторинг Kuma, Zabbix</h3>
+ <a href=https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=12&components=agent_2&db=&ws=>Zabbix download agent 2 </a>
  Уточни ссылку
 <p><code>wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb</code>
 <p><code>dpkg -i zabbix-release_latest_7.0+debian12_all.deb</code>
 <p><code>apt update</code>
 <p><code>apt install zabbix-agent2 -y</code>
 
- <pre>
+<table><tr><td><pre>
  cd /etc/zabbix/
+ cp zabbix_agent2.conf  zabbix_agent2.conf.ORGN
 grep -v "^#" zabbix_agent2.conf | grep -v "^$" > 1.conf
 mv 1.conf  zabbix_agent2.conf
 nano zabbix_agent2.conf
-</pre>
+</pre></tr></td></table>
+
 </ul>
 </body>
   </html>
