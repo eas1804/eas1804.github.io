@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>7.0</version>
+    <template_groups>
+        <template_group>
+            <uuid>e960332b3f6c46a1956486d4f3f99fce</uuid>
+            <name>Templates/Server hardware</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>60b714a395114c27a92b21acfb058d47</uuid>
+            <template>Sli_nvme</template>
+            <name>Sli_nvme</name>
+            <groups>
+                <group>
+                    <name>Templates/Server hardware</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>ea7cf740f50f4cd3bc7b4899090a98b6</uuid>
+                    <name>Состояние устройства (Critical Warning) nvme0n1</name>
+                    <key>smartctl-Critical_nvme0n1</key>
+                    <delay>120m</delay>
+                    <description>Если значение != 0, значит есть предупреждение</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>cbeccfaaec8f494c928223cb964a6d0d</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Critical_nvme0n1)&lt;&gt;0</expression>
+                            <name>Состояние устройства (Critical Warning) nvme0n1</name>
+                            <priority>HIGH</priority>
+                            <description>Если значение != 0, значит есть предупреждение.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>8f3af093d15f4171bf46095230f482f3</uuid>
+                    <name>Состояние устройства (Critical Warning) nvme1n1</name>
+                    <key>smartctl-Critical_nvme1n1</key>
+                    <delay>120m</delay>
+                    <description>Если значение != 0, значит есть предупреждение</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>521ed566867f444fb5473f55f8ae3e00</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Critical_nvme1n1)&lt;&gt;0</expression>
+                            <name>Состояние устройства (Critical Warning) nvme1n1</name>
+                            <priority>HIGH</priority>
+                            <description>Если значение != 0, значит есть предупреждение.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>74b748da381d438e849abf7e9d571c97</uuid>
+                    <name>Износ nvme0n1</name>
+                    <key>smartctl-PercentageUsed_nvme0n1</key>
+                    <delay>120m</delay>
+                    <triggers>
+                        <trigger>
+                            <uuid>b361f7bb13c64876a9bd026b9ce5379b</uuid>
+                            <expression>last(/Sli_nvme/smartctl-PercentageUsed_nvme0n1)&gt;70</expression>
+                            <name>Износ (PercentageUsed) nvme0n1 &gt;70%</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>8e29960684a64d8fafdaa416d1a4c52e</uuid>
+                    <name>Износ nvme1n1</name>
+                    <key>smartctl-PercentageUsed_nvme1n1</key>
+                    <delay>120m</delay>
+                    <triggers>
+                        <trigger>
+                            <uuid>103d5b4637214407925588fcb2efe163</uuid>
+                            <expression>last(/Sli_nvme/smartctl-PercentageUsed_nvme1n1)&gt;70</expression>
+                            <name>Износ (PercentageUsed) nvme1n1 &gt;70%</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>31c77f9eaf514ad6bc376413e86e1c80</uuid>
+                    <name>Доступный запас ресурса (Available Spare)  nvme0n1</name>
+                    <key>smartctl-Spare_nvme0n1</key>
+                    <delay>120m</delay>
+                    <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                    <preprocessing>
+                        <step>
+                            <type>RTRIM</type>
+                            <parameters>
+                                <parameter>%</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>0a646496a1324e51adecac967c69a593</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Spare_nvme0n1)&lt;&quot;30%&quot;</expression>
+                            <name>Доступный запас ресурса (Available Spare) nvme0n1&lt;30%</name>
+                            <priority>HIGH</priority>
+                            <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                        </trigger>
+                        <trigger>
+                            <uuid>94f764cf8b6144cfbc0902a7063c918f</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Spare_nvme0n1)&lt;&quot;50%&quot;</expression>
+                            <name>Доступный запас ресурса (Available Spare) nvme0n1&lt;50%</name>
+                            <priority>AVERAGE</priority>
+                            <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>d78a833e87bb4012b40ac7a336f935c9</uuid>
+                    <name>Доступный запас ресурса (Available Spare)  nvme1n1</name>
+                    <key>smartctl-Spare_nvme1n1</key>
+                    <delay>120m</delay>
+                    <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                    <preprocessing>
+                        <step>
+                            <type>TRIM</type>
+                            <parameters>
+                                <parameter>%</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>8f3069bb23054391adeba124b1a7cf80</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Spare_nvme1n1)&lt;&quot;30%&quot;</expression>
+                            <name>Доступный запас ресурса (Available Spare) nvme1n1&lt;30%</name>
+                            <priority>HIGH</priority>
+                            <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                        </trigger>
+                        <trigger>
+                            <uuid>115e9739b0394d9e8e75224d0e34ff38</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Spare_nvme1n1)&lt;&quot;50%&quot;</expression>
+                            <name>Доступный запас ресурса (Available Spare) nvme1n1&lt;50%</name>
+                            <priority>AVERAGE</priority>
+                            <description>Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>6c852417e4dc43268d8ffaeeec510022</uuid>
+                    <name>Температура  nvme0n1</name>
+                    <key>smartctl-Temperature_nvme0n1</key>
+                    <delay>120m</delay>
+                    <description>температурa (Temperature Sensor 1)</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>3d4feccad94b459fb018b772814e37c1</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Temperature_nvme0n1)&gt;50</expression>
+                            <name>Температура  nvme0n1 &gt;50C</name>
+                            <event_name>Температура  nvme0n1 &gt;50C</event_name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>0e8f51e7172b4171b4e2afce49cd511e</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Temperature_nvme0n1)&gt;75</expression>
+                            <name>Температура  nvme0n1 &gt;75C</name>
+                            <event_name>Температура  nvme0n1 &gt;75C</event_name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>c691399cf13f4880a8e6285c72d69ae6</uuid>
+                    <name>Температура nvme1n1</name>
+                    <key>smartctl-Temperature_nvme1n1</key>
+                    <delay>120m</delay>
+                    <triggers>
+                        <trigger>
+                            <uuid>ba41ea25fd96475589fb4729ef1e9a2a</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Temperature_nvme1n1)&gt;50</expression>
+                            <name>Температура  nvme1n1 &gt;50C</name>
+                            <event_name>Температура  nvme1n1 &gt;50C</event_name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>44c071c61d5e49af936101ae02309796</uuid>
+                            <expression>last(/Sli_nvme/smartctl-Temperature_nvme1n1)&gt;75</expression>
+                            <name>Температура  nvme1n1 &gt;75C</name>
+                            <event_name>Температура  nvme1n1 &gt;75C</event_name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>01206223cb9c41649a40d6d05a9f11e1</uuid>
+                    <name>ZFS деградация</name>
+                    <key>zfs-degraded</key>
+                    <delay>120m</delay>
+                    <description># Если значение != 0, значит есть предупреждение.</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>dd180b00b4c046cb847085fdfbde356d</uuid>
+                            <expression>last(/Sli_nvme/zfs-degraded,#1)&lt;&gt;0</expression>
+                            <name>ZFS DEGRADED</name>
+                            <priority>DISASTER</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>c2a05dd21d714a8eab2265125c5885c3</uuid>
+                    <name>ZFS online</name>
+                    <key>zfs-online</key>
+                    <description>Если значение != 1, значит есть предупреждение.</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>7353e7322db14f2e9eca046e9ac761ba</uuid>
+                            <expression>last(/Sli_nvme/zfs-online,#1)&lt;&gt;1</expression>
+                            <name>ZFS online</name>
+                            <priority>DISASTER</priority>
+                            <description>Если значение != 1, значит есть предупреждение.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+        </template>
+    </templates>
+</zabbix_export>

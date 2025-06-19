@@ -12,8 +12,11 @@
 <ol>
 
 <h3><li>nftables.conf </h3>
-<p><code>wget https://eas1804.github.io/Proxmox/nftables.conf && mv nftables.conf  /etc/</p></code>
-<p> Создать vmbr1 для LAN
+<table><tr><td><pre>
+wget https://eas1804.github.io/Proxmox/nftables.conf
+mv nftables.conf  /etc/
+</pre></tr></td></table>
+Создать vmbr1 для LAN
 <h4>Запускает nftables только после завершения настройки сети</h4>
  <p><code>mkdir   /etc/systemd/system/nftables.service.d/</p></code>
  <p><code>nano  /etc/systemd/system/nftables.service.d/override.conf</p></code>
@@ -35,11 +38,14 @@ Wants=network-online.target
 <h3><li> NVMe info</h3>
 <p><code>wget https://eas1804.github.io/Proxmox/nvme_info.sh </code>
 <h3><li>Сохранить серйиные номера носителей </h3>
+<p><code>lsblk -o NAME,SERIAL | grep  nvme > /root/SERIAL.info</code>
 <p><code>wget https://eas1804.github.io/Proxmox/nvme_in_file.sh</code>
+
+
 
 <h3><li>Тестирование парамертров NVME</h3>
 <p>Отправляет сообщение в случае проблемы
-<p><code>wget https://eas1804.github.io/Proxmox/nvme_send_problesm_info.sh></code>
+<p><code>wget https://eas1804.github.io/Proxmox/nvme_send_problesm_info.sh</code>
 
 
 <h3><li>Добавить ПО</h3>
