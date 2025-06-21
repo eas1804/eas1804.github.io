@@ -15,11 +15,12 @@
 <p><code>lsblk</code></p>
 
 <li>Форматируем диск, например /dev/sdb в GPT
-<p><code>gdisk /dev/sdb</code></p>
-<li>На 2м ске должен быть создан раздел с файловой системой 
+<p><code>gdisk /dev/sdB</code></p>
+<p> Нажимаем O  Y W Y
+<li> Cоздаем раздел с файловой системой 
 <p>для ext4
-<p><code>mkfs -t ext4 /dev/sdb</code> или
-<code>/usr/sbin/mkfs.ext4 /dev/sdb</code></p>
+<p><code>mkfs -t ext4 /dev/sdB</code> или
+<code>/usr/sbin/mkfs.ext4 /dev/sdB</code></p>
 
 <p>для XFS
 <p><code>mkfs -t xfs /dev/sdb</code>  или <code>/sbin/mkfs.xfs /dev/sdb</code></p>

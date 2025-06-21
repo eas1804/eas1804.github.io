@@ -28,7 +28,8 @@
 Смотрим топ 20 самых больших директорий:
 <p><code>du -hcx --max-depth=6 / | sort -rh | head -n 20</code></p>
 Смотрим топ 20 самых больших файлов:
-<p><code>find / -mount -ignore_readdir_race -type f -exec du -h "{}" + 2>&1 > | sort -rh | head -n 20</code></p>	
+<p><code>find / -mount -ignore_readdir_race -type f -exec du -h "{}" + 2>&1   | sort -rh | head -n 20</code></p>	
+<p><code>find . -mount -ignore_readdir_race -type f -exec du -h "{}" + 2>&1   | sort -rh | head -n 20</code></p>	
 
 </body>
   </html>
