@@ -12,7 +12,7 @@
 <h2> Backup</h2>
 <a href=https://freefilesync.org/>FreeFileSync</a>
 <h3> Упаковать каталог </h3>
-<pre>
+<table><tr><td><pre>
 @echo off
 taskkill /F /FI "ImageName eq 1c*"
 
@@ -34,17 +34,17 @@ set curdate=%dd%-%mm%-%yyyy%_%hh%-%min%
 copy  %destination%\%dd%-%mm%*  E:\Backup_in_Cloud
 
 exit /b 0
-</pre>
+</pre></td></tr></table>
 
 <p>-x	Исключить файлы или папки из архива по имени или маске.
 <br> -xr@exclude.txt 
 <p> В файле exclude.txt  прописываем
-<pre>
+<table><tr><td><pre>
 1c7
 MedocStattion
 TestBase
 2024-03-06-14-38_11.02.135_37203325.ZBK
-</pre>
+</pre></td></tr></table>
 <p>То есть исключаем каталоги 1c7, MedocStattion, TestBase
 <p> файл 2024-03-06-14-38_11.02.135_37203325.ZBK
 <p>*.tmp - все файлы с расширением tmp.
@@ -60,8 +60,9 @@ TestBase
 <p>-mx1: Этот параметр задает уровень сжатия.начение 1 означает минимальное сжатие, что приводит к более быстрому архивированию, но файлы будут занимать больше места. Возможные значения варьируются от 0 (без сжатия) до 9 (максимальное сжатие).
 <p>-ssw: Этот параметр указывает, что 7-Zip будет создавать резервные копии открытых файлов (например, если файл открыт в приложении, он будет заархивирован, чтобы сохранить его состояние).
 <p>- r	Рекурсивное архивирование для папок. Задается числом от 0 (все каталоги) до количества уровней каталогов, которые нужно включить в архив.
-<h3> Удалить старыве файлы</h3>
-<pre>
+<h3> Удалить старые файлы</h3>
+
+<table><tr><td><pre>
 rem сколько дней хранить копии
 set /a iCount = 20
 set destination="D:\Medoc_backup\db"
@@ -73,7 +74,7 @@ for /f "skip=%iCount% usebackq delims=" %%i in (
 ) do del /f /q "%destination%\%%~i"
 
 endlocal
-</pre>
+</pre></td></tr></table>
 
 <h3>Удалить поцессс</h3>
 <p><code>taskkill /F /FI "ImageName eq Open*"</code></p>
@@ -92,9 +93,9 @@ endlocal
 <li>/W:10: Время ожидания между попытками в секундах.
 <li>/LOG:C:\backup\log.txt Запись лога.
 <li>/NFL /NDL /NP: Отключение вывода информации о файлах и прогрессе.
-
+</ul>	
 <h2> UNAC. Запаковать каждую  базу в отдельный каталог</h2>
-<pre>
+<table><tr><td><pre>
 @echo off
 
 taskkill /F /FI "ImageName eq 1c*"
@@ -154,11 +155,11 @@ for /f "skip=%COUNT_FOLDER% delims=" %%G in (files.txt) do rmdir /q/s "%%G"
 
 exit 0
 
-</pre>
+</pre></td></tr></table>
 
-<h3> Упаковать каждый файл в отдельный архзив. SQL базы Him</h3>
+<h3> Упаковать каждый файл в отдельный архив. SQL базы Him</h3>
 <p>Удалить оригинальные файлы после упаковки <code>-sdel</code>
-<pre>
+<table><tr><td><pre>
 @echo off
 setlocal enabledelayedexpansion
 
@@ -186,10 +187,7 @@ for %%f in ("%source_dir%\*") do (
 
 echo Все файлы успешно архивированы.
 exit /b 0
+</pre></td></tr></table>
 
-</pre>
-
-
-</ul>
 </body>
   </html>
