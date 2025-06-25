@@ -12,48 +12,62 @@
 <h2>zabbix</h2>
 <p><a href=nvme_info.sh>nvme_info.sh</a>
 <p><a href=zabbix_agent2.conf>zabbix_agent2.conf</a>
-<p><a href=zbx_export_templates.xml>Мой шаблон Sli_nvme</a>
+<p><a href=zbx_export_templates.xml>Мой шаблон Sli_nvme</a> Templates/Server hardware
 
 
 
 <h2>Скрипт сбора метрик</h2>
-### Файл разместить в /etc/zabbix/scripts
+<p><code>/etc/zabbix/scripts/nvme_info.sh</code>
+
+
 <table><tr><td><pre>
 #!/bin/bash
 
 PATH_INFO="/etc/zabbix/scripts/info"
 mkdir -p "$PATH_INFO"
 
+
+# Метрики носителей
 for dev in nvme0n1 nvme1n1; do
     OUT=$(smartctl -a /dev/$dev 2>/dev/null)
     echo "$OUT" | grep "Percentage Used" | sed 's/[^0-9]*//g' > "$PATH_INFO/Percentage_$dev.txt"
+# износ (Percentage Used)
+	
     echo "$OUT" | grep "Temperature Sensor 1" | awk '{print $4}' > "$PATH_INFO/Temperature_$dev.txt"
+# температурa (Temperature Sensor 1)  менее 75 С
+	
     echo "$OUT" | grep "Critical Warning" | awk '{print $3}' > "$PATH_INFO/Critical_$dev.txt"
+# Состояние устройства (Critical Warning). Если значение != 0, значит есть предупреждение.
+
     echo "$OUT" | grep "Available Spare:" | awk '{print $3}' > "$PATH_INFO/Spare_$dev.txt"
+# Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:
+	
     echo "$OUT" | grep "Power Cycles" | awk '{print $3}' > "$PATH_INFO/PowerCycles_$dev.txt"
-#    echo "$OUT" | grep "Power On Hours" | awk '{print $4}' > "$PATH_INFO/PowerOnHours_$dev.txt"
-#    echo "$OUT" | grep "Data Units Written" | awk '{print $4}' > "$PATH_INFO/Written_$dev.txt"
-#    echo "$OUT" | grep "Data Units Read" | awk '{print $4}' > "$PATH_INFO/Read_$dev.txt"
+# Счётчик сбросов питания (Power Cycles)# Позволяет понять, как часто диск перезапускается — может быть признаком проблемы питания
+
+    echo "$OUT" | grep "Power On Hours" | awk '{print $4}' > "$PATH_INFO/PowerOnHours_$dev.txt"
+# Общее время работы (Power On Hours) . Полезно для оценки возраста устройства:
+
+    echo "$OUT" | grep "Data Units Written" | awk '{print $4}' > "$PATH_INFO/Written_$dev.txt"
+    echo "$OUT" | grep "Data Units Read" | awk '{print $4}' > "$PATH_INFO/Read_$dev.txt"
+#Счётчик перезаписей (Data Units Written/Read). Информативно для оценки нагрузки:
 done
 
-# износ (Percentage Used)
-# температурa (Temperature Sensor 1) <75
-# Состояние устройства (Critical Warning). Если значение != 0, значит есть предупреждение.
-# Доступный запас ресурса (Available Spare). Информирует, сколько ресурса осталось, %:
-# Счётчик сбросов питания (Power Cycles)# Позволяет понять, как часто диск перезапускается — может быть признаком проблемы питания
-# Общее время работы (Power On Hours) . Полезно для оценки возраста устройства:
-#Счётчик перезаписей (Data Units Written/Read). Информативно для оценки нагрузки:
 
-
+#Метрики zfs
 /sbin/zpool status | grep DEGRADED | wc -l > "$PATH_INFO"/zfs_degraded.txt
-# Если значение != 0, значит есть предупреждение.
+# pool в состоянии DEGRADED. Если значение != 0, значит есть предупреждение.
+
 /sbin/zpool list  | grep ONLINE   | wc -l > "$PATH_INFO"/zfs_online.txt
-# Если значение != 1, значит есть предупреждение.
+# Pool в состоянии Online. Если значение != 1, значит есть предупреждение.
+
+#Параметр CAP (capacity) в выводе zpool list показывает, сколько процентов пула уже занято. Мнее 70% - OK
+/sbin/zpool list | grep rpool| awk '{print $8}' > "$PATH_INFO"/zfs_cap.txt
 </pre></td></tr></table>
 
+<p><code>chmod +x  /etc/zabbix/scripts/nvme_info.sh</code>
 
-
-<h2>cat /etc/systemd/system/nvme_info.service</h2>
+<h2>/etc/systemd/system/nvme_info.service</h2>
 <table><tr><td><pre>
 
 [Unit]
@@ -70,7 +84,7 @@ Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 WantedBy=multi-user.target
 </pre></td></tr></table>
 
-<h2>cat /etc/systemd/system/nvme_info.timer</h2>
+<h2>/etc/systemd/system/nvme_info.timer</h2>
 <table><tr><td><pre>
 [Unit]
 Description=Run nvme_info script every 60 minutes
@@ -82,6 +96,19 @@ Unit=nvme_info.service
 
 [Install]
 WantedBy=timers.target
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+systemctl daemon-reload
+
+systemctl  start   nvme_info.service
+systemctl  status  nvme_info.service
+
+systemctl enable --now nvme_info.timer
+systemctl status  nvme_info.timer
+
+systemctl list-timers | grep NEXT && systemctl list-timers | grep nvme_info.timer
+
 </pre></td></tr></table>
 
 </body>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>7.0</version>
+    <version>7.2</version>
     <template_groups>
         <template_group>
             <uuid>e960332b3f6c46a1956486d4f3f99fce</uuid>
@@ -186,6 +186,37 @@
                     </triggers>
                 </item>
                 <item>
+                    <uuid>3a4c37cdf792479f8c2919ac29619a17</uuid>
+                    <name>ZFScap</name>
+                    <key>zfs-cap</key>
+                    <delay>120m</delay>
+                    <units>%</units>
+                    <description>Параметр CAP (capacity) в выводе zpool list показывает, сколько процентов пула уже занято</description>
+                    <preprocessing>
+                        <step>
+                            <type>RTRIM</type>
+                            <parameters>
+                                <parameter>%</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>e3ae395534e84c85b45ae15754a17e78</uuid>
+                            <expression>last(/Sli_nvme/zfs-cap,#1)&gt;=70</expression>
+                            <name>Cap &gt;70%</name>
+                            <priority>HIGH</priority>
+                            <description>На практике лучше всего ориентироваться на следующие уровни:
+
+Порог использования	Уровень	Описание
+&lt; 70%	OK	Всё в порядке
+≥ 70%	Warning	Начало активного заполнения пула
+≥ 85%	High	Срочное внимание! Возможны проблемы с производительностью и фрагментацией
+≥ 90-95%	Disaster	Критическое состояние, ZFS может заблокировать запись</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
                     <uuid>01206223cb9c41649a40d6d05a9f11e1</uuid>
                     <name>ZFS деградация</name>
                     <key>zfs-degraded</key>
@@ -204,6 +235,7 @@
                     <uuid>c2a05dd21d714a8eab2265125c5885c3</uuid>
                     <name>ZFS online</name>
                     <key>zfs-online</key>
+                    <delay>120m</delay>
                     <description>Если значение != 1, значит есть предупреждение.</description>
                     <triggers>
                         <trigger>
