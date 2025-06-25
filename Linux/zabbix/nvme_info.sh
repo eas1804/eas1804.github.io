@@ -1,4 +1,5 @@
 #!/bin/bash
+## 25/06/2025 ver 2
 
 PATH_INFO="/etc/zabbix/scripts/info"
 mkdir -p "$PATH_INFO"
