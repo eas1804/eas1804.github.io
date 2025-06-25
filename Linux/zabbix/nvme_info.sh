@@ -31,7 +31,7 @@ for dev in nvme0n1 nvme1n1; do
 #Счётчик перезаписей (Data Units Written/Read). Информативно для оценки нагрузки:
 done
 
-#Метрики zfs
+#Метрики ZFS
 /sbin/zpool status | grep DEGRADED | wc -l > "$PATH_INFO"/zfs_degraded.txt
 # pool в состоянии DEGRADED. Если значение != 0, значит есть предупреждение.
 

@@ -12,8 +12,17 @@
 <h2>zabbix</h2>
 <p><a href=nvme_info.sh>nvme_info.sh</a>
 <p><a href=zabbix_agent2.conf>zabbix_agent2.conf</a>
-<p><a href=zbx_export_templates.xml>Мой шаблон Sli_nvme</a> Templates/Server hardware
+<p><a href=zbx_export_templates.xml>xml шаблон </a> Templates/Server hardware/Sli_nvme
+<p><a href=zbx_export_templates.yaml> yaml шаблон</a>
 
+<table><tr><td><pre>
+mkdir /etc/zabbix/scripts
+cd /etc/zabbix/scripts
+wget https://eas1804.github.io/Linux/zabbix/nvme_info.sh
+chmod +x nvme_info.sh
+./nvme_info.sh
+ls -lt info 
+</pre></td></tr></table>
 
 
 <h2>Скрипт сбора метрик</h2>
