@@ -14,30 +14,31 @@
 <h2>Настройка сетевого интерфейса в Debian</h2>
 
 <p><code>nano /etc/network/interfaces</code></p>
-<pre>auto lo
+
+<table><tr><td><pre>
+auto lo
 iface lo inet loopback
-</pre>
+</pre></td></tr></table>
 <h3> Статический IP</h3>
-<pre>
+<table><tr><td><pre>
 auto eth0
 iface eth0 inet static
 address 192.168.1.35
 gateway 192.168.1.1
 netmask 255.255.255.0
-</pre>
+</pre></td></tr></table>
 <p>allow-hotplug eth0
 <p>"Горячее подключение" (hotplug) означает, что интерфейс будет автоматически обнаруживаться и активироваться при подключении к компьютеру или при вставке сетевого кабеля. 
 Это отличается от статической настройки интерфейса, которая всегда активна, независимо от наличия физического подключения.
 <h3>Динамический  IP</h3>
-<pre>
+<table><tr><td><pre>
 auto eth0
 iface eth0 inet dhcp
-</pre>
+</pre></td></tr></table>
 
 <h3>Мост (Bridge -vmbr0)</h3>
 
-
-<pre>
+<table><tr><td><pre>
 iface eno1 inet manual
 
 auto vmbr0
@@ -56,13 +57,13 @@ iface vmbr1 inet static
         bridge-stp off
         bridge-fd 0
         post-up echo 1 > /proc/sys/net/ipv4/ip_forward
-        post-up iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MA                                                                                             SQUERADE
-        post-down iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j                                                                                              MASQUERADE
+        post-up iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
+        post-down iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
 #virt net
-</pre>
+</pre></td></tr></table>
 
 или
-<pre>
+<table><tr><td><pre>
 auto lo
 iface lo inet loopback
 
@@ -77,7 +78,26 @@ iface vmbr0 inet static
         bridge-ports eno1
         bridge-stp off
         bridge-fd 0
-</pre>
+</pre></td></tr></table>
+
+<h3>Добавить маршрут в другую сеть до перезагрузки </h3>
+<p><code>ip route add 10.10.10.0/24 via 192.168.18.100</code>
+
+<h3>Добавить постоянный маршрут в другую сеть </h3>
+
+<p><code>exch_adm@zabbix7:~$ cat /etc/network/interfaces</code>
+
+<table><tr><td><pre>
+allow-hotplug ens18
+iface ens18 inet static
+        address 192.168.18.95/24
+        gateway 192.168.18.100
+        dns-nameservers 8.8.8.8
+        up ip route add 10.10.10.0/24 via 192.168.18.100
+</pre></td></tr></table>
+
+
+
 <h3>DNS</h3>
 
 <p><code>echo "nameserver 8.8.8.8" > /etc/resolv.conf</code></p>

@@ -58,6 +58,20 @@ PROTO=tcp
 /sbin/nft list ruleset
 </pre></td></tr></table>
 
+<h3>Более строго!!Маскарадинг только для клиентов OpenVPN</h3>
+<p><code>cat /etc/nftables.conf</code>
+<table><tr><td><pre>
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority filter; policy accept;
+
+        # Маскарадинг только для клиентов OpenVPN (tun0 -> выход через ens18)
+        ip saddr 172.31.31.0/24 oif "ens18" masquerade comment "Masquerade VPN clients only"
+    }
+}
+</pre></td></tr></table>
+
+
 
 
 <li>Downlload Config tcp: <a href="6_create_client_crt_TCP.sh">Client in 5 Files</a>  | 
