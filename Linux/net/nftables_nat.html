@@ -38,20 +38,23 @@
 
 
 <h3>Пример</h3>
-<pre>
+<p>/etc/nftables.conf
+<table><tr><td><pre>
 table ip nat {
-        chain POSTROUTING {
-                type nat hook postrouting priority filter; policy accept;
-                oifname "vmbr0" ip saddr 172.16.16.0/24 counter masquerade
-        }
+   chain POSTROUTING {
+        type nat hook postrouting priority <b>srcnat</b>; policy accept;
+        oifname "vmbr0" ip saddr 10.10.10.0/24 masquerade
+            }
 
-        chain PREROUTING {
-                type nat hook prerouting priority filter; policy accept;
-                iif "vmbr0" udp dport 1194 counter dnat to 172.16.16.2
-        }
+    chain PREROUTING {
+        type nat hook prerouting priority <b>dstnat</b>; policy accept;
+
+        iif "vmbr0" udp dport 3319 dnat to 10.10.10.2 comment "OpenVPN Diol udp"
+        iif "vmbr0" tcp dport { 80, 443 } dnat to 10.20.20.2
+        iif "vmbr0" tcp dport 10052 dnat to 10.10.10.4:10050
+    }
 }
-
-</pre>
+</pre></tr></td></table>
 
 </body>
   </html>
