@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Net cmd</title>
+    <title>net control by cmd</title>
     <link rel="stylesheet" href="../../style.css">
   </head>
 
 <body>
-<h2>net cmd</h2>
+<h2>net control by  cmd</h2>
 <h3>netstat (a b n f) </h3>
 <ol>
 <li>Отображение всех соединений в числовом порядке.
@@ -18,7 +18,42 @@
 <p><code>netstat -ab</code></p>
 <li>Отображает FQDN с информацией о подключении.
 <p><code>netstat -af</code></p>
+</ol>
+<h3>ping on/off</h3>
+<p><code>netsh advfirewall firewall add rule name="All ICMP V4" dir=in action=<b>allow</b> protocol=icmpv4</code></p>
+<p><code>netsh advfirewall firewall add rule name="All ICMP V4" dir=in action=<b>block</b> protocol=icmpv4</code></p>
 
+<h3>Включить Подключение к удаленному рабочему столу</h3>
+<p><code>netsh advfirewall firewall set rule group="remote desktop" new enable=Yes</code></p>
+
+
+<h3>Открыть порты 80, 443 и 3389 порты</h3>
+<pre>
+:: Открыть порт 3389 (Remote Desktop)
+netsh advfirewall firewall add rule name="Open Remote Desktop" dir=in action=allow protocol=TCP localport=3389 profile=any
+
+:: Открыть порт 80 (HTTP)
+netsh advfirewall firewall add rule name="Open HTTP" dir=in action=allow protocol=TCP localport=80 profile=any
+
+:: Открыть порт 443 (HTTPS)
+netsh advfirewall firewall add rule name="Open HTTPS" dir=in action=allow protocol=TCP localport=443 profile=any
+
+:: Закрыть все остальные TCP-порты (входящие) 
+netsh advfirewall firewall add rule name="Block Other TCP" dir=in action=block protocol=TCP localport=1-79,81-442,444-3388,3390-65535 profile=any
+</pre>
+
+
+<h3>export/import правил</h3>
+<p><code>netsh advfirewall export "C:\temp\WFconfiguration.wfw"</code></p>
+<p><code>netsh advfirewall import "C:\temp\WFconfiguration.wfw"</code></p>
+
+
+<h3>Включение и выключение брандмауэра</h3>
+<p><code>netsh advfirewall set allprofiles state <b>on</b></code></p>
+<p><code>netsh advfirewall set allprofiles state <b>off</b></code></p>
+
+<h3>Вернуть брандмауэр к установкам по умолчанию</h3>
+<p><code>netsh advfirewall reset</code></p>
 
 
 </body>
