@@ -1,5 +1,5 @@
 zabbix_export:
-  version: '7.2'
+  version: '7.0'
   template_groups:
     - uuid: e960332b3f6c46a1956486d4f3f99fce
       name: 'Templates/Server hardware'
@@ -14,10 +14,11 @@ zabbix_export:
           name: 'Состояние устройства (Critical Warning) nvme0n1'
           key: smartctl-Critical_nvme0n1
           delay: 120m
+          trends: '0'
           description: 'Если значение != 0, значит есть предупреждение'
           triggers:
             - uuid: cbeccfaaec8f494c928223cb964a6d0d
-              expression: last(/Sli_nvme/smartctl-Critical_nvme0n1)<>0
+              expression: last(/Sli_nvme/smartctl-Critical_nvme0n1)<>1
               name: 'Состояние устройства (Critical Warning) nvme0n1'
               priority: HIGH
               description: 'Если значение != 0, значит есть предупреждение.'
@@ -25,10 +26,11 @@ zabbix_export:
           name: 'Состояние устройства (Critical Warning) nvme1n1'
           key: smartctl-Critical_nvme1n1
           delay: 120m
+          trends: '0'
           description: 'Если значение != 0, значит есть предупреждение'
           triggers:
             - uuid: 521ed566867f444fb5473f55f8ae3e00
-              expression: last(/Sli_nvme/smartctl-Critical_nvme1n1)<>0
+              expression: last(/Sli_nvme/smartctl-Critical_nvme1n1)<>1
               name: 'Состояние устройства (Critical Warning) nvme1n1'
               priority: HIGH
               description: 'Если значение != 0, значит есть предупреждение.'
@@ -121,29 +123,6 @@ zabbix_export:
               name: 'Температура  nvme1n1 >75C'
               event_name: 'Температура  nvme1n1 >75C'
               priority: HIGH
-        - uuid: 3a4c37cdf792479f8c2919ac29619a17
-          name: ZFScap
-          key: zfs-cap
-          delay: 120m
-          units: '%'
-          description: 'Параметр CAP (capacity) в выводе zpool list показывает, сколько процентов пула уже занято'
-          preprocessing:
-            - type: RTRIM
-              parameters:
-                - '%'
-          triggers:
-            - uuid: e3ae395534e84c85b45ae15754a17e78
-              expression: 'last(/Sli_nvme/zfs-cap,#1)>=70'
-              name: 'Cap >70%'
-              priority: HIGH
-              description: |
-                На практике лучше всего ориентироваться на следующие уровни:
-                
-                Порог использования	Уровень	Описание
-                < 70%	OK	Всё в порядке
-                ≥ 70%	Warning	Начало активного заполнения пула
-                ≥ 85%	High	Срочное внимание! Возможны проблемы с производительностью и фрагментацией
-                ≥ 90-95%	Disaster	Критическое состояние, ZFS может заблокировать запись
         - uuid: 01206223cb9c41649a40d6d05a9f11e1
           name: 'ZFS деградация'
           key: zfs-degraded
@@ -157,7 +136,6 @@ zabbix_export:
         - uuid: c2a05dd21d714a8eab2265125c5885c3
           name: 'ZFS online'
           key: zfs-online
-          delay: 120m
           description: 'Если значение != 1, значит есть предупреждение.'
           triggers:
             - uuid: 7353e7322db14f2e9eca046e9ac761ba

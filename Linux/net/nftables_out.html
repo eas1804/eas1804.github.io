@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nftables. Output</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Output</h2>
+<h3>Базовый</h3>
+Блокировать неправильные  исходящие пакеты
+<pre>
+    chain output {
+        type filter hook output priority filter; policy accept;
+
+        ct state invalid counter drop comment "Drop invalid outgoing packets"
+        # Остальной трафик разрешён по умолчанию
+    }
+	</pre>
+<h3> Запретить исходящий RDP, SSH</h3>
+<pre>
+
+    chain output {
+        type filter hook output priority filter; policy accept;
+
+        # Блокируем некорректные исходящие пакеты
+        ct state invalid counter drop comment "Drop invalid outgoing packets"
+
+        # Блокируем исходящие TCP подключения к SSH и RDP
+        tcp dport {22, 3389, 3390} ct state new counter drop comment "Block outgoing SSH and RDP (TCP)"
+
+        # Блокируем исходящие UDP пакеты на порт 3389 (RDP)
+        udp dport 3389 ct state new counter drop comment "Block outgoing RDP (UDP)"
+    }
+</pre>
+</body>
+  </html>
+

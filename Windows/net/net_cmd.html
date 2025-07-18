@@ -42,6 +42,10 @@ netsh advfirewall firewall add rule name="Open HTTPS" dir=in action=allow protoc
 netsh advfirewall firewall add rule name="Block Other TCP" dir=in action=block protocol=TCP localport=1-79,81-442,444-3388,3390-65535 profile=any
 </pre>
 
+<h3>Просмотреть правила брандмауэра, в имени которых встречается "RDP"</h3>
+<p><code>netsh advfirewall firewall show rule name=all | findstr /I "RDP"</code></p>
+
+
 
 <h3>export/import правил</h3>
 <p><code>netsh advfirewall export "C:\temp\WFconfiguration.wfw"</code></p>
