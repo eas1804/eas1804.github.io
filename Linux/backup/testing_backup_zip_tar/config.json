@@ -1,0 +1,9 @@
+{
+  "backup_testing-Plan": "v1.0",
+  "autor": "SEA",
+  "backups": [
+    { "target_folder": "/mnt/colocall/mtir_v2/1c/current/"},
+    { "target_folder": "/mnt/colocall/mtir_v2/medoc/db/current/"},
+    { "target_folder": "/mnt/colocall/mtir_v2/medoc/upfk/current/"}
+  ]
+}

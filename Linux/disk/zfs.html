@@ -16,13 +16,17 @@
 
 <h3>Показать все ZFS пулы и их файловую структуру.</h3>
 <p><code>zfs list</code></p>
+
+
 <h3>Показать все ZFS snapshot</h3>
  <p><code>zfs list -t snapshot</code></p>
 
-<h3>увидеть созданные ZVOL и их путь</h3>
+<h3>Показать созданные ZVOL и их путь</h3>
 <p>диски находятся в формате ZFS томов (ZVOL)
 <p><code>zfs list -t volume</code></p>
-
+<h3> lsblk</h3>
+<p><code>lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT,UUID</code>
+<p><code>lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT,UUID | grep ntfs</code>
 <h3>Прямое копирование ZFS тома (ZVOL)</h3>
 <ol>
 <li>Создть моментальный снимок
@@ -61,6 +65,9 @@ Ctrl + C — это безопасно прервёт zfs send | ssh ... zfs rec
 <h3>Проверки целостности данных и устранения ошибок</h3>
 <p><code>zpool scrub rpool </p></code>
 <p>если ошибки повторяются при каждом scrub — один или несколько дисков начинают "сыпаться"
+
+
+
 <hr>
 <p><a href=https://habr.com/ru/articles/742286/>Dedup Windows vs Linux, MS снова “удивит”?</a>
 </body>
