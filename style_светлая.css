@@ -1,0 +1,62 @@
+/* Основной стиль страницы */
+body {
+  background-color: #fdfdfd;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  margin: 0;
+  padding: 0 20px;
+  line-height: 1.6;
+}
+
+/* Заголовки */
+h1 {
+  font-size: 32px;
+  color: #2a7ae2;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Абзацы и списки */
+p, li {
+  font-size: 16px;
+  margin: 12px 0;
+}
+
+/* Ссылки */
+a {
+  color: #2a7ae2;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #1a5fb4;
+  text-decoration: underline;
+}
+
+/* Особая ссылка */
+#dynamic-link {
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+/* Общий стиль для <code> и <pre> */
+code,
+pre {
+  font-family: 'Fira Code', monospace;
+  font-size: 15px;
+  background-color: #f0f0f0;     /* Светло-серый фон */
+  color: #000000;                /* Чёрный текст */
+  border: 1px solid #ccc;        /* Светлая окантовка */
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Специально для многострочного блока */
+pre {
+  overflow-x: auto;
+  margin: 20px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

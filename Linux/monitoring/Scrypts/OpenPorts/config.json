@@ -1,0 +1,9 @@
+{
+  "backup_testing-Plan": "v1.0",
+  "autor": "SEA",
+  "backups": [
+    { "target_folder": "pbs.mlp.pp.ua"},
+    { "target_folder": "vpn.mtir.com.ua"},
+    { "target_folder": "vpn.diol.kiev.ua"}
+  ]
+}

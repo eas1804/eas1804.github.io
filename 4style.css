@@ -1,0 +1,62 @@
+/* Основной стиль страницы: тёмная тема */
+body {
+  background-color: #121212;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0 20px;
+  line-height: 1.6;
+}
+
+/* Заголовки */
+h1 {
+  font-size: 32px;
+  color: #4dabf7; /* Голубой акцент */
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Абзацы и списки */
+p, li {
+  font-size: 16px;
+  margin: 12px 0;
+}
+
+/* Ссылки */
+a {
+  color: #4dabf7;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #82cfff;
+  text-decoration: underline;
+}
+
+/* Особая ссылка */
+#dynamic-link {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Общий стиль для <code> и <pre> */
+code,
+pre {
+  font-family: 'Fira Code', monospace;
+  font-size: 15px;
+  background-color: #1e1e1e;     /* Очень тёмный фон */
+  color: #f8f8f2;                /* Светлый текст */
+  border: 1px solid #444;        /* Тёмно-серая окантовка */
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Для <pre> — добавим прокрутку и отступы */
+pre {
+  overflow-x: auto;
+  margin: 20px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
