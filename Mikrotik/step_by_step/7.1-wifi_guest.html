@@ -20,6 +20,13 @@ add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=<b>guest
 
 <h3>Добавить новый виртуальный интерфейс wlan-guest</h3>
 Указать MAC-адрес, который следует взять у <b> физического </b>беспроводного интерфейса.
+
+<table><tr><td><pre>
+/interface wireless
+add disabled=no keepalive-frames=disabled mac-address=D6:01:C3:D0:09:79 master-interface=wlan1 \
+    multicast-buffering=disabled name=wlan-guest security-profile=guest ssid=Encanto_Guest \
+    wds-default-cost=1 wps-mode=disabled
+</pre></td></tr></table>
 <table><tr><td><pre>
 /interface/wireless
 add disabled=no keepalive-frames=disabled mac-address=<b>1A:FD:74:D8:E6:8B</b> master-interface=wlan1 multicast-buffering=disabled name=<b>wlan-guest</b> \
