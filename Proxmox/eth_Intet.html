@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Если падает сеть</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+
+<h2>Проблема с сетевыми картами Intel i218/i219</h2>
+<p> Если падает сеть: 
+<ol>
+<li> Выяснить, это Intel i218/i219
+<p><code>lspci | grep -i eth |grep Intel | grep 218</code>
+<p><code>lspci | grep -i eth |grep Intel | grep 219</code>
+<li> Если Intel i218/i219, отключить tso, gso
+<p>вместо eno1 - указать свою сетевую карту
+<p><code>/usr/sbin/ethtool -K  <b>eno1</b> tso off gso off</code>
+<li> для автоматизации, добавить это в файл <code>/etc/network/interfaces </code>
+<table><tr><td><pre>
+auto vmbr0
+iface vmbr0 inet static
+        address 94.130.222.29/26
+        gateway 94.130.222.1
+        bridge-ports eno1
+        bridge-stp off
+        bridge-fd 0
+<b>        post-up /usr/sbin/ethtool -K  eno1 tso off gso off</b>
+</pre></td></td></table>
+<li>Проверить состояние
+ <p><code>ethtool -k eno1 | grep tcp-segmentation-offload</code>
+ <p><code>ethtool -k eno1 | grep generic-segmentation-offload</code>
+
+</ol>
+<a href=https://docs.hetzner.com/robot/dedicated-server/troubleshooting/performance-intel-i218-nic/>link</a>
+</body>
+  </html>
