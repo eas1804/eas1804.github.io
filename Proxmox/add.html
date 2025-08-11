@@ -53,6 +53,23 @@ Wants=network-online.target
 
 
 <h3><li>Изменить Репозиторий</h3>
+<H5>Верcия 9</H5>
+<table><tr><td><pre>
+cat <<EOF > /etc/apt/sources.list.d/pve-no-subscription.sources
+Types: deb
+URIs: http://download.proxmox.com/debian/pve
+Suites: bookworm
+Components: pve-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-release-bookworm.gpg
+EOF
+</pre></td></tr><table>
+ 
+ <table><tr><td><pre>
+ echo "Enabled: no" >> /etc/apt/sources.list.d/ceph.sources
+ echo "Enabled: no" >> /etc/apt/sources.list.d/pve-enterprise.sources
+</pre></td></tr><table>
+
+<H5>Верcия 8</H5>
  <p><code>nano /etc/apt/sources.list.d/pve-enterprise.list</p></code>
 Заменить  pve-enterprise
 <p>PVE
