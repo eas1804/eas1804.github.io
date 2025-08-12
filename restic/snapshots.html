@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Restic. Snapshots</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+<body>
+<h2>Отобразить список снапшотов и их статистику</h2>
+<h3>Windows по SSH</h3>
+
+<table><tr><td><pre>
+@echo off
+
+set RESTIC_PASSWORD_FILE=C:\Users\us\restic-password.txt
+set REMOTE_HOST=backup12345.backup.1cloudlab.com
+set REMOTE_USER=backup12345
+set REMOTE_PATH=/backup/restic/company/
+set SSH_KEY_PATH=C:/Users/exch_adm/colocall.key
+
+
+
+echo =============отобразить все snapshots  ==================
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
+    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
+snapshots
+
+echo =============отобразить  snapshots c определенным тегом --tag=%TAG% ==================
+set %TAG%=1c
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
+    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
+snapshots --tag=%TAG%
+
+echo =============отобразить  статистику snapshots  ==================
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
+    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
+stats
+
+echo =============отобразить  реальный размер репозитория  ==================
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
+    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
+stats --mode  raw-data
+
+
+exit 0
+</pre></td></tr></table>
+
+</body>
+

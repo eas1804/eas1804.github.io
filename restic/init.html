@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Restic. init</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+<body>
+<h2>Инициировать репозиторий. Windows</h2>
+<p>Если клиент ssh не установлен в Windows – его нужно установить. <a href=https://github.com/PowerShell/Win32-OpenSSH/releases>Вот ссылка на github</a>
+
+<h3>Локальный репозиторий</h3>
+<p><code>restic init --repo F:\Restic_backup</code>
+
+<h3>Скрипт ssh для colocall (ssh 22/tcp)</h3>
+
+<table><tr><td><pre>
+@echo off
+
+set "RESTIC_PASSWORD_FILE=C:\Users\us\restic-password.txt"
+set REMOTE_HOST=backup12345.backup.colocall.eu
+set REMOTE_USER=backup12345
+set REMOTE_PATH=/backup/restic/company/
+set SSH_KEY_PATH=C:/Users/us/colocall.key
+
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
+    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
+ init
+pause
+exit 0
+</pre></td></tr></table>
+
+<h3>Скрипт ssh для hetzner.com (ssh 23/tcp)</h3>
+
+<table><tr><td><pre>
+@echo off
+set PORT=23
+set REMOTE_HOST=u12345.your-storagebox.de
+set REMOTE_USER=u12345
+set REMOTE_PATH=/home/company
+set SSH_KEY_PATH=C:/Users/us/.ssh/stor.key
+set RESTIC_PASSWORD_FILE=C:/Users/us/restic-password.txt
+
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% -o "sftp.command=ssh -i %SSH_KEY_PATH% -p %PORT% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" init
+pause
+exit 0
+</pre></td></tr></table>
+
+
+
+</body>
+
