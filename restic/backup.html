@@ -40,9 +40,30 @@ rem Запуск резервного копирования
 restic -r %RESTIC_REPO% backup %FROM% --tag=%TAG%
 </pre></td></tr></table>
 
-<h2>Linux</h2>
-<table><tr><td><pre>
 
+
+
+<h2>Linux SSH</h2>
+<table><tr><td><pre>
+#!/bin/bash
+
+PORT=23
+REMOTE_HOST=u12345.your-storagebox.de
+REMOTE_USER=u12345
+REMOTE_PATH=/mnt/company/restic/
+SSH_KEY_PATH=/root/.ssh/company_key
+RESTIC_PASSWORD_FILE=/root/restic-password.txt
+
+FROM=/mnt/1c/
+TAG=1c
+
+export RESTIC_PASSWORD_FILE
+
+restic -r "sftp:${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}" \
+  -o "sftp.command=ssh -i ${SSH_KEY_PATH} -p ${PORT} -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} -s sftp" \
+backup ${FROM} --tag=${TAG}
 </pre></td></tr></table>
+
+
 </body>
 

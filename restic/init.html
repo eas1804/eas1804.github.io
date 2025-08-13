@@ -18,23 +18,7 @@
 <p><code>restic init --repo s3:s3.amazonaws.com/ИмяТвоегоБакета/restic</code>
 <p><code>restic init --repo s3:s3.amazonaws.com/shamoev.restic/restic</code>
 
-<h3>Скрипт ssh для colocall (ssh 22/tcp)</h3>
 
-<table><tr><td><pre>
-@echo off
-
-set "RESTIC_PASSWORD_FILE=C:\Users\us\restic-password.txt"
-set REMOTE_HOST=backup12345.backup.colocall.eu
-set REMOTE_USER=backup12345
-set REMOTE_PATH=/backup/restic/company/
-set SSH_KEY_PATH=C:/Users/us/colocall.key
-
-restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% ^
-    -o "sftp.command=ssh -i %SSH_KEY_PATH% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp" ^
- init
-pause
-exit 0
-</pre></td></tr></table>
 
 <h3>Скрипт ssh для hetzner.com (ssh 23/tcp)</h3>
 
@@ -51,6 +35,28 @@ restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% -o "sftp.command=ssh -i
 pause
 exit 0
 </pre></td></tr></table>
+
+
+
+<h3>Linux SSH</h3>
+<table><tr><td><pre>
+#!/bin/bash
+
+PORT=23
+REMOTE_HOST=u12345.your-storagebox.de
+REMOTE_USER=u12345
+REMOTE_PATH=/mnt/company/restic/
+SSH_KEY_PATH=/root/.ssh/company_key
+RESTIC_PASSWORD_FILE=/root/restic-password.txt
+
+export RESTIC_PASSWORD_FILE
+
+restic -r "sftp:${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}" \
+  -o "sftp.command=ssh -i ${SSH_KEY_PATH} -p ${PORT} -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} -s sftp" \
+  init
+
+</pre></td></tr></table>
+
 
 
 
