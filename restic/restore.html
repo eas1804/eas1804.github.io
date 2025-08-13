@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Restic. restore</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+<body>
+<h2>Восстановление<h2>
+<h3>Windows по SSH. port 23. your-storagebox.de</h3>
+ID - идентификатор snapshot
+<table><tr><td><pre>
+@echo off
+set PORT=23
+set REMOTE_HOST=u12345.your-storagebox.de
+set REMOTE_USER=u12345
+set REMOTE_PATH=/home/restic
+set SSH_KEY_PATH=C:/Users/us/.ssh/tor.key
+set RESTIC_PASSWORD_FILE=C:/Users/us/restic-password.txt
+
+
+set ID=6ab87b9a
+set TAGRET=D:\ca
+restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% -o "sftp.command=ssh -i %SSH_KEY_PATH% -p %PORT% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp"  restore %ID% --target %TAGRET%
+pause
+</pre></td></tr></table>
+</body>
+
