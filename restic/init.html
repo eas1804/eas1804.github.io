@@ -8,6 +8,42 @@
     <link rel="stylesheet" href="../style.css">
   </head>
 <body>
+<h2>Установка в Debian</h2>
+<table><tr><td><pre>
+apt update
+apt install wget bzip2 -y
+cd /tmp
+LATEST=$(curl -s https://api.github.com/repos/restic/restic/releases/latest | grep browser_download_url | grep linux_amd64.bz2 | cut -d '"' -f 4)
+wget "$LATEST" -O restic.bz2
+bunzip2 restic.bz2
+chmod +x restic
+mv restic /usr/local/bin/
+type -a restic
+</pre></td></tr></table>
+<p>Проверить
+<p><code>restic version</code>
+<p>Если есть старая верися restic
+<table><tr><td><pre>
+mv /usr/bin/restic /usr/bin/restic.old
+ln -s /usr/local/bin/restic /usr/bin/restic
+</pre></td></tr></table>
+
+<h2>Установка в Windows</h2>
+Если у вас ещё не установлен Scoop, выполните в PowerShell (от имени обычного пользователя, не администратора!):
+<table><tr><td><pre>
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+irm get.scoop.sh | iex
+</pre></td></tr></table>
+<p>Ставим restic
+<p><code>scoop install restic</code>
+<p>Проверка
+<p><code>restic version</code>
+<p>Простое обновление:
+<p><code>scoop update restic</code>
+
+
+
+
 <h2>Инициировать репозиторий. Windows</h2>
 <p>Если клиент ssh не установлен в Windows – его нужно установить. <a href=https://github.com/PowerShell/Win32-OpenSSH/releases>Вот ссылка на github</a>
 

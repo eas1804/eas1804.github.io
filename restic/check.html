@@ -19,109 +19,102 @@ CHAT_ID=33109821804
 
 <p>Высылаю лог файл по вторинкам в любом случае
 
-<h3>задать параметры:</h3>
-
-<ol>
-<li>EMAIL_REPORT
-<li>REMOTE_HOST
-<li>REMOTE_USER
-<li>REMOTE_PATH
-<li>SSH_KEY_PATH
-<li>PASSWORD_FILE
-</oL>
-
-
-<h3>Скрипт по SSH</h3>
+<h3>Скрипт Linux по SSH</h3>
 <table><tr><td><pre>
 #!/bin/bash
 
-# email для отчетов
-EMAIL_REPORT="report@domen.com"
+# --- Настройки подключения SFTP ---
+PORT=2222
+REMOTE_HOST="srv.pp.ua"
+REMOTE_USER="root"
+REMOTE_PATH="/mnt/company/restic/"
+SSH_KEY_PATH="/root/.ssh/company_key"
+RESTIC_PASSWORD_FILE="/root/restic-password.txt"
+EMAIL_REPORT=report@company.ua
+export RESTIC_PASSWORD_FILE="/root/restic-password.txt"
 
-# Параметры локального репозитория
 
-REMOTE_HOST=backup12345.backup.1cloudlab.com
-REMOTE_USER=backup12345
-REMOTE_PATH=/backup/restic/company/
-SSH_KEY_PATH=/root/.ssh/colocall.key
-PASSWORD_FILE="/root/restic-password.txt"
+# --- Теги для проверки ---
+TAGS=("1c" "custom" "Svetlana" "glbuh")
 
-# Загрузка переменных из .env для отчета в телегшрам
+# --- Telegram ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/.env"
+source "$SCRIPT_DIR/.env"   # BOT_TOKEN, CHAT_ID
 
-# IP для уведомлений
-IP_local=$( ip -4 -br a | grep UP |  awk '{print $3}')
+# --- IP для уведомлений ---
+IP_local=$(ip -4 -br a | grep UP | awk '{print $3}')
 IP_global=$(curl -s ifconfig.me)
 
-LOG_FILE=/var/log/unac_restic.log
+# --- Логирование ---
+LOG_FILE=/var/log/restic_spetscontract.log
+TODAY=$(date +%F)
+echo "TODAY is $TODAY" > "$LOG_FILE"
+exec > >(tee -a "$LOG_FILE") 2>&1
 
-#Получить  тукущцю дату
-TODAY=$(date +%F) # формат YYYY-MM-DD
-echo TODAY is $TODAY >$LOG_FILE
+# --- Путь к репозиторию SFTP + ключ и порт ---
+RESTIC_REPO="sftp:${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}"
+RESTIC_SFTP_OPTS="sftp.command=ssh -p ${PORT} -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} -s sftp"
 
-# лог файл
-exec > >(tee -a $LOG_FILE) 2>&1
+# --- Функция вывода снапшотов по тегу ---
+show_snapshots_by_tag() {
+    local tag="$1"
+    echo "------- ${tag} ---------------"
+    restic -r "$RESTIC_REPO" -o "$RESTIC_SFTP_OPTS" snapshots --tag="$tag"
+}
 
-echo ==================== "$REMOTE_HOST"=====================
-# 1. отобразить всех snapshots c тегом --tag
-<u>TAG=1c</u>
-RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-snapshots --tag=$TAG
+echo "==================== $REMOTE_HOST ====================="
 
-# 2. отобразить всех snapshots c тегом --tag
-<u>TAG=Glavbuh_Desktop</u>
-RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-snapshots --tag=$TAG
+# --- Вывод снапшотов по тегам ---
+for tag in "${TAGS[@]}"; do
+    show_snapshots_by_tag "$tag"
+done
 
-echo ====================  "$TODAY" ===========================
-# отобразить snapshots
-RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-snapshots  | grep "$TODAY"
+# --- Отображение снапшотов за сегодня ---
+echo "====================  $TODAY  ==========================="
+restic -r "$RESTIC_REPO" -o "$RESTIC_SFTP_OPTS" snapshots | grep "$TODAY"
 
-# Проверка наличия снапшота за сегодня
+# --- Проверка наличия снапшота за сегодня ---
 echo "=== Проверка наличия снапшота за $TODAY ==="
-SNAPSHOT_TODAY=$(RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-snapshots  | grep "$TODAY")
+SNAPSHOT_TODAY=$(restic -r "$RESTIC_REPO" -o "$RESTIC_SFTP_OPTS" snapshots | grep "$TODAY")
 
 if [[ -n "$SNAPSHOT_TODAY" ]]; then
-    echo "Результат: ОК — найден снапшот за $TODAY"
+    echo "✅ Снапшот за $TODAY найден:"
+    echo "$SNAPSHOT_TODAY"
 else
+    echo "⚠️ Снапшот за $TODAY не найден!"
     echo "Результат: ПРОБЛЕМА — нет снапшота за $TODAY"
-    MESSAGE="⚠️ Restic: сегодня ($TODAY) не создан снапшот в репозитории $REPO
+    MESSAGE="⚠️ Restic: сегодня ($TODAY) не создан снапшот в репозитории ${RESTIC_REPO}
 LAN: $IP_local
 WAN: $IP_global
-$0
-"
+$0"
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
         -d chat_id="$CHAT_ID" \
         -d text="$MESSAGE"
 fi
 
-#Отобразить статистику по snapshot
-RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-stats
-#Отобразить статистику по snapshot (сколько реально занимают данные в хранилище)
-RESTIC_PASSWORD_FILE="$PASSWORD_FILE" restic -r sftp:"$REMOTE_USER"@"$REMOTE_HOST":"$REMOTE_PATH" \
--o "sftp.command=ssh -i "$SSH_KEY_PATH" -o StrictHostKeyChecking=no "$REMOTE_USER"@"$REMOTE_HOST" -s sftp" \
-stats --mode  raw-data
+# --- Статистика ---
+echo "=== Статистика snapshot ==="
+restic -r "$RESTIC_REPO" -o "$RESTIC_SFTP_OPTS" stats
+echo "=== Статистика snapshot (raw-data) ==="
+restic -r "$RESTIC_REPO" -o "$RESTIC_SFTP_OPTS" stats --mode raw-data
+
+echo "------------------------"
+echo "$IP_local"
+echo "$IP_global"
+echo "$0"
 
 
 # Отправить лог по вторникам
 # Получаем номер дня недели: 2 — вторник (1 — понедельник, 7 — воскресенье)
 DOW=$(date +%u)
 
-if [[ "$DOW" -eq 2 ]]; then
+if [[ "$DOW" -eq 4 ]]; then
     echo "Вторник. Высылаю отчет на $EMAIL_REPORT "
-mutt -s "Metcon colocall  Restic  Log. IP 172.16.16.2, WAN 195.201.9.226" -- "$EMAIL_REPORT" < "$LOG_FILE"
+mutt -s "Company log restic" -- "$EMAIL_REPORT" < "$LOG_FILE"
 else
     echo "Сегодня не вторник. Отчет не высылаю"
 fi
+
 exit 0
 </pre></td></tr></table>
 
