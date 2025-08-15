@@ -20,6 +20,7 @@ CHAT_ID=33109821804
 <p>Высылаю лог файл по вторинкам в любом случае
 
 <h3>Скрипт Linux по SSH</h3>
+<p>Внимание # --- Теги для проверки ---
 <table><tr><td><pre>
 #!/bin/bash
 
@@ -108,7 +109,7 @@ echo "$0"
 # Получаем номер дня недели: 2 — вторник (1 — понедельник, 7 — воскресенье)
 DOW=$(date +%u)
 
-if [[ "$DOW" -eq 4 ]]; then
+if [[ "$DOW" -eq 2 ]]; then
     echo "Вторник. Высылаю отчет на $EMAIL_REPORT "
 mutt -s "Company log restic" -- "$EMAIL_REPORT" < "$LOG_FILE"
 else
