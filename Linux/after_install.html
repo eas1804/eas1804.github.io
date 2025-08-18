@@ -16,10 +16,13 @@
 <p># Install Soft
  <p><code>apt install tmux mc wget curl chrony sudo duf htop -y </code></p>
 <p># TimeZone + chrony
-<p><code>timedatectl set-timezone 'Europe/Kiev'</code></p>
-<p><code>echo 'server time.ntp.org.ua  iburst' >>/etc/chrony/chrony.conf</code></p>
-<p><code>echo 'server pool.ntp.org.ua iburst' >>/etc/chrony/chrony.conf</code></p>
-<p><code>systemctl enable --now chrony</code></p>
+<p><code>timedatectl set-timezone 'Europe/Kiev'</code> в 12 версии Debian</p>
+<p><code> timedatectl set-timezone 'Europe/Kyiv'</code> c 13 версии Debian</p>
+<table><tr><td><pre>
+echo 'server time.ntp.org.ua  iburst' >>/etc/chrony/chrony.conf
+echo 'server pool.ntp.org.ua iburst' >>/etc/chrony/chrony.conf
+systemctl enable --now chrony
+</pre></td></tr></table>
 <p># sudoers.d</p>
 <p><code>USER=exch_adm</code></p>
 <pre>

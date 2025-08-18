@@ -16,7 +16,7 @@
 
 <h2>Создать собственный юнит сервиса</h2>
 <p><code>nano /etc/systemd/system/send_ip.service</code></P>
-<pre>
+<table><tr><td><pre>
 [Unit]
 Description=Send Ip This server
 After=network.target
@@ -29,7 +29,7 @@ Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 [Install]
 WantedBy=multi-user.target
-</pre>
+</pre></td></tr></table>
 
 <p>Перезагружаем службу systemd:
 <p><code>systemctl daemon-reload</code>
@@ -56,41 +56,53 @@ WantedBy=multi-user.target
 <p>WorkingDirectory - для указания рабочей директории
 <p>Environment для задания переменных окружения 
 <p>User, Group чтобы запустить сервис от указанного пользователя или группы
-<pre>
+<table><tr><td><pre>
 WorkingDirectory=/var/www
 User=www-data
 Group=www-data
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-</pre>
-
+</pre></td></tr></table>
 <h3>Install</h3>
 <p>И завершает юнит секция [Install] в которой укажем уровень запуска сервиса:
-<pre>
+<table><tr><td><pre>
 [Install]
 WantedBy=multi-user.target
-</pre>
+</pre></td></tr></table>
+
 <p>lti-user.target соответствует runlevel=3 или многопользовательский режим без графики.
 <hr>
 <h2>Создать таймер</h2>
 <p><code>nano /etc/systemd/system/send_ip.timer</code>
-<pre>
-[Unit]
+<p>Каждый день в 02:02
+<table><tr><td><pre>[Unit]
 Description= Send Ip This server
 [Timer]
 OnBootSec=1m
 OnCalendar=*-*-* 02:02:00
 [Install]
 WantedBy=timers.target
-</pre>
+</pre></td></tr></table>
+
+
+С понедельника по пятинцу
+<table><tr><td><pre>
+[Unit]
+Description= check snapstots today
+[Timer]
+OnCalendar=Mon..Fri 11:33:00
+[Install]
+WantedBy=timers.target
+</pre></td></tr></table>
+
 <p>Обратите внимание, что его название соответствует файлу юнита сервиса, но имеет другое расширение.
 <p>Чтобы таймер запускался каждый день в 02:02 используем:
 <code>OnCalendar=*-*-* 02:02:00</code>
 <h3> Запустить</h3>
-<pre>
+<table><tr><td><pre>
 systemctl daemon-reexec
 systemctl daemon-reload
 systemctl enable --now backup.timer
-</pre>
+</pre></td></tr></table>
 
 <h3>Прверить результат для backup.timer</h3>
 <p><code>systemctl list-timers | grep backup</code>
@@ -105,29 +117,34 @@ systemctl enable --now backup.timer
 <li>OnCalendar - сработает по условию календаря.
 </ul>
 <p>Все указанные условия можно сочетать между собой. Например, чтобы указать запуск сервиса через полчаса после загрузки системы, а затем повторять каждые 15 минут укажем:
-<pre>[Timer]
+<table><tr><td><pre>
+[Timer]
 OnBootSec=30m
 OnUnitActiveSec=15m
-</pre>
+</pre></td></tr></table>
+
 <p>будет запускать .service каждые 15 минут после завершения предыдущего запуска, даже если он не был активирован ранее.
-<pre>
+
+<table><tr><td><pre>
 [Timer]
 OnBootSec=5min
 OnUnitInactiveSec=15min
-</pre>
+</pre></td></tr></table>
+
 <p>таймер OnCalendar, позволяет указать нужную дату и время срабатывания. 
 В качестве формата используется:
 <p><code>DOW YYYY-MM-DD HH:MM:SS</code>
 <p>Где DOW - Day Of Week - день недели, это необязательный параметр. За ним следует указание года, месяца и дня через дефис и час, минута, секунда через двоеточие. Для указания любого значения можно использовать *, перечисления делаются через запятую, а диапазоны разделяются .. (двумя точками). Знак тильды ~ можно использовать для указания количества интервалов от конца диапазона, а косую черту / в качестве модификатора. 
-<pre>
+<table><tr><td><pre>
 *:*:00 - каждую минуту
 *:15:00 - в 15 минут каждого часа
 *-*-1,5,7 *:00:00 каждый час 1, 5 и 7 числа
 Mon *-*~1 если последний день месяца понедельник
 Mon *-*~7/1 последний понедельник месяца
-</pre>
+</pre></td></tr></table>
+
 <p>Также можно использовать следующие алиасы:
-<pre>
+<table><tr><td><pre>
 minutely - ежеминутно
 hourly - каждый час
 daily - каждый день
@@ -136,14 +153,14 @@ weekly - еженедельно
 yearly - ежегодно
 quarterly - ежеквартально
 semiannually - раз в полгода
-</pre>
+</pre></td></tr></table>
 <p>systemd предоставляет удобный инструмент для проверки таких конструкций, чтобы проверить ваше условие выполните, заключив анализируемые данные в кавычки:
 <p><code>systemd-analyze calendar "Mon *-*~7/1"</code>
 <p>И завершает юнит секция [Install] со следующим содержимым:
-<pre>
+<table><tr><td><pre>
 [Install]
 WantedBy=timers.target
-</pre>
+</pre></td></tr></table>
 
 <p><code>systemctl daemon-reload</code>
 <p><code>systemctl start send_ip.timer</code>

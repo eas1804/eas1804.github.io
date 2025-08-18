@@ -143,7 +143,7 @@ WantedBy=multi-user.target
 
 
 
-root@vpn:~# cat  /etc/systemd/system/check_snapstots_today.timer
+nano /etc/systemd/system/check_snapstots_today.timer
 
 <table><tr><td><pre>
 [Unit]
@@ -153,6 +153,13 @@ OnBootSec=1m
 OnCalendar=*-*-* 11:33:00
 [Install]
 WantedBy=timers.target
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+systemctl  daemon-reload
+systemctl  start check_snapstots_today.timer
+systemctl  enable  check_snapstots_today.timer
+systemctl list-timers --all | grep check_snapstots_today.service
 </pre></td></tr></table>
 
 
