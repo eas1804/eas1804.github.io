@@ -1,19 +1,18 @@
 #!/bin/bash
 clear
 
-
-MAIL_TO=admin@srv.com
 # Порог для Available Spare Threshold - Порог доступных резервных блоков выше
 THRESHOLD_LIMIT=60
 # Порог для Temperature Sensor (°C)
 TEMPERATURE_LIMIT=80
 
-
 LOGFILE="/var/log/Threshold.log"
 exec > >(tee  "$LOGFILE") 2>&1
+
 date
 IP=$(ip -4 addr show vmbr0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 HOSTNAME=$(hostname)
+MAIL_TO=admin@srv.com
 
 fun_info () {
     echo -----------------
@@ -27,7 +26,7 @@ fun_info () {
     THRESHOLD=$(smartctl -a $DEV | grep "Available Spare Threshold" | awk -F'[:%]+' '{print $2}' | tr -d ' ')
     if [[ -n "$THRESHOLD" ]]; then
         if (( THRESHOLD > THRESHOLD_LIMIT )); then
-            echo ⚠️ Available Spare Threshold - Порог доступных резервных блоков выше ${THRESHOLD_LIMIT}% (текущее значение: ${THRESHOLD}%)"
+            echo "⚠️ Available Spare Threshold - Порог доступных резервных блоков выше ${THRESHOLD_LIMIT}% (текущее значение: ${THRESHOLD}%)"
             mutt -s "!!!Available Spare Threshold (Порог доступных резервных блоков) в $DEV  ip:$IP. ${HOSTNAME}" -- ${MAIL_TO} < ${LOGFILE}
         else
             echo "✅ Available Spare Threshold - Порог доступных резервных блоков в норме (текущее значение: ${THRESHOLD}%)"
@@ -61,5 +60,14 @@ DEV=/dev/nvme0n1
 fun_info
 DEV=/dev/nvme1n1
 fun_info
-DEV=/dev/nvme2n1
-fun_info
+
+# Отправить лог по вторникам
+# Получаем номер дня недели: 2 — вторник (1 — понедельник, 7 — воскресенье)
+DOW=$(date +%u)
+
+if [[ "$DOW" -eq 2 ]]; then
+    echo "Вторник. Высылаю отчет на ${MAIL_TO} "
+mutt -s "NVME is OK. ${IP}, ${HOSTNAME}" -- "${MAIL_TO}" < "${LOGFILE}"
+else
+    echo "Другой день. Отчет не высылаю"
+fi
