@@ -1,0 +1,7 @@
+[Unit]
+Description= check ZFS status
+[Timer]
+OnBootSec=5min
+OnCalendar=*-*-* 09:03:00
+[Install]
+WantedBy=timers.target
