@@ -80,6 +80,15 @@ OnCalendar=*-*-* 09:03:00
 WantedBy=timers.target
 </pre></td></tr></table>
 
+
+ <li> Download
+ <p><a href=sh/zfs-check.sh>zfs-check.sh</a>
+<p><code> wget -P /root https://eas1804.github.io/Proxmox/sh/zfs-check.sh</code>
+<p><code>chmod +x /root/zfs-check.sh</code>
+ <p><a href=sh/zfs-check.service>zfs-check.service</a>
+ <p><code> wget -P /etc/systemd/system/  https://eas1804.github.io/Proxmox/sh/zfs-check.service</code>
+ <p><a href=sh/zfs-check.timer>zfs-check.timer</a> 
+ <p><code>wget -P /etc/systemd/system/ https://eas1804.github.io/Proxmox/sh/zfs-check.timer</code>
 <li>  systemctl 
 <table><tr><td><pre>
 systemctl  daemon-reload
@@ -87,15 +96,7 @@ systemctl start zfs-check.service
 systemctl start zfs-check.timer
 systemctl enable  zfs-check.timer
 systemctl list-timers --all | grep  zfs-check.timer
-</pre></td></tr></table>	
- <li> Download
- <p><a href=sh/zfs-check.sh>zfs-check.sh</a>
-<p> wget -P /root https://eas1804.github.io/Proxmox/sh/zfs-check.sh
- <p><a href=sh/zfs-check.service>zfs-check.service</a>
- <p> wget -P /etc/systemd/system/  https://eas1804.github.io/Proxmox/sh/zfs-check.service
- <p><a href=sh/zfs-check.timer>zfs-check.timer</a> 
- <p> wget -P /etc/systemd/system/ https://eas1804.github.io/Proxmox/sh/zfs-check.timer
- 
+</pre></td></tr></table> 
  
  </ol>
 
