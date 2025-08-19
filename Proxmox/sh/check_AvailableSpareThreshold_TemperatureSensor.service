@@ -1,0 +1,12 @@
+[Unit]
+Description=check_AvailableSpareThreshold_TemperatureSensor
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/check_AvailableSpareThreshold_TemperatureSensor.sh
+WorkingDirectory=/root
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+[Unit]
+Description=check_AvailableSpareThreshold_TemperatureSensor
+[Timer]
+OnBootSec=5min
+OnCalendar=*-*-* 11:50:00
+[Install]
+WantedBy=timers.target

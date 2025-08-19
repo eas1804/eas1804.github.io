@@ -14,6 +14,16 @@
 <p>Если он не дает <code>"all pools are healthy"</code> - высылаем отчет на e-mail.
 <p>Высылаем лог файл по вторникам в любома случае
 <ol>
+ <li> Download
+ <p><a href=sh/zfs-check.sh>zfs-check.sh</a>
+<p><code> wget -P /root https://eas1804.github.io/Proxmox/sh/zfs-check.sh</code>
+<p><code>chmod +x /root/zfs-check.sh</code>
+<p>Задать e-mail в скрипте!
+ <p><a href=sh/zfs-check.service>zfs-check.service</a>
+ <p><code> wget -P /etc/systemd/system/  https://eas1804.github.io/Proxmox/sh/zfs-check.service</code>
+ <p><a href=sh/zfs-check.timer>zfs-check.timer</a> 
+ <p><code>wget -P /etc/systemd/system/ https://eas1804.github.io/Proxmox/sh/zfs-check.timer</code>
+
 <li>cat /root/zfs-check.sh
 <table><tr><td><pre>
 #!/bin/bash
@@ -81,15 +91,6 @@ WantedBy=timers.target
 </pre></td></tr></table>
 
 
- <li> Download
- <p><a href=sh/zfs-check.sh>zfs-check.sh</a>
-<p><code> wget -P /root https://eas1804.github.io/Proxmox/sh/zfs-check.sh</code>
-<p><code>chmod +x /root/zfs-check.sh</code>
-<p>Задать e-mail в скрипте!
- <p><a href=sh/zfs-check.service>zfs-check.service</a>
- <p><code> wget -P /etc/systemd/system/  https://eas1804.github.io/Proxmox/sh/zfs-check.service</code>
- <p><a href=sh/zfs-check.timer>zfs-check.timer</a> 
- <p><code>wget -P /etc/systemd/system/ https://eas1804.github.io/Proxmox/sh/zfs-check.timer</code>
 <li>  systemctl 
 <table><tr><td><pre>
 systemctl  daemon-reload
