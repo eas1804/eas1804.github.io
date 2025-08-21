@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox backup server</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Proxmox backup server</h2>
+<li>Выяснить версию
+<p><code>proxmox-backup-manager version</code>
+<li>Настройка обновлений
+<table><tr><td><pre>
+echo "Types: deb
+URIs: http://download.proxmox.com/debian/pbs
+Suites: trixie
+Components: pbs-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" > /etc/apt/sources.list.d/pbs-no-subscription.sources
+</pre></tr></td></table>
+
+<p><code> echo "Enabled: no" >> /etc/apt/sources.list.d/pbs-enterprise.sources</code>
+<li>Устнаовка агента Proxmox VE
+<p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</code>
+
+
+
+</body>
+  </html>

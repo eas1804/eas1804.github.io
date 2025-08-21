@@ -53,15 +53,15 @@ Wants=network-online.target
 
 
 <h3><li>Изменить Репозиторий</h3>
+<p>Узнать версию
+<p><code>pveversion</code>
 <H5>Верcия 9</H5>
 <table><tr><td><pre>
-cat <<EOF > /etc/apt/sources.list.d/pve-no-subscription.sources
-Types: deb
+echo "Types: deb
 URIs: http://download.proxmox.com/debian/pve
-Suites: bookworm
+Suites: trixie
 Components: pve-no-subscription
-Signed-By: /usr/share/keyrings/proxmox-release-bookworm.gpg
-EOF
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" >/etc/apt/sources.list.d/pve-no-subscription.sources
 </pre></td></tr><table>
  
  <table><tr><td><pre>
@@ -81,11 +81,6 @@ EOF
 <p><code> nano /etc/apt/sources.list.d/ceph.list</code>
 <p>tmux
 <p><code>apt update && apt upgrade -y</code>
-
-
-
-
- 
 
 <h3><li>Настройить оповещения  по email</h3>
 <p>Протестировать
