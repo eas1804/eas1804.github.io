@@ -4,14 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Restic. init</title>
+    <title>Restic. forget</title>
     <link rel="stylesheet" href="../style.css">
   </head>
 <body>
-<h2>Удалить конкретный snapshots. Windows</h2>
-<h3>AWS</h3>
-<p><code>restic -r s3:s3.amazonaws.com/shamoev.restic/restic forget 2590e1ba</code>
+<h3>Удалить конкретный snapshots.</h3>
+<p><code>restic -r [REPO] forget 2590e1ba</code>
 
-
+<h3>Оставить только последние 10 снимков по  тегу Medoc, удалив остальные</h3>
+<p><code>restic  -r [REPO] forget --tag Medoc --keep-last 10 --prune</code>
+<h3>Проверка перед удалением --dry-run</h3>
+<p><code>restic -r [REPO] forget --tag Medoc --keep-last 10 --prune --dry-run</code>
+<ol>
+<li>--tag Medoc – выбираем только снапшоты с тегом Medoc.
+<li>--keep-last 10 – оставить последние 10 снимков.
+<li>--prune – удаляет неиспользуемые данные из репозитория после удаления снапшотов.
+</ol>
+<p>Если много разных тегов/хостов, можно добавить <b>--host <имя_хоста></b>, чтобы фильтровать только для конкретного сервера
+<h3>Ошибка repo already locked</h3>
+<p><code>restic -r [REPO] unlock</code>
+<hr>
+<h3>Стратегия</h3>
+<h4>Каждый день</h4>
+<table><tr><td><pre>
+restic -r [REPO] forget --tag Medoc --keep-last 10
+restic -r [REPO] forget --tag 1с --keep-last 10
+restic -r [REPO] forget --tag SQL --keep-last 10
+restic -r [REPO] forget --tag users --keep-last 10
+</pre></td></tr></table>
+<p>Удаляются записи о лишних снапшотах по каждому тегу.
+<p>Реальные данные ещё остаются в хранилище, так что процесс быстрый.
+<p>Можно объединить в один запуск:
+<p><code>restic -r [REPO] forget --tag Medoc --tag 1с --tag SQL --tag users --keep-last 10</code>
+	
+<h4>Раз в неделю</h4>
+<p><code>restic -r [REPO] prune</code>
+<p>Перепаковываются и удаляются все неиспользуемые блоки.
+<p>Процесс может быть долгим, но выполняется редко.
+<p>После prune место на диске реально освобождается.
 </body>
 

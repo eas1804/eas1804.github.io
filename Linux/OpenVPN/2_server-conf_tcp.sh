@@ -12,7 +12,7 @@ echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 /sbin/nft add rule inet filter input tcp dport $PORT counter accept
 
 /sbin/nft add table ip nat
-/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
+/sbin/nft add chain nat postrouting { type nat hook postrouting priority 100\; }
 /sbin/nft add rule ip nat postrouting oif $ETH masquerade 
 
 echo '#!/usr/sbin/nft -f' > /etc/nftables.conf

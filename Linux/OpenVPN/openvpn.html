@@ -48,9 +48,10 @@ ETH=<b>ens18</b>
 PROTO=tcp
 
 /sbin/nft add table inet filter
-/sbin/nft add chain inet filter input {type filter hook input priority 0\;}
+/sbin/nft add chain inet filter input { type filter hook input priority 0; policy drop; }
+
 /sbin/nft add table ip nat
-/sbin/nft add chain nat postrouting { type nat hook postrouting priority 0\; }
+/sbin/nft add chain ip nat postrouting { type nat hook postrouting priority 100; policy accept; }
 
 /sbin/nft add rule inet filter input $PROTO dport $PORT counter accept
 /sbin/nft add rule ip nat postrouting oif $ETH masquerade 
@@ -63,7 +64,7 @@ PROTO=tcp
 <table><tr><td><pre>
 table ip nat {
     chain postrouting {
-        type nat hook postrouting priority filter; policy accept;
+        type nat hook postrouting priority srcnat; policy accept;
 
         # Маскарадинг только для клиентов OpenVPN (tun0 -> выход через ens18)
         ip saddr 172.31.31.0/24 oif "ens18" masquerade comment "Masquerade VPN clients only"
@@ -71,7 +72,17 @@ table ip nat {
 }
 </pre></td></tr></table>
 
-
+<p>Если нужен досуп в несколько сетей:
+<table><tr><td><pre>
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+        oifname "ens18" masquerade
+        oifname "ens19" masquerade
+        oifname "ens20" masquerade
+    }
+}
+</pre></td></tr></table>
 
 
 <li>Downlload Config tcp: <a href="6_create_client_crt_TCP.sh">Client in 5 Files</a>  | 
