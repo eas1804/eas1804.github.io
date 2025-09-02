@@ -155,13 +155,18 @@ OnCalendar=*-*-* 11:33:00
 WantedBy=timers.target
 </pre></td></tr></table>
 
+<p>или
+<p><code>OnCalendar=Mon..Fri *-*-* 10:33:00</code>
+
+
 <table><tr><td><pre>
 systemctl  daemon-reload
 systemctl  start check_snapstots_today.timer
 systemctl  enable  check_snapstots_today.timer
 systemctl list-timers --all | grep check_snapstots_today.service
 </pre></td></tr></table>
-
+<p>Если таймер не отображается, то - «жёсткая перезагрузка» самого процесса systemd (PID 1)
+<p><code>systemctl daemon-reexec</code>
 
 </body>
 
