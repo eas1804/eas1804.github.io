@@ -11,6 +11,13 @@
 <h2>Установка в Debian</h2>
 <table><tr><td><pre>
 apt update
+apt install restic -y 
+restic self-update
+restic version
+</pre></td></tr></table>
+или скчать свежую версию с github
+<table><tr><td><pre>
+apt update
 apt install wget bzip2 -y
 cd /tmp
 LATEST=$(curl -s https://api.github.com/repos/restic/restic/releases/latest | grep browser_download_url | grep linux_amd64.bz2 | cut -d '"' -f 4)

@@ -9,11 +9,64 @@
   </head>
 
 <body>
+<h2>Брандмауэр Windows</h2>
 <ol>
-<li>Открыть порт  3000 tcp в брандмауэре Windows
-<p><code>New-NetFirewallRule -DisplayName "Allow TCP Port 3000" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow</code>
+обратный апостроф ` ставить только в конце строки, чтобы переносить команду
+<li><h3> Закрыть порт 135 tcp</h3>
+<p><code> New-NetFirewallRule -DisplayName "Block_TCP_135_Internet" `
+  -Direction Inbound -Protocol TCP -LocalPort 135 -Action <b>Block</b></code>
 
-<li>Проверить правило по порту 3000 tcp в брандмауэре Windows
+<li><h3> Закрыть диапазон портов tcp</h3>
+Можно в одном правиле Windows Firewall указать диапазон портов.
+Закрываем все TCP-порты с 1 по 442 одним правилом:
+<table><tr><td><pre>
+New-NetFirewallRule -DisplayName "Block_TCP_1-442_Internet" `
+    -Direction Inbound `
+    -Protocol TCP `
+    -LocalPort 1-442 `
+    -Action Block `
+    -Enabled True
+</pre></td></tr></table>
+
+<h3>Закрываем все потры, кроме 443 и 3389 tcp</h3>
+<table><tr><td><pre>
+New-NetFirewallRule -DisplayName "Block_TCP_CustomRanges" `
+    -Direction Inbound `
+    -Protocol TCP `
+    -LocalPort 1-442,444-3388,3390-64535 `
+    -Action Block `
+    -Enabled True
+</pre></td></tr></table>
+
+<h3>Разрешить доступ к 3389 только с IP 121.172.72.4 и 223.27.72.4</h3>
+-InterfaceAlias "WAN" - указать, к какому интенрфейсу применить парвило
+<table><tr><td><pre>
+# Список разрешённых IP
+$AllowedIPs = "121.172.72.4","223.27.72.4"
+
+foreach ($ip in $AllowedIPs) {
+    New-NetFirewallRule -DisplayName "Allow_RDP_$ip" `
+        -Direction Inbound `
+        -Protocol TCP `
+        -LocalPort 3389 `
+        -RemoteAddress $ip `
+        -Action Allow `
+        -Enabled True `
+        -InterfaceAlias "WAN"
+}
+</pre></td></tr></table>
+
+<h3>Узнать имя интерфейса</h3>
+<p><code>Get-NetIPAddress | Select-Object InterfaceAlias, IPv4Address, PrefixLength</code>
+
+
+
+
+<li><h3>Открыть порт  3000 tcp </h3>
+<p><code>New-NetFirewallRule -DisplayName "Allow TCP Port 3000" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action <b>Allow</b></code>
+
+<li><h3>Проверить правило</h3>
+Проверить правило по порту 3000 tcp в брандмауэре Windows
 ждать результат около минуты
 <table><tr><td><pre>
 Get-NetFirewallRule | Where-Object {
@@ -22,18 +75,16 @@ Get-NetFirewallRule | Where-Object {
      })}
 </pre></td></tr></table>
 
-<li>Ищем по части имени
+<li><h3>Ищем по части имени</h3>
 <p>Например, если ищете правила с «3000» в названии:
 <p><code>Get-NetFirewallRule | Where-Object DisplayName -like "*3000*"</code>
 
 
-<li>Быстрая проверка по имени (если создавали как "Allow TCP Port 3000")
+<li><h3>Быстрая проверка по имени</h3> 
+если создавали как "Allow TCP Port 3000"
 <p><code>Get-NetFirewallRule -DisplayName "Allow TCP Port 3000" | Get-NetFirewallPortFilter</code>
 
-<li>Отобразить  имена всех правил брандмауэра Windows
+<li><h3>Отобразить  имена всех правил брандмауэра Windows</h3>
 <p><code>Get-NetFirewallRule | Select-Object DisplayName</code>
-
-
-
 </body>
   </html>
