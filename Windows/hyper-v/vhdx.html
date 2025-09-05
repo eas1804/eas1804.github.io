@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VHDX</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>VHDX</h2>
+<h3>Уменьшение размера VHDX</h3>
+<ol>
+<li>Удалить ненужные файлы с диска
+<li>Очистить корзину
+<li>Выполнить дефрагментацию (если это Windows-диск) - defrag F: /U /L /V 
+<P>/L — это ключ для оптимизации в режиме Retrim, который необходим для подготовки диска к усечению.
+<p>/U	Отображать ход выполнения операции на экране.
+<p>/V	Выводить подробные (verbose) отчеты о выполнении операции.
+<P>Альтернативный способ. 
+<p>Для Windows можно использовать утилиту sdelete от Sysinternals, чтобы обнулить свободное пространство ( sdelete -z F:).Заполнит все свободное место нулями, что идеально подходит для последующего сжатия. Этот способ часто более эффективен.
+<li>Отключить диск от виртуальной машины 
+<li>Cоздать резервную копию VHDX файла
+
+<li><code>Optimize-VHD -Path "путь_к_файлу.vhdx" -Mode Full</code>
+<p>-Mode Full — выполняет максимальное сжатие
+<LI><code>Resize-VHD -Path "путь_к_файлу.vhdx" -ToMinimumSize</code>
+<p>-ToMinimumSize, чтобы уменьшить размер до минимально возможного.
+<LI>Если сжатие недостаточно, создайте новую виртуальную машину, экспортируйте данные в новый VHDX и удалите старый файл.
+</oL>
+
+
+</body>
+  </html>
