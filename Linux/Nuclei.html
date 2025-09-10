@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nuclei</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Сканер уязвимостей Nuclei</h2>
+<h3>Install</h3>
+<table> <tr> <td> <pre>
+wget https://github.com/projectdiscovery/nuclei/releases/download/v3.4.10/nuclei_3.4.10_linux_amd64.zip
+unzip nuclei_3.4.10_linux_amd64.zip
+mv ./nuclei /usr/local/bin/nuclei
+</pre></td></tr><table>
+<h3>Scan</h3>
+<p><code>nuclei -u  Адрес	</code>
+<p> Вывести только low,medium,high,critical (-s)
+<p><code>nuclei -u  Адрес	-s low,medium,high,critical</code>
+<p>Сохранить результаты в файл (-o)
+<p><code>nuclei  Адрес -s low,medium,high,critical -o nuclei_report.txt</code>
+<p>Задать список адресов для сканирования (-L)
+<p><code>nuclei -l ip-list.txt -s low,medium,high,critical -o nuclei_report.txt</code>
+<p>Если будете сканировать сайты, веб сервера или любые другие сервисы, где есть ограничение на одновременное количество запросов, то используйте ключ  -rl или -rate-limit
+
+
+<hr>
+<p><code>nmap -iL ip-list.txt -p- -T4 -oN nmap_report.txt</code>
+</body>
+  </html>

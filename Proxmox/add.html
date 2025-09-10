@@ -86,12 +86,16 @@ Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" >/etc/apt/sources.li
 <p>Протестировать
 <p><code>Datacenter-Notoficcations-Notifications Targets-Modyfy</code>
 <h3><li> Мониторинг Kuma, Zabbix</h3>
- <a href=https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=12&components=agent_2&db=&ws=>Zabbix download agent 2 </a>
+ <a href=
+https://www.zabbix.com/ru/download?zabbix=7.0&os_distribution=debian&os_version=13&components=agent_2&db=&ws=
+>Zabbix client 2 </a>
  Уточни ссылку
-<p><code>wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb</code>
-<p><code>dpkg -i zabbix-release_latest_7.0+debian12_all.deb</code>
-<p><code>apt update</code>
-<p><code>apt install zabbix-agent2 -y</code>
+<table><tr><td><pre>
+wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb</code>
+dpkg -i zabbix-release_latest_7.0+debian12_all.deb</code>
+apt update</code>
+apt install zabbix-agent2 -y</code>
+</pre></tr></td></table>
 
 <table><tr><td><pre>
  cd /etc/zabbix/
@@ -100,6 +104,13 @@ grep -v "^#" zabbix_agent2.conf | grep -v "^$" > 1.conf
 mv 1.conf  zabbix_agent2.conf
 nano zabbix_agent2.conf
 </pre></tr></td></table>
+
+<table><tr><td><pre>
+systemctl  restart  zabbix-agent2.service
+systemctl  status   zabbix-agent2.service
+</pre></tr></td></table>
+
+
 
 </ul>
 </body>
