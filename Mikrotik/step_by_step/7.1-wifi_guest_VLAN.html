@@ -13,25 +13,22 @@
 <ol>
 <li>Создаем гостевой профиль безопасности
 Имя guest,Пароль 987654321
-<table><tr><td><pre>
-/interface wireless security-profiles
-add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=<b>guest</b> supplicant-identity="" wpa2-pre-shared-key=<b>987654321</b>
-</pre></td></tr></table>
+<p><code>
+/interface wireless security-profiles add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=<b>guest</b> supplicant-identity="" wpa2-pre-shared-key=<b>987654321</b>
+</code>
 
 
 <li>Добавить новый виртуальный интерфейс wlan1-guest
 <P>Указать MAC-адрес, который следует взять у <b> физического </b>беспроводного интерфейса.
 <P> Указываем гостевой vlan 20
 <table><tr><td><pre>
-/interface wireless add disabled=no keepalive-frames=disabled mac-address=DE:2C:6E:2D:B8:A6 master-interface=<b>wlan1</b> \
-multicast-buffering=disabled name=wlan1_guest security-profile=guest ssid=Sli_guest_2.4GHz vlan-id=<b>20</b> wds-default-cost=1 wps-mode=disabled
-</pre><td><tr><table>
+/interface wireless add disabled=no keepalive-frames=disabled mac-address=DE:2C:6E:2D:B8:A6 master-interface=<b>wlan1</b> multicast-buffering=disabled name=wlan1_guest security-profile=guest ssid=Sli_guest_2.4GHz vlan-id=<b>20</b> wds-default-cost=1 wps-mode=disabled
+</pre></tr></td></table>
 
 <p>Если у вас двухдиапазоvнная точка доступа и вы желаете создать в каждом из них гостевые сети, то создайте еще один виртуальный беспроводной интерфейс и укажите в качестве Master Interface второй беспроводной адаптер.  Рабочую частоту, ширину канала, мощность и прочие настройки виртуальный адаптер наследует от физического интерфейса. Т.е. гостевая сеть будет работать на том же канале и с такими же параметрами, как и основная.
 <table><tr><td><pre>
-/interface wireless add disabled=no keepalive-frames=disabled mac-address=DC:2C:6E:2D:B8:A7 master-interface=wlan2 \
-multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_guest_5Ghz vlan-id=20 wds-default-cost=1 wps-mode=disabled
-</pre><td><tr><table>
+/interface wireless add disabled=no keepalive-frames=disabled mac-address=DC:2C:6E:2D:B8:A7 master-interface=wlan2 multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_guest_5Ghz vlan-id=20 wds-default-cost=1 wps-mode=disabled
+</pre></tr></td></table>
 
 <li>Изоляция клиентов в гостевом Wi-Fi
 <p><code>/interface wireless set wlan1_guest default-forwarding=no</code>
@@ -40,8 +37,13 @@ multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_gu
 <li>Создаем bridge для гостевого vlan с именем bridge_guest
 <p><code>/interface bridge add name=bridge_guest vlan-filtering=yes</code>
 
-<li>Добавляем интерфейс в список LAN
-<p><code>add interface=bridge_guest list=LAN</code>
+<li>Добавляем интерфейс в список GUEST_LAN
+<table><tr><td><pre>
+/interface list
+add comment=defconf name=GUEST_LAN
+/interface list member
+add interface=bridge_guest list=GUEST_LAN
+</pre></tr></td></table>
 
 <li>Создать VLAN интерфейс
 Создадим VLAN 20 интерфейс c именем bridge_guest.20 в bridge_guest
@@ -55,7 +57,7 @@ multicast-buffering=disabled name=wlan2_guest security-profile=guest ssid=Sli_gu
 /interface bridge  port
 add bridge=bridge_guest interface=wlan1_guest pvid=20
 add bridge=bridge_guest interface=wlan2_guest pvid=20
-</pre><td><tr><table>
+</pre></td></tr></table>
 
 <li>Определим тегированные и нетегированне порты
 Определяем wlan1_guest, wlan2_guest как нетегированные порты
@@ -72,16 +74,28 @@ add bridge=bridge_guest interface=wlan2_guest pvid=20
 <p><code> /ip/ pool/ add name="pool20" ranges="192.168.20.20-192.168.20.250"</code>
 
 <li>Создаем DHCP
-<p><code>/ip dhcp-server add  address-pool=pool20 disabled=no  interface=bridge_guest.20 name=dhcp20</code>
-<p><code>/ip dhcp-server network add address=192.168.20.0/24 dns-server=8.8.8.8 gateway=192.168.20.1</code>
+<table><tr><td><pre>
+/ip dhcp-server add  address-pool=pool20 disabled=no  interface=bridge_guest.20 name=dhcp20
+/ip dhcp-server network add address=192.168.20.0/24 dns-server=8.8.8.8 gateway=192.168.20.1
+</pre></td></tr></table>
 
-
-<li> Закрыть досуп из vlan 20 во vlan 10
-<p><code>/ip firewall address-list add address=192.168.10.0/24 list=Vlan10</code>
-<p><code>/ip firewall address-list add address=192.168.20.0/24 list=Vlan20</code>
-<p><code>/ip firewall firewall add action=drop chain=forward dst-address-list=Vlan10 src-address-list=Vlan20</code>
+<li> Закрыть досуп из vlan 20 в Lan_Home
+<p><code>/ip firewall filter add action=drop chain=forward in-interface-list=GUEST_LAN dst-address-list=Lan_Home comment="Block Guest to Home"</code>
 <p>Поднимаем правило
+
+<li>Разрешить доступ в WAN
+<table><tr><td><pre>
+/ip firewall address-list add address=192.168.20.0/24 list=Guest_Vlan_20  comment=GuestVlan
+/ip firewall filter add action=accept chain=forward src-address-list=Guest_Vlan_20 
+</pre></td></tr></table>
+<p>Поднимаем правило
+<p> или
+<p><code>/ip firewall filter  add action=accept chain=forward src-address=192.168.20.0/24</code>
+
 </ol>
+
+
+
 
 </body>
   </html>

@@ -11,6 +11,43 @@
 <body>
 <h2>MikroTik scripts</h2>
 <ol>
+<li><p>autoupgrade</p>
+<tabe><tr><td><pre>
+:local BackupPassword "ПАРОЛЬотMikrotik";
+
+/system package update
+:put "Check for Update"
+check-for-updates once as-value;
+:while ([get status] = "finding out latest version...") do={
+  :put "checking.."
+  :delay 1s;
+};
+
+:if ( [get status] = "New version is available") do={
+  :log info "New version is available"
+  :put "New version is available"  
+
+  /system/backup/cloud/print as-value;
+  :if ([ :len [ /system/backup/cloud/find ] ] > 0) do={
+    :log info "Replace Old Backup"
+    :put "Replace Old Backup"
+    /system/backup/cloud/upload-file action=create-and-upload password=$BackupPassword replace=[ get ([ find ]->0) name ] as-value;
+  } else={
+    :log info "Creating Backup"
+    :put "Creating Backup"  
+    /system/backup/cloud/upload-file action=create-and-upload password=$BackupPassword as-value;
+  }
+
+  :log info "Starting Upgrade"
+  :put "Starting Upgrade"  
+  /system package update install
+}
+</pre></td></tr></table>	
+<li>auto_upgrade_firmware
+<p><code>/system/routerboard/upgrade </code>
+<li>Reoot after auto_upgrade_firmware
+<p><code>:if ([/system/routerboard/get current-firmware] != [/system/routerboard/get upgrade-firmware]) do={/system/reboot}</code></p>
+
 <li><p>reboot</p>
 <p><code>/system reboot</code></p>
 <li><p>Send my IP</p>

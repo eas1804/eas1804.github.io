@@ -17,7 +17,7 @@
 
 <h3><li>Разрешить запросы из Lan_Home</h3>
 <table><tr><td><pre>
-/ip/firewall
+/ip/firewall/filter
 add action=accept chain=input comment="allow LAN DNS UDP" dst-port=53 in-interface-list=LAN protocol=udp src-address-list=Lan_Home
 add action=accept chain=input comment="allow LAN DNS TCP" dst-port=53 in-interface-list=LAN protocol=tcp src-address-list=Lan_Home
 </pre></td></tr></table>
