@@ -13,7 +13,7 @@
 <ol>
 <li><p>autoupgrade</p>
 <tabe><tr><td><pre>
-:local BackupPassword "ПАРОЛЬотMikrotik";
+:local BackupPassword "PaSsWorD";
 
 /system package update
 :put "Check for Update"
@@ -44,9 +44,15 @@ check-for-updates once as-value;
 }
 </pre></td></tr></table>	
 <li>auto_upgrade_firmware
-<p><code>/system/routerboard/upgrade </code>
-<li>Reoot after auto_upgrade_firmware
-<p><code>:if ([/system/routerboard/get current-firmware] != [/system/routerboard/get upgrade-firmware]) do={/system/reboot}</code></p>
+<tabe><tr><td><pre>
+:if ([/system/routerboard/get current-firmware] != [/system/routerboard/get upgrade-firmware]) do={
+  /system/routerboard/upgrade;
+:delay 10s;
+  /system/reboot;
+}
+</pre></td></tr></table>	
+
+
 
 <li><p>reboot</p>
 <p><code>/system reboot</code></p>

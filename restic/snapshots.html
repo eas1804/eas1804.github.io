@@ -10,6 +10,12 @@
 <body>
 <h2>Отобразить список снапшотов и их статистику</h2>
 
+<p><code>restic -r ${REPO} snapshots  --group-by tags</code>
+<p><code>restic -r ${REPO} snapshots  --group-by paths</code>
+<p><code>restic -r ${REPO} snapshots  --group-by host</code>
+
+<p><code>restic -r ${REPO} stats --mode  raw-data</code>
+
 
 
 <h3>Windows по SSH</h3>

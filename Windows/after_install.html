@@ -102,8 +102,6 @@
 Powershell -> admin ->
 <code>wsreset -i</code></p>
 
-
-
 <li><h3>Убираем экран ‘Завершение настройки вашего устройства’ в Windows 10/11</h3>
 <p> win+r <code>ms-settings:notifications</code></p>
 <p>Дополнительные параметры -> Отключите опцию 
@@ -119,6 +117,12 @@ Powershell -> admin ->
 <p>Get tips, tricks, and suggestions as you are use Windows 
 <p><code>reg add HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f</code></p>
 
+<li><h3>Сделать копию драйверов </h3>
+<p> Powershell от Администратора
+<p><code>Export-WindowsDriver —Online —Destination D:\Drivers</code></p>
+
+<p>cmd от Администратора
+<p><code>dism /online /export-driver /destination:D:\Drivers</code></p>
 
 
 

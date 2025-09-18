@@ -43,11 +43,17 @@ config.json
 <li><a href=today.html>Уведомление. В каталоге $DIR нет файлов, которые были созданы сегодня!</a>
 </ol>
 
-<h3>rsync. Скопировать на удаленный сервер</h3>
+<h3>rsync. </h3>
+<p>rsync [опции] <источник> <назначение>
+<h4>Скопировать на удаленный сервер</h4>
 <p><code>rsync -avz -e "ssh -p 2222" /mnt/video2/ root@pbs2.mlp.pp.ua:/mnt/video/</code>
+<h4>Скопировать c удаленнного сервера в лакальную папку</h4>
+<p><code>rsync -avz -e "ssh -p 2222" root@pbs2.mlp.pp.ua:/mnt/video/ /mnt/video/</code>
 <li>-a – архивный режим (сохраняет права, владельцев, симлинки и т.п.).
 <li>-v – подробный вывод.
 <li>-z – сжатие при передаче.
+
+
 
 <h3> Отравить файлы в Telegram</h3>
 <p><code>curl -F    chat_id=33109821804  https://api.telegram.org/bot18045447450203:AAGEjU7HKEEGle1Zv2an5sVF49QxNxhw03w/sendDocument -F document=@/путь</code></p>
