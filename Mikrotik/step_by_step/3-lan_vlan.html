@@ -62,8 +62,16 @@ add  address-pool=pool10 disabled=no  interface=bridge_lan.10 name=dhcp10
 add address=192.168.10.0/24 dns-server=8.8.8.8 gateway=192.168.10.1
 </pre></td></tr></table>
 <hr>
+<h3>Задача. Перенести ether5 в другой VLAN</h3>
+<p>Шаг 1. Перенести порт из текущего моста в мост с vlan
+<p>bridge_lan -> bridge_vlans
+ <p><img src=vlan1.png>
+ <p><img src=vlan2.png>
+<p>Шаг 2. Укзазать, что ether5 - нетегиованный
+ <p><img src=vlan3.png>
+<hr>
 <h2> На свиче, который подключен к маршрутизатору </h2>
-<pre>
+<table><tr><td><pre>
 /interface bridge
 add name=bridge1 vlan-filtering=yes
 
@@ -89,6 +97,6 @@ add bridge=bridge1 tagged=bridge1,ether1 untagged=ether4,ether5 vlan-ids=40
 /ip dhcp-client
 add default-route-tables=main interface=vlan111
 
-</pre>
+</pre></td></tr></table>
 </body>
   </html>

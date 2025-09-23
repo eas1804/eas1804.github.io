@@ -37,6 +37,12 @@ reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
 <p>
 <a href=https://www.microsoft.com/ru-ru/software-download/windows11>Download windows11 </a>
 
+<h3>Обновиться до Windows 11 версия 25H2 с версии 24H2</h3>
+
+<p>
+Invoke-WebRequest -Uri "https://catalog.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/fa84cc49-18b2-4c26-b389-90c96e6ae0d2/public/windows11.0-kb5054156-x64_a0c1638cbcf4cf33dbe9a5bef69db374b4786974.msu" -OutFile "$env:TEMP\kb5054156.msu"; Start-Process "wusa.exe" -ArgumentList "$env:TEMP\kb5054156.msu /quiet /norestart" -Wait; $choice = Read-Host "Обновление установлено. Перезагрузить сейчас? (y/n)"; if ($choice -eq "y") { Restart-Computer -Force }
+</p>
+
 <h3>Запретить обновления до Windows 11</h3>
 <a href=reg/noUpdateWin10.reg>Download </a>reg file win10 22H2
 <ol>
