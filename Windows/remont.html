@@ -36,6 +36,13 @@ ps
 status
 <p><code>sc query spooler</code></p>
 
+
+<li><h3>Очищаем очередь печати</h3>
+<table><tr><td><pre>
+net stop spooler
+del /Q /F %systemroot%\System32\spool\PRINTERS\*
+net start spooler
+</pre></td></tr></table>
 <li><h3>defrag</h3>
 <p><code>defrag F: /U /V</code></p>
 <p>/U	Показывает ход выполнения операции в реальном времени. Вы будете видеть прогресс прямо в консоли.
