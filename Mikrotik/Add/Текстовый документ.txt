@@ -1,3 +1,0 @@
-:if ([/system/routerboard/get current-firmware] != [/system/routerboard/get upgrade-firmware]) do={
-  /system/reboot
-}

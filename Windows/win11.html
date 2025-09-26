@@ -10,9 +10,11 @@
 
 <body>
 <h2> Windows 11</h2>
-<h2> Bref</h2>
-<pre>
+<p><a href=https://www.microsoft.com/ru-ru/software-download/windows11>Download windows11 </a>
 
+<p>Отключить "Дополнительные параметры" в проводнике <a href=reg\classic_menu_win11.reg>classic_menu_win11.reg</A> Перезагрузится
+<h2> Bref</h2>
+<table><tr><td><pre>
 echo добавить схему Максимальная производительность
 powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
 powercfg /list
@@ -32,16 +34,12 @@ slmgr.vbs /xpr
 
 echo Отключить Автоматические обновления
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
-
-</pre>
-<p>
-<a href=https://www.microsoft.com/ru-ru/software-download/windows11>Download windows11 </a>
+</pre></td></tr></table>
 
 <h3>Обновиться до Windows 11 версия 25H2 с версии 24H2</h3>
-
-<p>
+<table><tr><td><pre>
 Invoke-WebRequest -Uri "https://catalog.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/fa84cc49-18b2-4c26-b389-90c96e6ae0d2/public/windows11.0-kb5054156-x64_a0c1638cbcf4cf33dbe9a5bef69db374b4786974.msu" -OutFile "$env:TEMP\kb5054156.msu"; Start-Process "wusa.exe" -ArgumentList "$env:TEMP\kb5054156.msu /quiet /norestart" -Wait; $choice = Read-Host "Обновление установлено. Перезагрузить сейчас? (y/n)"; if ($choice -eq "y") { Restart-Computer -Force }
-</p>
+</pre></td></tr></table>
 
 <h3>Запретить обновления до Windows 11</h3>
 <a href=reg/noUpdateWin10.reg>Download </a>reg file win10 22H2

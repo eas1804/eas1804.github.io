@@ -11,29 +11,83 @@
 <body>
 <h2>Wifi</h2>
 <h3> Создаем профиль безопасности </h3>
-Иия профиля безопасности: MY_wifi_profile, SSID:Esplanadnaya_2, Пароль: walker12
+<p>Иия профиля безопасности: MY_wifi_profile, Пароль: MyStr0ngP@ssw0rd
+
 <table><tr><td><pre>
 /interface wireless security-profiles
-
+add authentication-types=wpa2-psk eap-methods="" group-key-update=1h management-protection=allowed \
+mode=dynamic-keys name=MY_wifi_profile wpa2-pre-shared-key=MyStr0ngP@ssw0rd
+</pre></td></tr></table>
+<p> OLD
+<table><tr><td><pre>
+/interface wireless security-profiles
 set [ find default=yes ] supplicant-identity=<b>Esplanadnaya_2</b>
 add authentication-types=wpa2-psk comment=walker12 eap-methods="" group-key-update=1h management-protection=allowed \
-mode=dynamic-keys name=MY_wifi_profile supplicant-identity="" wpa2-pre-shared-key=<b>walker12</b>
+mode=dynamic-keys name=MY_wifi_profile supplicant-identity="" wpa2-pre-shared-key=<b>MyStr0ngP@ssw0rd</b>
 </pre></td></tr></table>
 
+
+
 <h3> Задаем параметры wifi интерфейсу 2.4 ГГЦ</h3>
+<p>Например  SSID:Esplanadnaya_2
+<table><tr><td><pre>
+/interface wireless
+set [ find default-name=wlan1 ] band=2ghz-onlyn channel-width=20mhz country=ukraine disabled=no distance=indoors \
+frequency=2437 installation=indoor mode=ap-bridge security-profile=MY_wifi_profile ssid=Esplanadnaya_2 wireless-protocol=802.11
+</pre></td></tr></table>
+<p>OLD
 <table><tr><td><pre>
 /interface wireless
 set [ find default-name=wlan1 ] band=<b>2ghz-onlyn</b> country=ukraine disabled=no distance=indoors frequency=auto \
 installation=indoor mode=ap-bridge security-profile=MY_wifi_profile <b>ssid=Esplanadnaya_2</b> wireless-protocol=802.11
 </pre></td></tr></table>
-
-
+<p>frequency=auto — автоматический выбор частоты удобен, но в перегруженных сетях (например, в многоквартирных домах) лучше вручную выбрать канал (1, 6 или 11 для 2.4 ГГц), чтобы минимизировать помехи.
+<p>Если вы находитесь в зоне с большим количеством Wi-Fi сетей, используйте frequency=2412 (канал 1), 2437 (канал 6) или 2462 (канал 11) вместо auto, чтобы избежать пересечения каналов с соседними сетями.
+<p>Если старые устройства (802.11b/g) не используются, оставьте band=2ghz-onlyn. Если нужна совместимость, замените на band=2ghz-b/g/n
 <h3> Задаем параметры wifi интерфейсу 5 ГГЦ</h3>
+<table><tr><td><pre>
+/interface wireless
+set [ find default-name=wlan2 ] band=5ghz-n/ac channel-width=40mhz country=ukraine disabled=no distance=indoors \
+frequency=5180 installation=indoor mode=ap-bridge security-profile=MY_wifi_profile ssid=Esplanadnaya_2_5Ghz wireless-protocol=802.11
+</pre></td></tr></table>
+<p>OLD
 <table><tr><td><pre>
 /interface wireless
 set [ find default-name=wlan2 ] band=<b>5ghz-n/ac</b> country=ukraine disabled=no distance=indoors frequency=auto \
 installation=indoor mode=ap-bridge security-profile=MY_wifi_profile <b>ssid=Esplanadnaya_2_5Ghz</b> wireless-protocol=802.11
+</pre></td></tr></table>
+<p>frequency=auto — как и для 2.4 ГГц, в перегруженных местах лучше выбрать фиксированный канал (например, 36, 40, 44 или 48 для 5 ГГц).
+<p>ssid=Esplanadnaya_2_5Ghz — SSID отличается от 2.4 ГГц, что хорошо для явного разделения сетей. 
+<br>Однако, если вы хотите использовать одинаковый SSID для обеих частот, устройства будут автоматически выбирать лучшую частоту (это называется "band steering").
 
+<h3>Полезные команды</h3>
+<ol>
+<li>Проверка помех: Используйте инструмент Scan в MikroTik для анализа занятости каналов и выберите наименее загруженные каналы для 2.4 и 5 ГГц.
+<p><code>/interface wireless scan wlan1</code>
+<p><code>/interface wireless scan wlan2</code>
+
+
+<li>Установите канал 1 (2412 МГц) для wlan1
+<p>Каналы 1 (2412 МГц), 6 (2437 МГц), и 11 (2462 МГц) являются стандартными непересекающимися каналами в диапазоне 2.4 ГГц, и их стоит рассматривать в первую очередь.
+<table><tr><td><pre>
+/interface wireless
+set wlan1 frequency=2412 channel-width=20mhz
+</pre></td></tr></table>
+<p>для 5 ГГц
+<table><tr><td><pre>
+/interface wireless
+set wlan2 frequency=5240 channel-width=20mhz
+</pre></td></tr></table>
+<li>Установить ширину канала 20 МГц для wlan1
+<table><tr><td><pre>
+/interface wireless
+set wlan1 channel-width=20mhz
+</pre></td></tr></table>
+
+<p>Если нужна более высокая пропускная способность (для 5 ГГц), протестируйте ширину 40 МГц:
+<table><tr><td><pre>
+/interface wireless
+set wlan2 frequency=5240 channel-width=20/40mhz-Ce
 </pre></td></tr></table>
 </body>
   </html>
