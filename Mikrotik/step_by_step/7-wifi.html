@@ -89,5 +89,44 @@ set wlan1 channel-width=20mhz
 /interface wireless
 set wlan2 frequency=5240 channel-width=20/40mhz-Ce
 </pre></td></tr></table>
+<hr>
+<h2>wifi 6</h2>
+ <table><tr><td><pre>
+/interface wifi security
+add authentication-types=wpa2-psk comment=Password disabled=no encryption=ccmp name=sec_corp
+
+#задать пароль
+/interface wifi security
+set sec_corp passphrase=YourSecurePassword123
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+/interface wifi datapath
+add bridge=bridge_lan client-isolation=yes disabled=no name=dp_corp
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+/interface wifi channel
+add band=5ghz-ax disabled=no frequency=5180,5200 name=5Ghz_ax skip-dfs-channels=all width=20mhz
+add band=2ghz-n disabled=no frequency=2462,2437,2412 name=2Ghz-n skip-dfs-channels=disabled width=20mhz
+add band=2ghz-ax disabled=no frequency=2462,2437,2412 name=2Ghz_ax skip-dfs-channels=disabled width=20mhz
+add band=5ghz-ac disabled=no frequency=5260,5280 name=5Ghz_ac skip-dfs-channels=all width=20mhz
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+/interface wifi
+set [ find default-name=wifi1 ] configuration=cfg_5Ghz_ax configuration.mode=ap disabled=no name=wifi1_ax
+set [ find default-name=wifi2 ] configuration=cfg-2GHz_ax configuration.mode=ap disabled=no name=wifi2_ax2.4
+add configuration=cfg-5Ghz_ac configuration.mode=ap disabled=no mac-address=06:F4:1C:1C:78:F2 master-interface=wifi1_ax name=wifi3_5Ghz
+add configuration=cfg_2Ghz_n configuration.mode=ap disabled=no mac-address=06:F4:1C:1C:78:F3 master-interface=wifi2_ax2.4 name=wifi4
+</pre></td></tr></table>
+
+<table><tr><td><pre>
+/interface wifi configuration
+add channel=5Ghz_ax country=Ukraine datapath=dp_corp disabled=no mode=ap name=cfg_5Ghz_ax security=sec_corp ssid=Diol_ax
+add channel=2Ghz-n country=Ukraine datapath=dp_corp disabled=no mode=ap name=cfg_2Ghz_n security=sec_corp ssid=Diol_ax
+add channel=2Ghz_ax country=Ukraine datapath=dp_corp disabled=no mode=ap name=cfg-2GHz_ax qos-classifier=priority security=sec_corp ssid=Diol_ax
+add channel=5Ghz_ac country=Ukraine datapath=dp_corp disabled=no mode=ap name=cfg-5Ghz_ac security=sec_corp ssid=Diol_ax
+</pre></td></tr></table>
 </body>
   </html>

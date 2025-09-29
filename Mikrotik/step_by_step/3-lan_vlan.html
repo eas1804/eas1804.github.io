@@ -10,93 +10,120 @@
 
 <body>
 <h2>Шаг 3. LAN vlan</h2>
-<p> !!! Подключаемся через интерфейс, который не входит во VLAN
-<p> Дано: <b>Acsess ports</b> - подключекние к конечнім устройствам: ether2,ether3,ether4
+<p> Дано: <b>Acsess ports</b> - подключекние к конечным устройствам: ether2,ether3,ether4
+<p> Сеть corp  192.168.33.0/24, VLAN 33, ether2,ether3
+<p> Сеть guest 192.168.202.0/24, VLAN 202, ether4
 <p> <b>Trunk port</b> - подключение к соседнему коммутатору: <b>ether5</b>
-
-<p> Основная сеть будет в vlan10
+<p> !!! Подключаемся через интерфейс, который не входит во VLAN
 <ol>
-<li>Создаем bridge для vlan с именем bridge_lan</P>
-<p><code>/interface/ bridge/add name=bridge_lan vlan-filtering=yes</p></code>
+<li>Создаем bridge для vlan с именем <b>bridge_vlans</b> и vlan-filtering
+<p><code>/interface/ bridge/add name=bridge_vlans vlan-filtering=yes</p></code>
 
 <li>Создать VLAN интерфейс
-<p>Создадим VLAN 10 интерфейс c именем bridge_lan.10 в bridge_lan
-<p><code>/interface vlan add interface=bridge_lan name=bridge_lan.10 vlan-id=10</p></code>
+<p>Создадим VLAN 33 интерфейс c именем bridge_vlans.<b>corp</b> в bridge_vlans
+<p><code>/interface vlan add interface=bridge_vlans name=bridge_vlans.corp vlan-id=33</p></code>
+<p>Создадим VLAN 202 интерфейс c именем bridge_vlans.<b>guest</b> в bridge_vlans
+<p><code>/interface vlan add interface=bridge_vlans name=bridge_vlans.guest vlan-id=202</p></code>
 
 <li>Настроить порт для VLAN
-<p>Назначаем физическом портам ether2,ether3 и ether4 метку VLAN  номер 10
-<br>И добавляем этот физический порт в мост bridge_lan
-<br>Эти порты не должны входить в другие мосты
+<p>Назначаем физическом портам ether2,ether3 метку VLAN номер 33
+<p>Назначаем физическом портам ether4 метку VLAN номер 202
+<p>Но не трогаем тот порт через который подключены в данный момент 
+<p>И добавляем этот физический порт в мост bridge_vlans. Эти порты не должны входить в другие мосты
+
+
 <table><tr><td><pre>
 /interface bridge  port
-add bridge=bridge_lan interface=ether2 pvid=10
-add bridge=bridge_lan interface=ether3 pvid=10
-add bridge=bridge_lan interface=ether4 pvid=10
+add bridge=bridge_vlans interface=ether2 pvid=33
+add bridge=bridge_vlans interface=ether3 pvid=33
+add bridge=bridge_vlans interface=ether4 pvid=202
+add bridge=bridge_vlans interface=ether5 pvid=1
 
-add bridge=bridge_lan interface=wlan1 pvid=10
-add bridge=bridge_lan interface=wlan2 pvid=10
+
+add bridge=bridge_vlans interface=wlan1 pvid=33
+add bridge=bridge_vlans interface=wlan2 pvid=33
 </pre></td></tr></table>
 <li>Определим тегированные и нетегированне порты
-<p>Определяем ether3,ether4,ether2,wlan1,wlan2 как нетегированные порты
-<p>А bridge_lan, <b>ether5</b> – тегированный
+<p>Определяем ether2,ether3,ether4,wlan1,wlan2 как нетегированные порты
+<p>А bridge_vlans, <b>ether5</b> – тегированный
 
-<p><code>/interface bridge vlan add bridge=bridge_lan tagged=bridge_lan,ether5 untagged=ether2,ether3,ether4,wlan1,wlan2 vlan-ids=10</p></code>
+<p><code>/interface bridge vlan add bridge=bridge_vlans tagged=bridge_vlans,ether5 untagged=ether2,ether3,wlan1,wlan2 vlan-ids=33</p></code>
+<p><code>/interface bridge vlan add bridge=bridge_vlans tagged=bridge_vlans,ether5 untagged=ether4 vlan-ids=202</p></code>
 
-<p>То есть, если на bridge_lan придет кадр, помеченный  vlan 10, он его примет.
-Трафик из любого другого VLAN будет отброшен
+<p>То есть, если на bridge_vlans придет кадр, помеченный  vlan 33 или 202, он его примет. Трафик из любого другого VLAN будет отброшен
+
 <li>Назначить IP адрес
-<p><code>/ip address add address=192.168.10.1/24 interface=bridge_lan.10 network=192.168.10.0</p></code>
-<li>Создать DHCP 
-<p>Создаем pool
+<p>Для корпоративной сети
+<p><code>/ip address add address=192.168.33.1/24 interface=bridge_vlans.corp network=192.168.33.0</p></code>
+<p>Для гостевой сети
+<p><code>/ip address add address=192.168.202.1/24 interface=bridge_vlans.guest network=192.168.202.0</p></code>
+
+<li>Создаем pool для DHCP 
 <table><tr><td><pre>
-/ip/ pool/ add name="pool10" ranges="192.168.10.20-192.168.10.250"
+/ip/ pool/ 
+add name="pool_corp" ranges="192.168.33.2-192.168.33.202"
+add name="pool_guest" ranges="192.168.202.2-192.168.202.250"
 </pre></td></tr></table>
-
-<p>Создаем DHCP</P>
-
+<li>Создаем DHCP server
 <table><tr><td><pre>
 /ip dhcp-server/
-add  address-pool=pool10 disabled=no  interface=bridge_lan.10 name=dhcp10
-
-/ip dhcp-server network
-add address=192.168.10.0/24 dns-server=8.8.8.8 gateway=192.168.10.1
+add  address-pool=pool_corp  disabled=no  interface=bridge_vlans.corp name=dhcp33
+add  address-pool=pool_guest  disabled=no  interface=bridge_vlans.guest name=dhcp202
 </pre></td></tr></table>
+<table><tr><td><pre>
+/ip dhcp-server network
+add address=192.168.33.0/24 dns-server=8.8.8.8,208.67.222.222 gateway=192.168.33.1
+add address=192.168.202.0/24 dns-server=8.8.8.8,208.67.222.222 gateway=192.168.202.1
+</pre></td></tr></table>
+<li>Перевести порт с которого настраивал устройство в нужный VLAN
+<table><tr><td><pre>
+/interface bridge  port
+add bridge=bridge_vlans interface=ether7 pvid=202
+/interface bridge vlan add bridge=bridge_vlans untagged=ether7
+</pre></td></tr></table>
+
 <hr>
 <h3>Задача. Перенести ether5 в другой VLAN</h3>
 <p>Шаг 1. Перенести порт из текущего моста в мост с vlan
-<p>bridge_lan -> bridge_vlans
+<p>bridge_vlans -> bridge_vlans
  <p><img src=vlan1.png>
  <p><img src=vlan2.png>
 <p>Шаг 2. Укзазать, что ether5 - нетегиованный
  <p><img src=vlan3.png>
 <hr>
-<h2> На свиче, который подключен к маршрутизатору </h2>
+<h2> На свиче, который подключен к маршрутизатору (Trunk port) </h2>
+<p>транковым  портом будет ether 1
+<p>ehter2 и ehter3 будут в VLAN 33
+<p>ehter4 иehter5 будут в VLAN 202
+
+
+<ol>
+<li>Создание моста с VLAN-фильтрацией
 <table><tr><td><pre>
-/interface bridge
-add name=bridge1 vlan-filtering=yes
-
+/interface bridge add name=bridge_vlans vlan-filtering=yes
+</pre></td></tr></table>
+<li>Настройка VLAN на мосту
+<table><tr><td><pre>
 /interface vlan
-add interface=bridge1 name=vlan111 vlan-id=111
-
-/interface bridge port
-add bridge=bridge1 interface=ether1
-
-add bridge=bridge1 interface=ether2 pvid=30
-add bridge=bridge1 interface=ether3 pvid=30
-
-add bridge=bridge1 interface=ether4 pvid=40
-add bridge=bridge1 interface=ether5 pvid=40
-
-
-
-/interface bridge vlan
-add bridge=bridge1 tagged=bridge1,ether1 vlan-ids=111
-add bridge=bridge1 tagged=bridge1,ether1 untagged=ether3,ether2 vlan-ids=30
-add bridge=bridge1 tagged=bridge1,ether1 untagged=ether4,ether5 vlan-ids=40
-
-/ip dhcp-client
-add default-route-tables=main interface=vlan111
-
+add interface=bridge_vlans name=<b>corp</b> vlan-id=<b>33</b> 
+add interface=bridge_vlans name=<b>guest</b> vlan-id=<b>202</b>
+</pre></td></tr></table>
+<li>Назначение портов в мост
+<table><tr><td><pre>
+/interface bridge port 
+add bridge=bridge_vlans interface=ether1 
+add bridge=bridge_vlans interface=ether2 pvid=33 
+add bridge=bridge_vlans interface=ether3 pvid=33 
+add bridge=bridge_vlans interface=ether4 pvid=202 
+add bridge=bridge_vlans interface=ether5 pvid=202
+</pre></td></tr></table>
+<li>Настройка VLAN: ether1 как транковый порт, остальные как access-порты
+<table><tr><td><pre>
+/interface bridge vlan 
+add bridge=bridge_vlans tagged=bridge_vlans,ether1 untagged=ether2,ether3 vlan-ids=33 
+add bridge=bridge_vlans tagged=bridge_vlans,ether1 untagged=ether4,ether5 vlan-ids=202
+</pre></td></tr></table>
+</ol>
 </pre></td></tr></table>
 </body>
   </html>

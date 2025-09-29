@@ -9,9 +9,17 @@
   </head>
 
 <body>
-<h2>NTP</h2>
-<p><code>/system clock set time-zone-name=Europe/Kiev</p></code>
-<p><code>/system/ntp/client/set enabled=yes servers=ua.pool.ntp.org</p></code>
+<h2>NTP Client</h2>
+
+<table><tr><td><pre>
+/system clock set time-zone-name=Europe/Kiev
+/system ntp client servers
+add address=pool.ntp.org
+add address=ua.pool.ntp.org
+add address=0.ua.pool.ntp.org
+add address=1.ua.pool.ntp.org
+</pre></td></tr></table>
+
 <p>Если не работает синхронизация времени через SNTP Client в Mikrotik, то во вкладке IP -> DHCP Client (далее ваше подключение) уберите галочку Use Peer NTP, после этого все будет нормально синхронизироваться. Галочка отвечает за получение времени от вашего провайдера, и если у него нет этой услуги - будете мучаться</P>
 
 </body>
