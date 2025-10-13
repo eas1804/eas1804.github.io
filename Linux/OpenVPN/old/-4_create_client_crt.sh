@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-IP=pve.SERVER.com.ua
-PORT=31124
+IP=$(curl ifconfig.me)
+PORT=1194
 
 ls /etc/openvpn/client/ || mkdir /etc/openvpn/client/
 ls /etc/openvpn/ccd || mkdir /etc/openvpn/ccd
@@ -23,7 +23,6 @@ cp /usr/share/easy-rsa/pki/issued/$USER_NAME.*   $KEY_FOLDER/$USER_NAME
 cp /etc/openvpn/ca.crt   $KEY_FOLDER/$USER_NAME
 cp  /etc/openvpn/ta.key  $KEY_FOLDER/$USER_NAME
 echo "# disable" > /etc/openvpn/ccd/$USER_NAME
-echo 'push "route 10.10.18.0   255.255.255.240"' >> /etc/openvpn/ccd/$USER_NAME
 
 # generatee file.ovpn
  

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-PORT=31124
+PORT=1194
 ETH=ens18
 
 echo "part 1. Install soft and config networt"
@@ -10,16 +10,14 @@ echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 
 
 
-
 /sbin/nft add table inet filter
-/sbin/nft add chain inet filter input '{ type filter hook input priority 0; policy accept; }'
+/sbin/nft add chain inet filter input { type filter hook input priority 0; policy drop; }
 /sbin/nft add rule inet filter input udp dport $PORT counter accept
 
+
 /sbin/nft add table ip nat
-/sbin/nft add chain ip nat postrouting '{ type nat hook postrouting priority 100; policy accept; }'
-/sbin/nft add rule ip nat postrouting oif $ETH masquerade
-
-
+/sbin/nft add chain ip nat postrouting { type nat hook postrouting priority 100; policy accept; }
+/sbin/nft add rule ip nat postrouting oif $ETH masquerade 
 
 
 echo '#!/usr/sbin/nft -f' > /etc/nftables.conf
@@ -59,6 +57,8 @@ echo "log    /var/log/openvpn/openvpn.log" >>$FILE_SRV
 echo "ifconfig-pool-persist /var/log/openvpn/ipp.txt" >>$FILE_SRV
 echo "verb 3" >>$FILE_SRV
 echo "explicit-exit-notify 1" >>$FILE_SRV
+
+echo 'push "route 192.168.1.0 255.255.255.0"' >>$FILE_SRV
 
 echo 'client-config-dir "/etc/openvpn/ccd"' >>$FILE_SRV
 echo "topology subnet" >>$FILE_SRV

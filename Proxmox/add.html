@@ -55,7 +55,7 @@ Wants=network-online.target
 <h3><li>Изменить Репозиторий</h3>
 <p>Узнать версию
 <p><code>pveversion</code>
-<H5>Верcия 9</H5>
+<H5>Верcия 9 PVE</H5>
 <table><tr><td><pre>
 echo "Types: deb
 URIs: http://download.proxmox.com/debian/pve
@@ -63,10 +63,22 @@ Suites: trixie
 Components: pve-no-subscription
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" >/etc/apt/sources.list.d/pve-no-subscription.sources
 </pre></td></tr><table>
- 
  <table><tr><td><pre>
  echo "Enabled: no" >> /etc/apt/sources.list.d/ceph.sources
  echo "Enabled: no" >> /etc/apt/sources.list.d/pve-enterprise.sources
+</pre></td></tr><table>
+  
+<H5>Верcия 4 PBS</H5> 
+ <table><tr><td><pre>
+echo "Types: deb
+URIs: http://download.proxmox.com/debian/pbs
+Suites: trixie
+Components: pbs-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" >/etc/apt/sources.list.d/pbs-no-subscription.sources
+</pre></td></tr><table>
+ 
+ <table><tr><td><pre>
+  echo "Enabled: no" >> /etc/apt/sources.list.d/pbs-enterprise.sources
 </pre></td></tr><table>
 
 <H5>Верcия 8</H5>

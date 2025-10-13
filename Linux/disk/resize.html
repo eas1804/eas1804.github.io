@@ -32,7 +32,10 @@
 <li>Перезагружаем ОС — <code>reboot</code>
 <li>После перезагрузки нам необходимо расширить ФС на весь раздел. 
 <p><code>e2fsck -f /dev/sdb</code></p>
+<p>для ext4
 <p><code>resize2fs /dev/sdb</code></p>
+<p>для xfs
+<p><code>xfs_growfs /mnt/veeam</code></p>
 Если работали с системным диском, то
 <p><code>resize2fs /dev/sda1</code></p>
 <li><p><code>df -h</code> – проверить, что все получилось.
