@@ -1,14 +1,15 @@
 #!/bin/bash
 
 
-PORT=31124
+PORT=1194
 ETH=ens18
 
 echo "part 1. Install soft and config networt"
-
-echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
-
-
+echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf 
+sysctl -p
+#Сделать так, чтобы  net.ipv4.ip_forward=1 сохранялось после перезагрузки
+echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-forward.conf
+systemctl restart systemd-sysctl
 
 
 /sbin/nft add table inet filter
@@ -18,8 +19,6 @@ echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf && sysctl -p
 /sbin/nft add table ip nat
 /sbin/nft add chain ip nat postrouting '{ type nat hook postrouting priority 100; policy accept; }'
 /sbin/nft add rule ip nat postrouting oif $ETH masquerade
-
-
 
 
 echo '#!/usr/sbin/nft -f' > /etc/nftables.conf
@@ -78,6 +77,7 @@ systemctl status openvpn@server
 cat /var/log/openvpn/openvpn.log
 
 ip a | grep tun
+sysctl net.ipv4.ip_forward
 
 exit 0
 

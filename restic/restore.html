@@ -26,5 +26,17 @@ set TAGRET=D:\ca
 restic -r sftp:%REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH% -o "sftp.command=ssh -i %SSH_KEY_PATH% -p %PORT% -o StrictHostKeyChecking=no %REMOTE_USER%@%REMOTE_HOST% -s sftp"  restore %ID% --target %TAGRET%
 pause
 </pre></td></tr></table>
+<h3>Монтирование репозитория в Linux"</h3>
+<p>1. Если не установлено - установить
+<p><code> apt install fuse3</code>
+<p>Проверить
+<p> <code>modprobe fuse</code>
+<p> 2. Указать репозиторий и пароль (через переменные окружения)
+<p> <code>export RESTIC_REPOSITORY=/mnt/restic/users/unac/</code>
+<p><code>export RESTIC_PASSWORD=MyPassword</code>
+<p> 3. Смонтировать
+<p><code>restic mount /mnt/restore/</code>
+<p> Смонтировать последний снимок
+<p><code>restic mount --snapshot latest /mnt/restore</code>
 </body>
 

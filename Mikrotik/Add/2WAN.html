@@ -9,9 +9,33 @@
   </head>
 
 <body>
-<h2>Чистый Failover (основной + резервный). Рекурсивный маршрут</h2>
+<h2>Резервирование при помощи Netwatch</h2>
 <p>Основной канал: HelpTeh (ISP1). Gate: <b>94.62.137.1</b>
 <p>Резервный: Adamant (ISP2). Gate <b>212.26.133.105</b>
+
+<ol>
+<li>Добавим маршруты к каждому из провайдеров с разными дистанциями  и комментариями
+
+<table><tr><td><pre>
+/ip route
+add comment=ISP1 distance=1 gateway=94.62.137.1
+add comment=ISP2 distance=2 gateway=212.26.133.105
+</pre></td></tr></table>
+<li>Выбираем высокодоступный хост и добавляем к нему маршрут через первого провайдера
+<table><tr><td><pre>
+/ip route
+add distance=1 dst-address=8.8.8.8/32 gateway=194.62.137.1
+</pre></td></tr></table>
+<li>Tools->Netwatch 
+<p>добавляем там новый узел, на закладке Host указываем адрес выбранного высокодоступного узла 
+<p>закладе Up вводим следующий скрипт
+<p><code>/ip route set [find comment="ISP1"] distance=1</code>
+<p>закладе Down вводим следующий скрипт
+<p><code>/ip route set [find comment="ISP1"] distance=12</code>
+<p>Так как у ISP2 будет distance=2 (2<12), то трафик пойдет через ISP2
+</ol>
+<hr>
+<h2>Чистый Failover (основной + резервный). Рекурсивный маршрут</h2>
 <ol>
 <li>Удалиить маршрут по умолчанию на 0.0.0.0/0
 <li>Настройка маршрутов для проверки доступности
