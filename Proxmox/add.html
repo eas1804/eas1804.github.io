@@ -10,7 +10,12 @@
 
 <body>
 <ol>
-
+<h3><li>Проверить, включено ли перенаправление пакетов</h3>
+<p><code>sysctl net.ipv4.ip_forward</code>
+<table><tr><td><pre>
+echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-forward.conf
+systemctl restart systemd-sysctl
+</pre></tr></td></table>
 <h3><li>nftables.conf </h3>
 <table><tr><td><pre>
 wget https://eas1804.github.io/Proxmox/nftables.conf
