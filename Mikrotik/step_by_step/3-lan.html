@@ -32,6 +32,21 @@
 		<p><code>add address=<b>192.168.72.1/24</b> interface=bridge_lan network=<b>192.168.72.0</b> comment=LAN  </p></code>
 
 
+<hr>
+<p>Как задать MAC-адрес bridge
+<p>1. Взять MAC-адрес ether1
+<p><code>/interface ethernet print</p></code>
+результат
+<pre>
+Flags: X - disabled, R - running
+ #    NAME      MAC-ADDRESS       MTU
+ 0    ether1    04:F4:1C:26:F6:00 1500
+ </pre>
+ <p>	2. задать MAC-адрес bridge
+ <p><code>/interface bridge</p></code>
+<p><code>set bridge1 auto-mac=no admin-mac=04:F4:1C:26:F6:00</p></code>
+
+
 
 </body>
   </html>
