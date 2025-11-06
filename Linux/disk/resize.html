@@ -9,6 +9,25 @@
   </head>
 
 <body>
+<h2>Расширение диска PBS</h2>
+<ol>
+<li>Увеличить размер диска на уровне гипервизора
+<li>Рсширить раздел sdb1
+<p><code>apt install cloud-guest-utils -y</code>
+<p><code>growpart /dev/sdb 1</code>
+<li>Проверить, что раздел вырос
+<p><code>lsblk /dev/sdb</code>
+<li>Расширить файловую систему
+<p>Проверить тип файловой системы
+<p><code>df -Th | grep sdb1</code>
+<p>Если файловая система ext4:
+<p><code>resize2fs /dev/sdb1</code>
+<p>Если файловая система xfs:
+<p><code>xfs_growfs /mnt/datastore/baf_SQL</code>
+<li>Проверка результата
+<p><code>df -h /mnt/datastore/baf_SQL</code>
+
+</ol>
 <h2>Расширение диска в Linux (Debian, CentOS, Ubuntu). LVM - не используется!</h2>
 <p>Расширение будет выполнено без потери данных.
 <p>Cуществующий раздел удаляется, а на его месте создается новый, большего размера.
