@@ -12,9 +12,8 @@
 <h2>Мониторинг Proxmox</h2>
 
 
-
+<h3>docker-compose.yml</h3>
 <table><tr><td><pre>
-# docker-compose.yml
 services:
   pulse:
     image: rcourtman/pulse:latest
@@ -35,9 +34,16 @@ services:
     volumes:
       - /home/linuxadmin/homelabservices/pulse/data:/data
 </pre></tr></td></table>
+<p>Сервис запуститься на порту 7655
+<h3>Генерация тоткена</h3>
+<p><code>openssl rand -hex 32</code>
 
-
-
+<h3>В случае ошибки запуска скрипта на PVE:</h3>
+<p><code>export PATH=$PATH:/usr/sbin</code>
+<p><code>pveum help</code>
+<p>Если сработает — добавь строку
+<p><code>export PATH=$PATH:/usr/sbin</code>
+<p>в файл ~/.bashrc, чтобы не терялось после перезагрузки.
 
 </body>
   </html>
