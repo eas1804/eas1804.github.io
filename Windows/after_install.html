@@ -36,6 +36,27 @@
 <li><h3>Отключить cortana</h3>
 <p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
 
+<li><h3>Региональные параметры (Дата/вермя)</h3>
+<p>в PowerShell (с правами администратора)
+<table><tr><td><pre>
+Set-WinSystemLocale uk-UA
+Set-WinUILanguageOverride -Language uk-UA
+Set-WinUserLanguageList -LanguageList "uk-UA" -Force
+Set-Culture -CultureInfo "uk-UA"
+</pre></td></tr></table>
+<p>Перезагрузи систему или выйди и снова войди в учётную запись
+<p>Проверь результат:
+<table><tr><td><pre>
+Get-Culture
+Get-WinSystemLocale
+Get-WinUILanguageOverride
+
+Get-WinUserLanguageList
+</pre></td></tr></table>
+<li><h3>Добавить английский и русский языки</h3>
+<p><code>Set-WinUserLanguageList -LanguageList "uk-UA", "en-US", "ru-RU" -Force</code></p>
+
+
 <li><h3>Задать часовой пояс Украина/Киев</h3>
 <p><code>Set-TimeZone -Id "FLE Standard Time"</code></p>
 <p>узнать текущий часовой пояс <code>Get-TimeZone</code>  
@@ -44,13 +65,16 @@
 <p>Конфигурация компьютера — Политики — Конфигурация Windows — Параметры безопасности — Назначение прав пользователя — Изменение системного времен
 
 <li><h3>Синхронизация времени через Internet </h3>
-<p><code>net stop w32time</code>
-<p><code>w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"</code>
-<p><code>w32tm /config /reliable:yes</code>
-<p><code>net start w32time</code>
-<p><code>w32tm /config /update</code>
-<p><code>w32tm /resync</code>
+<table><tr><td><pre>
+net stop w32time
+w32tm /config /syncfromflags:manual /manualpeerlist:"0.ua.pool.ntp.org,0x8 1.ua.pool.ntp.org,0x8 3.ua.pool.ntp.org,0x8 4.ua.pool.ntp.org,0x8"
+w32tm /config /reliable:yes
+net start w32time</code>
+w32tm /config /update
+w32tm /resync
+</pre></td></tr></table>
 <p><a href=time.html> Подробнее </a>
+
 
 
 <li><h3>winget</h3>
