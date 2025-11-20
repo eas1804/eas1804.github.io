@@ -26,7 +26,12 @@
 <br>"Требовать смены пароля при следующем входе в систему". Текущий пароль Temp@123
 <code> <a href=Scrypts\add_new_user.ps1>add_new_user.ps1</a></code>
 
-
+<pre>
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+# Теперь запустите ваш скрипт:
+# .\add_new_user.ps1
+</pre>
+<p>Это самый безопасный вариант, так как политика сбрасывается после закрытия окна PowerShell.
 <li>Создать пользователя с правами Администратора. Убрать его имя с экрана приветсвия. Время пароля - неограничего
 <pre>
 cls
