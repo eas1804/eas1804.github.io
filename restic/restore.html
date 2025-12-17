@@ -38,5 +38,33 @@ pause
 <p><code>restic mount /mnt/restore/</code>
 <p> Смонтировать последний снимок
 <p><code>restic mount --snapshot latest /mnt/restore</code>
+
+<h3> Скрипт монтирования удаленного репозитория по SSH </h3>
+<table><tr><td><pre>
+#!/bin/bash
+
+# Настройки подключения
+PORT=22
+REMOTE_HOST="backup12345.backup.1cloudlab.com"
+REMOTE_USER="backup12345"
+REMOTE_PATH="/backup/restic/refacon/"
+
+# Пути к ключам и паролям
+SSH_KEY_PATH="/mnt/restic/all-key/Refacon"
+RESTIC_PASSWORD_FILE="/mnt/restic/all-key/Refacon.password"
+
+# Точка монтирования
+MOUNT_POINT="/mnt/restore/"
+
+echo  "Последний снапшот" ВСЕГДА доступен по этому пути:
+echo  LATEST_PATH="${MOUNT_POINT}snapshots/latest"
+
+# Выполнение монтирования всего репозитория
+restic -r "sftp:${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}" \
+  --password-file "${RESTIC_PASSWORD_FILE}" \
+  -o "sftp.command=ssh -i ${SSH_KEY_PATH} -p ${PORT} -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} -s sftp" \
+  mount "$MOUNT_POINT"
+</pre></td></tr></table>
+
 </body>
 
