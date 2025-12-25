@@ -25,7 +25,16 @@ Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" > /etc/apt/sources.l
 <li>Устнаовка агента Proxmox VE
 <p><code>apt install qemu-guest-agent -y && systemctl start qemu-guest-agent && systemctl status qemu-guest-agent && systemctl enable qemu-guest-agent</code>
 
-
-
+<h3>Зафиксировать размер кеша</h3>
+<p>Чтобы система всегда чувствовала себя стабильно и PBS не конфликтовал с ZFS за память, советую зафиксировать размер кеша.
+<p>по умолчанию ZFS может забрать под свои нужды (ARC-кеш) до 50% всей оперативной памяти
+<ol>
+<li>Ограничиваем ARC кеш до 4 ГБ
+<p><code>echo "options zfs zfs_arc_max=4294967296" > /etc/modprobe.d/zfs.conf</code>
+<li> Обновляем конфиг загрузки
+<p><code>update-initramfs -u</code>
+<li>После перезагрузки проверить результат
+<p><code>cat /sys/module/zfs/parameters/zfs_arc_max</code>
+</ol>
 </body>
   </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Устранение неполадок</h2>
+<h3>Выяснить серейный номер дефектного диска</h3>
+<p>Допустим, мы видим проблему "too many errors"
+<table><tr><td><pre>
+zpool status
+....
+wwn-0x5000039fc3ebff79            FAULTED      3   844     0  too many errors
+</pre></tr></td></table>
+<p>Выяснеяем сериный номер 
+ <p><code>lsblk -o NAME,SERIAL,WWN | grep 5000039fc3ebff79</code>
+
+<h3>Замена коротких имен</h3>
+Было
+<table><tr><td><pre>            
+        NAME        STATE     READ WRITE CKSUM
+       <b> pve-pool </b>   ONLINE       0     0     0
+          raidz2-0  ONLINE       0     0     0
+            sdb     ONLINE       0     0     0
+            sdc     ONLINE       0     0     0
+
+
+</pre></tr></td></table>
+<p>eСтало
+<p>Использование имен wwn- (World Wide Name) — это самый надежный способ идентификации дисков
+<table><tr><td><pre>
+            wwn-0x5000039fe7d1d033  ONLINE       0     0     0
+            wwn-0x5000c50064ecbc78  ONLINE       0     0     0
+</pre></tr></td></table>
+
+
+<p>Экспортируйте пул (отмонтирует его):
+<p><code>zpool export pve-pool</code>
+<p>Импортируйте обратно, указав путь к ID:
+<p><code>zpool import -d /dev/disk/by-id pve-pool</code>
+
+
+</body>
+  </html>

@@ -10,24 +10,32 @@
 
 <body>
 <h2>OpenVPN_connect</h2>
-<P> Поднять VPN канал и подключиться по RDP
+<P> У клиента поднять VPN канал и подключиться по RDP
 <p>Скрипт OpenVPN_connect <a href=OpenVPN_connect.cmd>ver1</a> |
 <a href=OpenVPN_connect.cmd>ver2</a>
 
 <ol>
-<li>задать переменные:
-<br> OVPN_PROFILE 
-<br>RDP_SERVER
-<li> Разрешить на %RDP_SERVER% ping
+В скрипте задать переменные:
+<ol>
+<li>OVPN_PROFILE 
+<li>RDP_SERVER
+</ol>
+<p> Разрешить на  сервере %RDP_SERVER% ping
 <p> <code>netsh advfirewall firewall add rule name="All ICMP V4" dir=in action=allow protocol=icmpv4</code>
 </ol>
 <hr>
 <p> Запустить и минимизировать окно
 <table><tr><td><pre>
 c:
-cd \Program Files\OpenVPN\bin\
+cd  "\Program Files\OpenVPN\bin\"
 start /min openvpn.exe --config Osipenko.ovpn
 </pre></td></tr></table>
+
+
+<h3>Отключиться</h3>
+<p> <code>"C:\Program Files\OpenVPN\bin\openvpn-gui.exe" --command disconnect_all </code>
+
+<p> <code>"C:\Program Files\OpenVPN\bin\openvpn-gui.exe" --command  disconnect Osipenko.ovpn</code>
 
 </body>
   </html>

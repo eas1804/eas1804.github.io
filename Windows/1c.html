@@ -18,6 +18,22 @@ rmdir C:\Users\%USER%\AppData\Local\1C\1cv8 /q/s
 mkdir C:\Users\%USER%\AppData\Local\1C\1cv8
 </td></tr></table></pre>
 
+
+<h2>Запуск 1с 7.7 без запроса админ прав</h2>
+<table><tr><td><pre>
+set __COMPAT_LAYER=RUNASINVOKER
+start "" "C:\Program Files (x86)\1Cv77\BIN\1cv7.exe" enterprise
+</td></tr></table></pre>
+
+<p>добавить локализацию переменных
+<table><tr><td><pre>
+@echo off
+setlocal
+set __COMPAT_LAYER=RunAsInvoker
+start "" "C:\Program Files (x86)\1Cv77\BIN\1cv7.exe" enterprise
+endlocal
+</td></tr></table></pre>
+
 <h2>Подключить базу SQL</h2>
 <p><code>"C:\Program Files\BAF\common\1cestart.exe" enterprise /S"Хост\База"</code>
 <p><code>"C:\Program Files\BAF\common\1cestart.exe" enterprise /S"win2019\jia_room"</code>
