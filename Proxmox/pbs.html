@@ -31,10 +31,28 @@ Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" > /etc/apt/sources.l
 <ol>
 <li>Ограничиваем ARC кеш до 4 ГБ
 <p><code>echo "options zfs zfs_arc_max=4294967296" > /etc/modprobe.d/zfs.conf</code>
+<p>Ограничиваем ARC кеш до 6	 ГБ
+<p><code>echo "options zfs zfs_arc_max=6442450944" > /etc/modprobe.d/zfs.conf</code>
+
 <li> Обновляем конфиг загрузки
 <p><code>update-initramfs -u</code>
 <li>После перезагрузки проверить результат
 <p><code>cat /sys/module/zfs/parameters/zfs_arc_max</code>
+</ol>
+<h3>мониторинг состояния ZFS ARC</h3>
+<p><code>arcstat 1</code>
+<p><code>arcstat -f time,hits,miss,hit%,size,c,metasz,mh% 1</code>
+<table><tr><td><pre>
+
+Столбец,	Что означает,	На что смотреть
+time,		Время замера,	—
+read,		Общее кол-во запросов на чтение,	Интенсивность нагрузки на хранилище.
+miss,		Промахи мимо кеша,		Чем меньше, тем лучше. Если растет — данные читаются с дисков.
+miss%,		Процент промахов,		Если выше 10–20% при активном бэкапе — памяти под ARC мало.
+hit%,		Процент попаданий в кеш,	В идеале должен стремиться к 90%+ для повторных операций.
+arcsz,		Текущий размер ARC,		Насколько кеш раздулся в данный момент.
+c,		Целевой размер (Target),	"Размер, к которому ARC стремится адаптироваться."
+</pre></tr></td></table>
 </ol>
 </body>
   </html>
