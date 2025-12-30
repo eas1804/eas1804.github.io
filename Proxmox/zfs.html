@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ZFS</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2> ZFS</h2>
+<h3>Диагностика производительности ZFS в реальном времени</h3>
+<p>Выводит детальную статистику ввода-вывода (I/O) для конкретного пула.
+<table><tr><td><pre>
+zpool iostat -v rpool 5
+</pre></td></tr></table> 
+аналог для ext4
+<table><tr><td><pre>
+apt install sysstat
+iostat -xz 5
+</pre></td></tr></table> 
+ 
+ 
+ <h3>Мониторинг ARC (Adaptive Replacement Cache) — оперативного кэша ZFS в оперативной памяти</h3>
+<table><tr><td><pre>
+  arcstat -f time,hits,miss,hit%,size,c,metasz,mh% 1
+</pre></td></tr></table> 
+
+ <h3>Тюнинг для Proxmox Backup Server (PBS)</h3>
+ <p>Включаем сжатие lz4 (снижает нагрузку на медленные диски за счет CPU)
+<p><code>zfs set compression=lz4 pbs-data</code>
+
+<p>Отключаем лишние операции записи метаданных
+<p><code>zfs set atime=off pbs-data</code>
+
+<p>Ограничиваем размер блока (PBS по умолчанию пишет чанками, 128k — ок)
+<p><code>zfs set recordsize=128k pbs-data</code>
+ </ol>
+
+</body>
+  </html>
