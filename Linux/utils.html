@@ -9,9 +9,14 @@
   </head>
 
 <body>
-<h1>ssh. Проброс порта</h1>
+<h2>Glances</h2>
+<p>Если вам нужно видеть всё и сразу (включая I/O дисков, что критично для вашего ZFS пула), это отличный инструмент.
+
+<p><code>apt install glances</code>
+<p>Запуск: <code>glances</code>
+<h2>ssh. Проброс порта</h2>
 <p><code>ssh -L 8080:10.10.12.2:8007 root@pbs.mlp.pp.ua</code>
-или <code>ssh -L 8080:172.16.2.2:80 root@pbs.mlp.pp.ua</code>
+или <p><code>ssh -L 8080:172.16.2.2:80 root@pbs.mlp.pp.ua</code>
 <p><code>http://localhost:8080/postfixadmin/public/login.php</code>
 <p>Если требуется долгое подключение, используйте флаг -f (фоновый режим) и -N (не выполнять команд на сервере):
 <p><code>ssh -f -N -L 8080:172.16.2.2:80 root@pbs.mlp.pp.ua</code>
@@ -54,7 +59,7 @@ go mod tidy</pre>
 <p><code>apt install exa -y</code></p>
 
 <p><code>exa --tree</code></p>
-<h1>Net</h1>
+<h2>Net</h2>
 <h2>traceroute</h2>
 <p><code>apt install mtr-tiny tcptraceroute -y</code></p>
 <p><code>mtr i.ua </code></p>

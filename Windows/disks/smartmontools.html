@@ -13,9 +13,13 @@
 https://www.smartmontools.org/
 <h3>Dowmload</h3>
 <a hfer=https://sourceforge.net/projects/smartmontools/files/smartmontools/>smartmontools</a>
+<p>C:\Program Files\smartmontools\bin>
 <h3>info Disks</h3>
-<p><code>C:\Program Files\smartmontools\bin>.\smartctl.exe --scan</code>
+<p><code>smartctl.exe --scan</code>
 <h3>scan Disks</h3>
 <p><code>smartctl.exe -a /dev/sdb</code>
+<p><code>smartctl.exe -x /dev/sdb</code>
+<p>Х включает в себя всё, что дает -a, плюс расширенные логи и специфические данные, которые диск способен отдать.
+<p>На многих современных NVMe-дисках таблица атрибутов в выводе -a может быть очень скудной. Флаг -x заставляет утилиту вытянуть максимум вендор-специфичных данных
 </body>
   </html>
