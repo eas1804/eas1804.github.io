@@ -42,6 +42,12 @@
 <p><code>update-initramfs -u -k all</code>
 </ol>
 
+<h3>Применить прямо сейчас (без перезагрузки)</h3>
+<p><code>echo 51539607552 > /sys/module/zfs/parameters/zfs_arc_max</code>
+<h3>Проверьте реальный параметр ядра</h3>
+<p><code>cat /sys/module/zfs/parameters/zfs_arc_max</code>
+
+
 <h3>Диагностика производительности ZFS в реальном времени</h3>
 <p>Выводит детальную статистику ввода-вывода (I/O) для конкретного пула.
 <table><tr><td><pre>
@@ -67,6 +73,7 @@ arcstat -f miss,size,dmh% 1
   arcstat -f time,hits,miss,hit%,size,c,metasz,mh% 1
 </pre></td></tr></table> 
 
+<hr>
  <h3>Тюнинг для Proxmox Backup Server (PBS)</h3>
  <p>Включаем сжатие lz4 (снижает нагрузку на медленные диски за счет CPU)
 <p><code>zfs set compression=lz4 pbs-data</code>
