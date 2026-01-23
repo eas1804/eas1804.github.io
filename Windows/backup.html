@@ -10,7 +10,12 @@
 
 <body>
 <h2> Backup</h2>
-<a href=https://freefilesync.org/>FreeFileSync</a>
+<p>Soft: <a href=https://freefilesync.org/>FreeFileSync</a>
+<h3>Скопировать все данные с диска W: на диск G:</h3>
+<p>Использовать команду, которая не просто копирует файлы, но и полностью переносит структуру, права доступа (ACL) и временные метки.
+<p><code>robocopy W:\ G:\ /E /COPYALL /ZB /DCOPY:T /R:3 /W:5 /V /MT:32 /LOG:C:\robocopy_log.txt  /XD "System Volume Information" "$RECYCLE.BIN"</code>
+<p>Если на диске W: есть системные папки (типа System Volume Information или Recycle.Bin), Robocopy попытается их скопировать и выдаст ошибки доступа. Чтобы их пропустить, можно добавить: /XD "System Volume Information" "$RECYCLE.BIN"
+
 <h3> Упаковать каталог </h3>
 <table><tr><td><pre>
 @echo off
