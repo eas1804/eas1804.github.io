@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Postfix</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Postfix</h2>
+<h3>Проверить очередь</h3>
+<p><code>mailq</code></p>
+<h3>Очистка очереди</h3>
+<p><code>postsuper -d ALL</code></p>
+
+<h3>Увеличиваем лимит разсера  письма</h3>
+<p>Увеличиваем лимит до 50МБ (чтобы точно хватило с запасом на кодирование)
+<p><code>postconf -e "message_size_limit = 52428800"</code></p>
+<p>Перечитываем конфиг
+<p><code>postfix reload</code></p>
+
+
+</body>
+  </html>
