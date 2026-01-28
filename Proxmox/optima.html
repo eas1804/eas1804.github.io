@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Windows</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h3>Эталонная конфигурация для Windows/Linux на ZFS.</h3>
+<p>Оптимальные параметры для диска (scsi0 / scsi1):
+<ol>
+<li>Cache: Write back — Это «лекарство» от задержек (latency). Система перестанет ждать физического подтверждения от SSD для каждой записи, используя RAM хоста как буфер. Фризы в Chrome при сохранении файлов должны исчезнуть.
+<li>SSD emulation: Включено (галочка) — Windows поймет, что она на SSD. Это включит внутреннюю оптимизацию ОС и позволит ей правильно отправлять команды очистки через TRIM.
+<li>Discard: Включено — Обязательно для ZFS. Позволяет Proxmox возвращать освобожденные Windows блоки обратно в пул, чтобы диск не «замусоривался» и не терял скорость со временем.
+<li>IO thread: Включено — Позволяет обрабатывать запросы к диску в отдельном потоке, не мешая работе 30 ядер процессора. Это критично для отзывчивости интерфейса при высокой нагрузке на диск. 
+</ol>
+<p><img src=windows1.png>
+
+<pre>
+Компонент			Что выбрать	
+SCSI Controller		VirtIO SCSI single
+Hard Disk (Cache)	Write back	
+Hard Disk (Flags)	Discard + IO thread	Включено (отлично для ZFS)
+Hard Disk (Emul)	SSD emulation	Включено (критично для Win 10/11/2025)
+Network (net0)		VirtIO (paravirtualized)	
+</pre>
+<p><img src=SCSI.png>
+</body>
+  </html>
