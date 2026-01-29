@@ -34,8 +34,8 @@ mv nftables.conf  /etc/
  <p><code>nano  /etc/systemd/system/nftables.service.d/override.conf</p></code>
 <table><tr><td><pre>
 [Unit]
-After=network-online.target
-Wants=network-online.target
+After=networking.service
+Wants=networking.service
 </pre></tr></td></table>
 <p>After=network-online.target — запускает nftables только после завершения настройки сети.
 <p>Wants=network-online.target — добавляет зависимость, чтобы network-online.target был также активирован.
@@ -46,7 +46,10 @@ Wants=network-online.target
  systemctl enable nftables.service
  systemctl restart nftables.service
 </pre></tr></td></table>
-
+<p>
+В nftables есть разница между iif и iifname:
+<br>iif: Привязывается к индексу интерфейса в ядре. Если интерфейса vmbr0 еще нет в момент загрузки, nftables выдает ошибку и прекращает работу.
+<br>iifname: Работает по строковому имени. Ему <b>все равно, существует интерфейс сейчас или нет</b>.
 <h3><li>Сохранить серйиные номера носителей </h3>
 <p><code>lsblk -o NAME,SERIAL | grep  nvme > /root/SERIAL.info</code>
 <p><code>wget https://eas1804.github.io/Proxmox/nvme_in_file.sh</code>
