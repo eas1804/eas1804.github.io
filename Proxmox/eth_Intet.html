@@ -11,7 +11,12 @@
 <body>
 
 <h2>Проблема с сетевыми картами Intel i218/i219</h2>
-<p> Если падает сеть: 
+<h3>Диагностика</h3>
+<p><code>dmesg -T | grep -i "net"</code>
+
+<p><code>journalctl --since "2 hours ago" | grep -iE "eth|eno|enp|vmbr|bridge|error"</code>
+
+<h3> Если падает сеть: </h3>
 <ol>
 <li> Выяснить, это Intel i218/i219
 <p><code>lspci | grep -i eth |grep Intel | grep 218</code>
@@ -19,7 +24,12 @@
 <li> Если Intel i218/i219, отключить tso, gso
 <p>вместо eno1 - указать свою сетевую карту
 <p><code>/usr/sbin/ethtool -K  <b>eno1</b> tso off gso off</code>
-<li> для автоматизации, добавить это в файл <code>/etc/network/interfaces </code>
+<p>по максисмуму от ИИ
+<p><code>ethtool -K <b>eno1</b> tx off rx off sg off tso off gso off gro off</code>
+
+
+
+<li> для автоматизации, добавить это в файл <p><code>/etc/network/interfaces </code>	
 <table><tr><td><pre>
 auto vmbr0
 iface vmbr0 inet static
@@ -36,5 +46,16 @@ iface vmbr0 inet static
 
 </ol>
 <a href=https://docs.hetzner.com/robot/dedicated-server/troubleshooting/performance-intel-i218-nic/>link</a>
+<h3>Вывод информации о текущей конфигурации сетевых мостов в Linux.</h3>
+<p><code>brctl show</code>
+<p><code>ip link show type bridge</code>
+<p> или более детально
+<p><code>ip addr show master vmbr0</code>
+<h3>Показывает статистику и состояние здоровья  соединени</h3>
+<p><code>ip -s link show</code>
+<p><code>ip -s link show enp5s0</code>
+<p>Следить  в реальном времени
+<p><code>watch -n 1 ip -s link show enp5s0</code>
+
 </body>
   </html>

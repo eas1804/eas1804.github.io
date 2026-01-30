@@ -10,10 +10,10 @@
 
 <body>
 <h2>Cli</h2>
-
+/usr/sbin/qm
 <ul>
 <li>Oтобразить список виртуальных машин:
-<p><code>/usr/sbin/qm list</code>
+<p><code>qm list</code>
 или
 <code>cat /etc/pve/.vmlist</code></p>
 
@@ -36,6 +36,8 @@
 <li>Конфиг VM здесь:
   <p><code>/etc/pve/qemu-server</code></p>
 
+<li>Показать Конфиг :
+  <p><code>qm config 102</code></p>
 <li>Диски VM здесь:
 <p><code>/var/lib/vz/images/</code></p>
 
@@ -45,6 +47,7 @@
 
 <li>Перосмотр журнала  pvedaemon
 <p><code>journalctl -u pvedaemon -f</code></p>
+<p><code>journalctl -u pvedaemon | tatl -n 20</code></p>
 
 </ul>
 </body>
