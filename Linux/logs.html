@@ -46,6 +46,8 @@
 <p>Можно использовать опцию --until, чтобы указать конечную дату и время, если вы хотите просмотреть записи за определенный временной интервал:
 <p><code>journalctl --since "YYYY-MM-DD HH:MM:SS" --until "YYYY-MM-DD HH:MM:SS"</code></p>
 
+<p><code>journalctl --since "2 hours ago" | grep -iE "eth|eno|enp|vmbr|bridge|error"</code></p>
+
 
 <li>Фильтрация событий по важности
 <p><code>journalctl -p 0</code></p>

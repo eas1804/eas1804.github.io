@@ -37,21 +37,5 @@
 <li>Проверьте, что swap активен
 <p><code>swapon -s</code></p>
 
-<h2>для ZFS</h2>
-<li>Создаем ZVOL объемом 4 ГБ
-<p><code>zfs create -V 4G -b $(getconf PAGESIZE) -o compression=zle -o logbias=throughput -o sync=always -o primarycache=metadata -o secondarycache=none rpool/swap</code></p>
-<p>Здесь мы отключаем лишнее кэширование и сжатие, чтобы swap работал максимально быстро.
-<li> Проверить
-<p><code>zfs list rpool/swap</code></p>
-<li>Подготавливаем его как swap:
-<p><code>mkswap /dev/zvol/rpool/swap</code></p>
-<li>Добавляем в /etc/fstab
-<p><code>/dev/zvol/rpool/swap none swap sw 0 0</code></p>
-<li>Активируем:
-<p><code>swapon -a</code></p>
-<li>Проверяем:
-<p><code>swapon -s</code></p>
-<p> или
-<p><code>free -h</code></p>
 </body>
   </html>

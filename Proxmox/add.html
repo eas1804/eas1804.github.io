@@ -10,6 +10,35 @@
 
 <body>
 <ol>
+<h3><li>Ошибки в логах</h3>
+<p><code>journalctl -p err -b</code>
+
+<h3><li>nftables.conf </h3>
+<table><tr><td><pre>
+wget https://eas1804.github.io/Proxmox/nftables.conf
+mv nftables.conf  /etc/
+nft -f  /etc/nftables.conf
+nft list ruleset
+</pre></tr></td></table>
+<table><tr><td><pre>
+mkdir   /etc/systemd/system/nftables.service.d/
+nano  /etc/systemd/system/nftables.service.d/override.conf
+</pre></tr></td></table>
+<table><tr><td><pre>
+[Unit]
+After=networking.service
+Wants=networking.service
+</pre></tr></td></table>
+<table><tr><td><pre>
+ systemctl daemon-reexec
+ systemctl daemon-reload
+ systemctl enable nftables.service
+ systemctl restart nftables.service
+</pre></tr></td></table>
+<p>
+В nftables есть разница между iif и iifname:
+<br>iif: Привязывается к индексу интерфейса в ядре. Если интерфейса vmbr0 еще нет в момент загрузки, nftables выдает ошибку и прекращает работу.
+<br>iifname: Работает по строковому имени. Ему <b>все равно, существует интерфейс сейчас или нет</b>.
 <h3><li>ZFS для NVME/SSD</h3>
 <p><code>zpool set autotrim=on rpool</code>
 <p>Проверить статус
@@ -23,44 +52,9 @@
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-forward.conf
 systemctl restart systemd-sysctl
 </pre></tr></td></table>
-<h3><li>nftables.conf </h3>
-<table><tr><td><pre>
-wget https://eas1804.github.io/Proxmox/nftables.conf
-mv nftables.conf  /etc/
-</pre></tr></td></table>
-Создать vmbr1 для LAN
-<h4>Запускает nftables только после завершения настройки сети</h4>
- <p><code>mkdir   /etc/systemd/system/nftables.service.d/</p></code>
- <p><code>nano  /etc/systemd/system/nftables.service.d/override.conf</p></code>
-<table><tr><td><pre>
-[Unit]
-After=networking.service
-Wants=networking.service
-</pre></tr></td></table>
-<p>After=network-online.target — запускает nftables только после завершения настройки сети.
-<p>Wants=network-online.target — добавляет зависимость, чтобы network-online.target был также активирован.
 
-<table><tr><td><pre>
- systemctl daemon-reexec
- systemctl daemon-reload
- systemctl enable nftables.service
- systemctl restart nftables.service
-</pre></tr></td></table>
-<p>
-В nftables есть разница между iif и iifname:
-<br>iif: Привязывается к индексу интерфейса в ядре. Если интерфейса vmbr0 еще нет в момент загрузки, nftables выдает ошибку и прекращает работу.
-<br>iifname: Работает по строковому имени. Ему <b>все равно, существует интерфейс сейчас или нет</b>.
 <h3><li>Сохранить серйиные номера носителей </h3>
 <p><code>lsblk -o NAME,SERIAL | grep  nvme > /root/SERIAL.info</code>
-<p><code>wget https://eas1804.github.io/Proxmox/nvme_in_file.sh</code>
-
-
-
-<h3><li>Тестирование парамертров NVME</h3>
-<p>Отправляет сообщение в случае проблемы
-<p><code>wget https://eas1804.github.io/Proxmox/nvme_send_problesm_info.sh</code>
-
-
 <h3><li>Изменить Репозиторий</h3>
 <p>Узнать версию
 <p><code>pveversion</code>
@@ -92,9 +86,7 @@ Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg" >/etc/apt/sources.li
 
 <p>Закомментировать содержимое 
 <p><code> nano /etc/apt/sources.list.d/ceph.list</code>
-<p>tmux
-<p><code>apt update && apt upgrade -y</code>
-
+Обновиь через Web
 <h3><li>Добавить ПО</h3>
 <p><code>apt install tmux mc htop -y</p></code>
 

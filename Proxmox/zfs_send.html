@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>zfs send</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Миграция ВМ между серверами </h2>
+<p>SSH ключи: Желательно, чтобы между серверами был настроен вход по SSH ключам, иначе при передаче больших объемов сессия может отвалиться по таймауту, пока вы вводите пароль.
+<p>Сеть: Если диски NVMe, а сеть между серверами 1 Гбит/с, то передача 100 ГБ займет примерно 15-20 минут.
+<ol>
+<h3><li>Выяснить номер виртуальной машины</h3>
+<p><code>qm list</code>
+<p>Предполодим, нам нужно машина 301
+<h3><li>Выяснить имя диска</h3>
+<p><code>zfs list</code>
+<p>Предположим, диск называется rpool/data/vm-301-disk-0 
+
+<h3><li>Копирование конфига</h3>
+<p><code>scp /etc/pve/qemu-server/301.conf root@pretendetn.mlp.pp.ua:/etc/pve/qemu-server/</code>
+
+<p>Важно, что бы не было ВМ с номером 301 на конечном сервере. Иначе переименовать конфиг
+<p><code>scp /etc/pve/qemu-server/301.conf root@pretendetn.mlp.pp.ua:/etc/pve/qemu-server/331.conf</code>
+<p>
+Если вы меняете ID (с 301 на 331)
+Если вы переименовываете конфиг при копировании (301.conf -> 331.conf), вам нужно обязательно отредактировать этот файл на целевом сервере:
+<p>Внутри файла 331.conf нужно заменить все упоминания старого диска vm-301-disk-0 на новое имя vm-331-disk-0.
+<p>ZFS датасет на втором сервере тогда тоже должен называться rpool/data/vm-331-disk-0.
+<h3>Алгоритм</h3>
+<p>Чтобы перенос прошел без проблем, лучше всего сделать это в два этапа: 
+<p>1. передать основной объем данных на живую
+<p>2. остановить ВМ и быстро дослать изменения.
+
+<h3><li>Создадим «свежий» снапшот диска виртуалки 301. </h3>
+<p>Это позволит передать 99% данных, пока пользователи еще работают.
+<p><code>zfs snapshot rpool/data/vm-301-disk-0@migration</code>
+
+
+
+<h3><li>Перенос данных на Сервер 2</h3>
+<p>Ключ -v покажет прогресс, а -C включит сжатие для ускорения
+<p><code>zfs send -v rpool/data/vm-301-disk-0@migration | ssh root@pretendetn.mlp.pp.ua zfs receive rpool/data/vm-301-disk-0</code>
+<p>Чтобы увидеть прогресс в реальном времени, скорость и расчетное время (ETA), нужно использовать утилиту pv (Pipe Viewer). Она вставляется в середину «конвейера» (pipe).
+<p><code>apt install pv</code>
+Важно: убрать ключ -v
+<p><code>zfs send rpool/data/vm-201-disk-0@migration_ovpn | pv -s 1540M | ssh root@pretendetn.mlp.pp.ua "zfs receive rpool/data/vm-201-disk-0"</code>
+
+<h3><li>Финальный перенос (с остановкой)</h3>
+<p>1. Останавливаем ВМ на srv1
+<p><code>qm stop 301</code>
+
+<p>2. Делаем инкрементальный снапшот
+<p><code>zfs snapshot rpool/data/vm-301-disk-0@final</code>
+
+<p> 3. Отправляем только разницу (delta)
+<p><code>zfs send -v -i rpool/data/vm-301-disk-0@migration rpool/data/vm-301-disk-0@final | ssh root@all1 zfs receive -F rpool/data/vm-301-disk-0</code>
+<p>Ключ -F (Force) откатывает диск на приемнике к состоянию снапшота @migration перед тем, как наложить на него изменения из @final
+</ol>
+
+
+<h3>О снапшотах</h3>
+<table><tr><td><pre>
+rpool/data/vm-301-disk-0 @ migration
+|______________________|   |_________|
+           |                    |
+    Путь к датасету        Имя снапшота
+</pre></td></tr></table>
+<ul>
+<li>Посмотреть список всех снапшотов этого диска:
+<p><code>zfs list -t snapshot | grep vm-301</code>
+(Там вы увидите ваш @migration).
+
+<li>Удалить его, когда он станет не нужен: 
+<p><code>zfs destroy rpool/data/vm-301-disk-0@migration</code>
+<li>Откатиться к нему (если что-то пошло не так): 
+<p><code>zfs rollback rpool/data/vm-301-disk-0@migration</code>
+</body>
+  </html>
+
