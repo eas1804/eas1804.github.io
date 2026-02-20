@@ -15,9 +15,12 @@
 <p><code>systemctl status fstrim.timer</code></p>
 <p><code>systemctl enable --now fstrim.timer</code></p>
 <p>в конфиге стоит discard=on, сама операционная система Debian (гость) не знает, когда ты удаляешь файлы физически с блоков, пока ты ей об этом не «скажешь» через fstrim или параметры монтирования
- <p><code>apt update && apt upgrade -y && apt autoremove -y</code></p>
-
+ 
+<p>Очистить вручную
+<p><code>fstrim -av</code></p>
+<hr>
 <p># Install Soft
+<p><code>apt update && apt upgrade -y && apt autoremove -y</code></p>
  <p><code>apt install tmux mc wget curl chrony sudo duf htop -y </code></p>
 <p># TimeZone + chrony
 <p><code>timedatectl set-timezone 'Europe/Kiev'</code> в 12 версии Debian</p>

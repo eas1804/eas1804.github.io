@@ -47,6 +47,10 @@ config.json
 <p>rsync [опции] <источник> <назначение>
 <h4>Скопировать на удаленный сервер</h4>
 <p><code>rsync -avz -e "ssh -p 2222" /mnt/video2/ root@pbs2.mlp.pp.ua:/mnt/video/</code>
+<h4>Без сжатия, простое шифрование ssh</h4>
+для ускорения копирования
+<p><code>rsync -avP -e "ssh -T -c aes128-gcm@openssh.com -o Compression=no" /rpool/soft/ root@172.18.72.3:/rpool/data/soft</code>
+
 <h4>Скопировать c удаленнного сервера в лакальную папку</h4>
 <p><code>rsync -avz -e "ssh -p 2222" root@pbs2.mlp.pp.ua:/mnt/video/ /mnt/video/</code>
 <li>-a – архивный режим (сохраняет права, владельцев, симлинки и т.п.).
