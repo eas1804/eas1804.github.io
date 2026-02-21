@@ -10,23 +10,30 @@
 
 <body>
 <h2>ZFS</h2>
-
 <p><code>zpool status</code></p>
+<h3>Очистите счётчики ошибок ZFS (если уже посмотрели и сохранили)</h3>
+<p><code>zpool clear "имя пула"</code> <code>zpool clear rpool  </p></code>
+<h3>Проверки целостности данных и устранения ошибок</h3>
 
+<p><code>zpool scrub rpool </p></code>
+<p>если ошибки повторяются при каждом scrub — один или несколько дисков начинают "сыпаться"
 
 <h3>Показать все ZFS пулы и их файловую структуру.</h3>
 <p><code>zfs list</code></p>
-
+<p><code>zfs list rpool/data/pbs_storage</code></p>
 
 <h3>Показать все ZFS snapshot</h3>
  <p><code>zfs list -t snapshot</code></p>
 
 <h3>Показать созданные ZVOL и их путь</h3>
 <p>диски находятся в формате ZFS томов (ZVOL)
+
 <p><code>zfs list -t volume</code></p>
+
 <h3> lsblk</h3>
 <p><code>lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT,UUID</code>
 <p><code>lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT,UUID | grep ntfs</code>
+
 <h3>Прямое копирование ZFS тома (ZVOL)</h3>
 <ol>
 <li>Создть моментальный снимок
@@ -53,20 +60,31 @@ Ctrl + C — это безопасно прервёт zfs send | ssh ... zfs rec
 
 <h3>Переименовать ZFS-диск</h3>
 <p><code>zfs rename OLD NEW</code> 
-<p><code>zfs renam5e rpool/data/vm-302-disk-1 rpool/data/vm-200-disk-1</code> 
+<p><code>zfs renam rpool/data/vm-302-disk-1 rpool/data/vm-200-disk-1</code> 
 <h3>Hагрузка на pool</h3>
 <p><code>zpool iostat rpool</code> 
 <p><code>zpool iostat rpool  5</code> обновлять каждые 5 секунд
  
 
-<hr>
-<h3>Очистите счётчики ошибок ZFS (если уже посмотрели и сохранили)</h3>
-<p><code>zpool clear "имя пула"</code> <code>zpool clear rpool  </p></code>
-<h3>Проверки целостности данных и устранения ошибок</h3>
-<p><code>zpool scrub rpool </p></code>
-<p>если ошибки повторяются при каждом scrub — один или несколько дисков начинают "сыпаться"
 
 
+
+
+<h3>Создать Dataset (файловую систему)</h3>
+Например, для хранния видео/фото
+<table><tr><td><pre>
+zfs create rpool/data/photos
+zfs set recordsize=1M rpool/data/photos
+zfs set compression=lz4 rpool/data/video
+zfs set xattr=sa rpool/data/photos
+</pre></td></tr></table>
+<h3>Посмотреть параметры Datastore</h3>
+<p><code>zfs get compression,compressratio,recordsize,xattr rpool/data/video</code>
+
+
+<h3>Удалить Dataset</h3>
+<p><code>zfs destroy rpool/data/pbs_storage</p></code>
+<p>Полностью и безвозвратно удаляет датасет (файловую систему) ZFS вместе со всем его содержимым.
 
 <hr>
 <p><a href=https://habr.com/ru/articles/742286/>Dedup Windows vs Linux, MS снова “удивит”?</a>
