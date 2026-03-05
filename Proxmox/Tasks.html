@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxmox</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h3>Bash-скрипт для Sync job PBS. </h3>
+<p>Он написан так, чтобы запускать задачи строго по очереди: следующая начнется только тогда, когда предыдущая завершится успешно (или с ошибкой, если мы добавим игнорирование)
+<pre>
+#!/bin/bash
+
+# Список ваших Job ID в нужном порядке
+JOBS=(
+  "s-0b0d7394-e46e"
+  "s-62c8ed02-51ed"
+  "s-cb290bde-3d26"
+  "s-1a518057-915e"
+  "s-75e040b5-8dbd"
+  "s-4b33a7b5-2a28"
+)
+
+echo "--- Запуск последовательной синхронизации: $(date) ---"
+
+for JOB in "${JOBS[@]}"
+do
+  echo "Запускаю задачу: $JOB..."
+
+  # Запуск задачи и ожидание её завершения
+  proxmox-backup-manager sync-job run "$JOB"
+
+  # Проверка статуса выхода (0 - успех)
+  if [ $? -eq 0 ]; then
+    echo "Задача $JOB успешно завершена."
+  else
+    echo "Внимание! Задача $JOB завершилась с ошибкой. Перехожу к следующей..."
+  fi
+
+  echo "------------------------------------------"
+done
+
+echo "--- Все задачи обработаны: $(date) ---"
+</pre>
+</body>
+  </html>
