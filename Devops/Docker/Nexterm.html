@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nexterm</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Nexterm</h2>
+Менеджер соединений Nexterm (https://github.com/gnmyt/Nexterm)
+<p>Download Nexterm <a href=yaml/Nexterm/compose.yml>compose.yaml</a>
+
+<p>Код сгенерировать
+<p><code>openssl rand -hex 32</code>
+
+<p></p>
+
+  <pre>
+   
+    
+services:
+  nexterm:
+    image: germannewsmaker/nexterm:latest
+    container_name: nexterm
+    network_mode: host
+    restart: always
+    environment:
+      - ENCRYPTION_KEY=be24c1c39ee9a41f34aa78c2d66a47b6e8eb632f0b847512799e76a052047294
+    volumes:
+      - ./nexterm-data:/app/data
+
+    </pre>
+    
+
+<ol>
+<li>️Подключение к серверам по SSH, RDP, VNC или TELNET через браузер. Порт <b>6989</b>
+<li>️Для соединений по SSH работает обзор файлов через SFTP.
+<li>️Для серверов с подключением по SSH можно включить простенький оперативный онлайн мониторинг с хранением метрик 24 часа.
+<li>️Поддерживается 2FA с помощью TOTP.
+<li>️Настроенные подключения можно раскладывать по организациям со своими настройками, учётными данными и пользователями, которым разрешён доступ.
+<li>️Все соединения логируются, есть возможность записывать сессии.
+<li>️Соединениям можно присваивать тэги для группировки.
+<li>️Можно подключить ИИ ассистента, который будет подсказывать команды в консоли. Поддерживается Ollama, ApenAI и совместимые с ним.
+<li>️Есть приложения для всех популярных систем, чтобы подключаться к серверу напрямую. Причём приложения легковесные. Под Windows всего 15 МБ весит, работает на базе WebView2.
+<li>️Проект полностью бесплатный, исходники открыты.
+</ol>
+
+</body>
+  </html>

@@ -45,17 +45,19 @@
 <a href="restic/index.html">Restic</a> |
 <a href="links.html">Links</a> | 
 
-
-
-
-
 <h2>Oracle</h2>
-| <a href=WG_oracle2_Mxxx10.exe>Wg oracle2 conf</a> |
-<a href=https://oracle2.mlp.pp.ua/>Kuma Rezerv</a>|
+| <a href=WG_oracle2_Fedot.7z>Wg oracle2</a> |
+ <a href=Key_oracle2_fedot_Mxx10.7z>ssh oracle2</2>
+| <a href=https://oracle2.mlp.pp.ua/>Kuma Rezerv</a> |
 <a href=https://fs.mlp.pp.ua/>Oracle1 Obmen</a> |
 Nginx Proxy manager <a href=http://193.123.36.107:81/login>Oracle</a> 
 <a href=http://129.151.237.120:81/nginx/proxy>Oracle2</a> |
-
+<table><tr><td><pre>
+powershell
+icacls "Key_oracle2.txt" /inheritance:r
+icacls "Key_oracle2.txt" /grant:r "$($env:USERNAME):R"
+ssh -i .\Key_oracle2.txt root@oracle2
+</pre></td></tr></table>
 <h2> Zabbix local</h2>
 <a href=http://192.168.18.3/zabbix/>UNAC</a>  |  
 <a href=http://192.168.1.204/zabbix/>Fenix</a> | 

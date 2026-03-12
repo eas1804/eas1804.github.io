@@ -22,15 +22,14 @@
 95.217.60.246  | 192 RAM, NVMe 4x2Tb  Raid10, W2145 16 cpu
 <p>|<a href=https://mail.chemcontinent.com.ua/> mail.chemcontinent.com.ua</a> |
 <a href=https://mail.spetskontract.com/>mail.spetskontract.com</a> |
-<p>|<a href=https://10.10.17.3:8007/> Pbs rezerv</a> |
 
-<a href=http://10.10.16.5:8080/>Zabbix</a> |
+
+<p>| <a href=http://10.10.16.5:8080/>Zabbix</a> |
 <a href=http://10.10.16.5:7655>Pulse</a> |
-<p>|<a href=https://10.10.10.142:8007/> PBS office 1</a> |
-<a href=https://10.0.2.20:8007/>PBS office 2.1</a> |
-<a href=https://10.0.2.5:8007/>PBS office 2.2</a> |
-<a href=https://10.0.2.9:8006/>PVE office 2</a> |
 <a href=https://mon.diol.kiev.ua/>Gatus</a> |
+<p>|<a href=https://10.10.10.142:8007/> PBS Diol</a> |
+<a href=https://10.0.2.20:8007/>PBS Him Hyper</a> |
+<a href=https://10.0.2.5:8007/>PBS Him Supermikro</a> |
 
 
 <li><a href=https://pve.mtir.com.ua:8006>MTIR</a>  |
@@ -76,5 +75,12 @@
 <li><a href=https://pretendetn.mlp.pp.ua:8006>pretendent</a>
 </ol>
 
+powershell
+
+<table><tr><td><pre>
+icacls "my.key" /inheritance:r
+icacls "my.key" /grant:r "$($env:USERNAME):R"
+ssh -i .\my.key root@oracle2
+</pre></td></tr></table>
 </body>
   </html>
