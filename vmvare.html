@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vmvare</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+<body>
+<h1>VMvare </h1>
+<h2>дтз. VMvare 6</h2>
+<h3>тест состояния Raid массива</h3>
+<p>покажет точное название вашего RAID-контроллера
+<p><code>lspci -v | grep -i storage -A 10</code>
+
+<p>для Adaptec AACRAID используется  arcconf
+<p><code> find / -name "arcconf"</code>
+<p> Состояние контроллера и массивов
+<p><code>/opt/pmc/arcconf  getconfig 1</code>
+
+<h3>BKUI. VMvare 7</h3>
+
+<pre>
+esxcli storage core device smart get -d t10.NVMe____SAMSUNG_MZVLB1T0HALR2D00000______________FD5BB8918C382500
+esxcli storage core device smart get -d t10.ATA_____HGST_HUS722T2TALA600____________________WMC6N0L45Y93________
+esxcli storage core device smart get -d t10.NVMe____SAMSUNG_MZVLB1T0HALR2D00000______________0F5CB8918C382500
+</pre>
+
+<h3>Proxmox Import Wizard</h3>
+<p>Начиная с версии Proxmox VE 8.2, появился встроенный мастер импорта специально для ESXi.
+<p>Как работает: Вы добавляете ваш сервер ESXi как внешнее хранилище в интерфейсе Proxmox (через API).
+<p>Плюсы: Минимум ручных действий. Proxmox сам видит список машин и копирует их «по воздуху».
+<p>Требования: На ESXi должен быть включен SSH и настроены права доступа. ESXi 7.0. и выше
