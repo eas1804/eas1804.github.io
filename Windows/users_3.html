@@ -50,6 +50,13 @@ User Configuration -> Administrative Templates -> Windows Components -> Microsof
 <p><code>quser</code>
 <h3>Закрыть сессию по ID</h3>
 <p><code>logoff 15</code>
+<h3>Убить Медок (ezvit) у конкретного пользователя</h3>
+<p>powershell от Админа
+<p>получаем ID процесса
+<p><code>Get-Process <u>ezvit</u> | Select-Object Path, Id</code>
+<p>Допусим id=29100
+<p><code>taskkill /PID 29100 /F</code>
+
 </body>
 </html>
 
