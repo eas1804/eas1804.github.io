@@ -36,10 +36,8 @@ push "dhcp-option DNS 208.67.220.220"
 <p><code>route 192.168.1.0 255.255.255.0</code>      #Сделать доступной сеть за Клиентом </p>
 </ul>
 
-
 <p>В Скрипте это прописано. Уточнение по nft.
 <p> For tcp 1194
-
 
 <table><tr><td><pre>
 
@@ -83,6 +81,12 @@ table ip nat {
     }
 }
 </pre></td></tr></table>
+
+<h3>example nftables.conf</h3>
+<p>Download: <a href=nftables.conf> nftables.conf</a>
+<pre> grep "^server " /etc/openvpn/server.conf
+server 172.31.31.0 255.255.255.0
+</pre>
 
 
 <li>Downlload Config tcp: <a href="6_create_client_crt_TCP.sh">Client in 5 Files</a>  | 
