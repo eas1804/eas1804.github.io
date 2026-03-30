@@ -33,17 +33,6 @@
 <p>Проверить текущее состояние:
 <p><code>vssadmin list shadowstorage</p></code>
 
-<li><h3>Отключить cortana</h3>
-<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
-
-<li><h3>Windows update on/off</h3>
-<a href=https://github.com/tsgrgo/windows-update-disabler>Download from github </a> |
-<a href=https://github.com/tsgrgo/windows-update-disabler/releases>releases</a>
-
-<li><h3>Windows antivirus off</h3>
-<a href=https://github.com/ionuttbara/windows-defender-remover>Downliad from github</a> |
-<a href=https://github.com/ionuttbara/windows-defender-remover/releases>releases</a> Не заюыть отключить Defender перед началом процесса
-
 
 <li><h3>Региональные параметры (Дата/вермя)</h3>
 <p>в PowerShell (с правами администратора)
@@ -86,15 +75,6 @@ w32tm /resync
 
 
 
-<li><h3>winget</h3>
-<p> Обновить все установленные программы
-<p><code>winget upgrade --all</code> 
-<p>Установить программу
-<p><code>winget install --id 7zip.7zip</code>   
-<p><code>winget install VideoLAN.VLC</code>
-<p><code>winget install --id OpenVPNTechnologies.OpenVPN </code>
-<p><code>winget install --id Google.Chrome </code>
-<p><code>winget install --id Mozilla.Firefox </code>
 
 
 <li><h3>Электропитание</h3>
@@ -129,6 +109,33 @@ w32tm /resync
 <p><code>shell:common start menu</code> перейти в папку Programs </p>
 <p>Для текущего пользователя</p>
 <p><code> %AppData%\Microsoft\Windows\Start Menu\Programs </code></p>
+
+<li><h3>Отключить cortana</h3>
+<p><code>Get-appxpackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</code></p>
+
+
+<li><h3>Windows update on/off</h3>
+<a href=https://github.com/tsgrgo/windows-update-disabler>Download from github </a> |
+<a href=https://github.com/tsgrgo/windows-update-disabler/releases>releases</a>
+
+<li><h3>Windows antivirus off</h3>
+<a href=https://github.com/ionuttbara/windows-defender-remover>Downliad from github</a> |
+<a href=https://github.com/ionuttbara/windows-defender-remover/releases>releases</a>
+Не забыть отключить Defender перед началом процесса
+
+<li><h3>winget</h3>
+<p> Обновить все установленные программы
+<p><code>winget upgrade --all</code>
+<p>Установить программу
+<p><code>winget install --id 7zip.7zip</code>
+<p><code>winget install --id OpenVPNTechnologies.OpenVPN </code>
+
+<p><code>winget install VideoLAN.VLC</code>
+
+<p><code>winget install --id Google.Chrome </code>
+<p><code>winget install --id Mozilla.Firefox </code>
+
+
 
 <li><h3>Включить «Просмотр фотографий» Win 10/11 LTSC</h3>
 <a href=https://g-ek.com/prosmotr-fotografij-v-windows-10>link</a> | 
