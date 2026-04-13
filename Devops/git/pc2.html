@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>git</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Работа на несколькоих устройствах</h2>
+<p>Важно соблюдать цикл "забрал — изменил — отдал":
+<p>Перед началом работы всегда делай:
+<p><code>git pull</code>
+ <p>чтобы забрать изменения (например, те, что ты сделал с "zfs autotrim" на первом ПК).
+<p>После работы делай стандартно:
+<p><code>git add . -> git commit -m "..." -> git push</code>
+
+
+
+<h2>Установка Git на втором компьютере</h2>
+<h3>Шаг 1: Установка Git</h3>
+<p>Если Git еще не установлен на втором компьютере:
+<p>Windows: Скачай  <a href=https://git-scm.com/install/windows> Git for Windows </a>
+<p>Debian: 
+<p><code>sudo apt update && sudo apt install git</code>
+
+<h3>Шаг 2: Идентификация пользователя</h3>
+<p>Чтобы коммиты на втором компьютере подписывались твоим именем, выполни:
+<p><code>git config --global user.name "Your Name"</code>
+<p><code>git config --global user.email "your_email@example.com"</code>
+
+<h3>Шаг 3: Настройка доступа (SSH — рекомендуемый способ)</h3>
+<p>3.1 Генерация ключа на новом компьютере:
+<p><code>ssh-keygen -t ed25519 -C "your_email@example.com"</code>
+<p> 3.2. Добавление ключа в GitHub:
+<p>Открой файл публичного ключа: 
+<p><code>cat ~/.ssh/id_ed25519.pub </code>
+<p><code>type C:\Users\Имя\.ssh\id_ed25519.pub).</code>
+<p>Скопируй содержимое.
+<p>Зайди на GitHub: Settings -> SSH and GPG keys -> New SSH key.
+<p>Вставь ключ и сохрани.
+<h3>3.3 Проверка связи:</h3>
+<p><code>ssh -T git@github.com</code>
+
+<h3>Шаг 4: Клонирование репозитория</h3>
+<p>Теперь создай папку, где будет лежать проект, и скачай его:
+<p><code>cd \путь\к\папке</code>
+<p><code>git clone git@github.com:eas1804/eas1804.github.io.git</code>
+
+</body>
+  </html>
