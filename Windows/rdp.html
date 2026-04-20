@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RDP</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+
+<h3>ВСЕГДА 3 раскладки клавиатры. Не добавлялись лишние раскладки </h3>
+<p>Классическая проблема RDP-сессий: Windows пытается быть «умной» и пробрасывает локальную раскладку на удаленный сервер, создавая дубликат.
+<p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
+</body>
+  </html>
+
