@@ -10,7 +10,26 @@
 <body>
 <h2>Windows. backup SSH, port 22</h2>
 
-<a href=UTF8.cmd>utf8 Кирилица</a>
+<h3> Кирилица Windows</h3>
+<p>Для обхода ограничений Windows, когда нужно прокинуть сложный путь через несколько уровней абстракции.
+
+<table><tr><td><pre>
+mklink /J "C:\Docs_Sveta" "C:\Документы Sveta\СВЕТЛАНА"
+
+rem  Создать виртуальный диск
+subst B: C:\Docs_Sveta
+...
+...
+...
+
+rem Удаление (размонтирование) виртуального диска.
+subst B: /D
+</pre></td></tr></table>
+
+
+
+<h3> Windows</h3>
+
 <table><tr><td><pre>
 @echo off
 rem taskkill /F /FI "ImageName eq 1c*"
