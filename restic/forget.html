@@ -11,6 +11,10 @@
 <h3>Удалить конкретный snapshots.</h3>
 <p><code>restic -r [REPO] forget 2590e1ba</code>
 
+<h3>Удаление с  группировкой по тегам</h3>
+<p>Чтобы restic оставлял по 60 копий для каждого тега отдельно, нужно добавить --group-by tags
+<p><code>restic -r [REPO] forget --keep-last 60 --group-by tags --prune </code>
+
 <h3>Оставить только последние 10 снимков по  тегу Medoc, удалив остальные</h3>
 <p><code>restic  -r [REPO] forget --tag Medoc --keep-last 10 --prune</code>
 <h3>Проверка перед удалением --dry-run</h3>
