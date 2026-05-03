@@ -37,8 +37,27 @@ mv nftables.conf  /etc/
 After=networking.service
 Wants=networking.service
 </pre></tr></td></table>
-<p>After=network-online.target — запускает nftables только после завершения настройки сети.
-<p>Wants=network-online.target — добавляет зависимость, чтобы network-online.target был также активирован.
+
+<h4> Отключние службы Proxmox Firewall</h4>
+<p>Эти службы при старте системы перезаписывают правила и могут мешать запуску стандартного nftables.service.
+
+<table><tr><td><pre>
+systemctl stop pve-firewall 
+systemctl stop  pvefw-logger
+
+systemctl disable pve-firewall 
+systemctl disable pvefw-logger
+</pre></tr></td></table>
+<p>Чтобы Proxmox после какого-нибудь крупного обновления или случайного клика в веб-интерфейсе не попытался снова запустить эту службу, её можно замаскировать:
+<table><tr><td><pre>
+
+systemctl mask pve-firewall
+systemctl mask pvefw-logger
+</pre></tr></td></table>
+
+<p>Это создаст симлинк на /dev/null, и службу нельзя будет запустить даже вручную или другой зависимостью, пока вы не сделаете unmask.
+
+
 
 <table><tr><td><pre>
  systemctl daemon-reexec
