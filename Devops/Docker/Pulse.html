@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monitoring</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+
+
+
+<h2>Pulse</h2>
+
+
+
+  <pre>
+
+services:
+  pulse:
+    image: rcourtman/pulse:latest
+    container_name: pulse
+    restart: unless-stopped
+    ports:
+      - "7655:7655"
+    environment:
+      # First-boot admin (plain text; Pulse will bcrypt-hash it internally)
+      PULSE_AUTH_USER: Admin
+      PULSE_AUTH_PASS: Pa$$word!
+
+      # Pre-generated API token for agents/webhooks
+      API_TOKEN: 9f0206c9168c835d33c307550e5e29902ba3ab4b40a9aa1d288bb73aac035c8e
+
+      # Optional: limit network discovery scope (example)
+      # DISCOVERY_SUBNET: "192.168.50.0/24"
+    volumes:
+      - /home/linuxadmin/homelabservices/pulse/data:/data
+
+  </pre>
+  
+
+
+
+
+
+</body>
+  </html>
