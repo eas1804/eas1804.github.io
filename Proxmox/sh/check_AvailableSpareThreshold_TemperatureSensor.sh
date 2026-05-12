@@ -12,7 +12,7 @@ exec > >(tee  "$LOGFILE") 2>&1
 date
 IP=$(ip -4 addr show vmbr0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 HOSTNAME=$(hostname)
-MAIL_TO=admin@srv.com
+MAIL_TO=report22.backup22@gmail.com
 
 fun_info () {
     echo -----------------

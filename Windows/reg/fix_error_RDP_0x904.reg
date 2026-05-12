@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+; Исправление ошибки RDP 0x904 
+; Снижение уровня безопасности для обхода проблем с TLS сертификатом
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]
+"SecurityLayer"=dword:00000000
+"UserAuthentication"=dword:00000000
+
+; (Опционально) Разрешение пустых паролей, если это необходимо для входа (не рекомендуется)
+; [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa]
+; "LimitBlankPasswordUse"=dword:00000000
