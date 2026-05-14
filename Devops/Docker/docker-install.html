@@ -26,8 +26,29 @@
  <p><code>chmod +x  /usr/local/bin/ctop</code></p>
 
 
+<h2>Удаление Docker</h2>
+
+# Удаление стандартного моста Docker
+<p><code>ip link delete docker0</code></p>
+
+# Удаление кастомных мостов (bridge), которые создавал Docker Compose
+<p>Имена можно увидеть через ip -br a
+<p><code>ip link delete br-89864152d695</code></p>
+<p><code>ip link delete br-e029116ed99f</code></p>
 
 
+
+# Остановка и удаление пакетов
+<p><code>apt-get purge docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras</code></p>
+
+# Удаление каталогов с данными (ВНИМАНИЕ: это удалит все образы и контейнеры)
+<p><code>rm -rf /var/lib/docker</code></p>
+<p><code>rm -rf /var/lib/containerd</code></p>
+
+
+<p><code>iptables -t nat -F</code></p>
+<p><code>iptables -t filter -F</code></p>
+<p><code>iptables -X</code></p>
 
 </body>
   </html>

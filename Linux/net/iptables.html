@@ -19,5 +19,30 @@
 <li><a href=Iptables_ipv6.html>ipv6</a>
 <li><a href=refresh_my_ip.html>Скрипт. Обновить мой IP </a>
 <li><a href=protect_service.html>Защитить сервис</a>
+</ol>
+<p>Полностью «отключить» iptables как сервис в Linux нельзя, так как это интерфейс управления фильтрацией трафика, встроенной прямо в ядро (Netfilter). 
+<p>Однако можно сбросить все ограничения, сделав систему полностью открытой.
+<ol>
+
+<li>Устанавливаем политику "разрешить всё" для основных цепочек
+
+<p><code>iptables -P INPUT ACCEPT</code>
+<p><code>iptables -P FORWARD ACCEPT</code>
+<p><code>iptables -P OUTPUT ACCEPT</code>
+
+<li>Очищаем все правила (Flush)
+<p><code>iptables -F</code>
+
+<li>Удаляем все пользовательские цепочки
+<p><code>iptables -X</code>
+
+<li>Обнуляем счетчики пакетов и байтов
+<p><code>iptables -Z</code>
+
+<li> Cохранение изменений
+<p><code>netfilter-persistent save</code>
+<p>ИЛИ напрямую
+<p><code>iptables-save > /etc/iptables/rules.v4</code>
+
 </body>
   </html>
