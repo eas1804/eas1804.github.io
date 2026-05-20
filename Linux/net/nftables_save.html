@@ -10,11 +10,15 @@
 
 <body>
 <h2>nftables</h2>
+
 <p>Правила nftables можно настроить через файл конфигурации <code>/etc/nftables.conf</code> или напрямую с помощью команд. 
 
 <h3>Вариант 1. Применить правила, после редактирваония /etc/nftables.conf</h3>
 <p>После редактирования /etc/nftables.conf перезагрузите nftables
 <p><code>systemctl restart nftables</code></p>
+
+
+
 <h3>Вариант 2. Сохранить правила в /etc/nftables.conf, созданные командами</h3>
 <p><code> echo '#!/usr/sbin/nft -f' > /etc/nftables.conf </code></p>
 <p><code>echo "flush ruleset" >> /etc/nftables.conf</code></p>
@@ -23,7 +27,15 @@
 <p><code>systemctl enable nftables.service</code></p>
 
 <h3>Перечитать правила из файла</h3>
+<p>Если работаем по SSH
+<p><code>nft -f /etc/nftables.conf && sleep 60 && nft flush ruleset</code>
+<p>Если связь не оборвалась и вы всё еще в консоли, просто нажмите Ctrl + C и зафиксируйте правила в системе:
+<p><code>systemctl restart nftables</code>
+
+<p>Из консоли
 <p><code>nft -f /etc/nftables.conf</code></p>
+
+
 
 <h3>Перечитать правила из файла после загузки сетевого интерфейса</h3>
 <p>в файл <code>/etc/network/interfaces</code>:
