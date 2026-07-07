@@ -13,6 +13,19 @@
 <h3>ВСЕГДА 3 раскладки клавиатры. Не добавлялись лишние раскладки </h3>
 <p>Классическая проблема RDP-сессий: Windows пытается быть «умной» и пробрасывает локальную раскладку на удаленный сервер, создавая дубликат.
 <p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
+
+<h3>Удаленный сеанс отключен, поскольку отсутствуют доступные серверы лицензирования удаленных рабочих столов, которые могли бы провести лицензирование.</h3>
+<p>Перейдите в 
+<p><code>HKEY_LOCAL_MACHINE\Software\Microsoft\MSLicensing</code>
+<p>Удалите подпапки 
+<p><code>HardwareID и Store</code>
+<p> или
+<pre>
+Windows Registry Editor Version 5.00 
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSLicensing]
+</pre>
+
 </body>
   </html>
 
