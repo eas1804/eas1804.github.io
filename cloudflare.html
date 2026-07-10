@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cloudflare</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+<body>
+<a href=https://github.com/cloudflare/cloudflared/releases>Download Windows client </a> 
+и скопировать в C:\cloudflared\
+
+<h3>Создать тоннель</h3>
+<p>https://dash.cloudflare.com/ > Networking > Tunnels
+<h3>Подключение по SSH</h3>
+<p><code>cloudflared.exe access tcp --hostname <b>ssh.eas.pp.ua</b> --listener localhost:2222</code>
+<p><code>ssh user@localhost -p 2222</code>
+
+
+<h3>Подключение по RDP</h3>
+<p><code>cloudflared.exe access tcp --hostname <b>rdp.eas.pp.ua</b> --listener localhost:33890</code>
+<p><code>mstsc /v:127.0.0.1:33890 /f</code>
+<h4>Скрипт connect_rdp.bat</h4>
+<pre>
+@echo off
+start "CF Tunnel RDP" C:\cloudflared\cloudflared.exe access tcp --hostname rdp.eas.pp.ua --listener localhost:33890
+timeout /t 3
+mstsc /v:127.0.0.1:33890 /f
+</pre>
+</body>
+  </html>
