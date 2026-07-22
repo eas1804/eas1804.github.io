@@ -12,6 +12,9 @@
 <a href=https://github.com/cloudflare/cloudflared/releases>Download Windows client </a> 
 и скопировать в C:\cloudflared\
 
+<h3>Обновить</h3>
+<p><code>cloudflared update</code>
+<p><code>cloudflared version</code>
 <h3>Создать тоннель</h3>
 <p>https://dash.cloudflare.com/ > Networking > Tunnels
 <h3>Подключение по SSH</h3>
@@ -28,6 +31,21 @@
 start "CF Tunnel RDP" C:\cloudflared\cloudflared.exe access tcp --hostname rdp.eas.pp.ua --listener localhost:33890
 timeout /t 3
 mstsc /v:127.0.0.1:33890 /f
+</pre>
+
+<h4>Nginx</h4>
+<p>отображение файлов
+<pre>
+  root /mnt/var/personal;
+
+        location / {
+charset utf-8;
+source_charset utf-8;
+   autoindex on;
+    autoindex_exact_size off;   # human-readable размеры (K/M/G)
+    autoindex_localtime on;     # локальное время вместо GMT
+        }
+</pre>
 </pre>
 </body>
   </html>
