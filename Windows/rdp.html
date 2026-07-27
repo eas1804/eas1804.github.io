@@ -27,6 +27,88 @@ Windows Registry Editor Version 5.00
 </pre>
 <p>Запустите подключение к удаленному столу (mstsc) обязательно от имени Администратора (это нужно один раз, чтобы Windows заново создала ключи в реестре).
 
+
+
+<h4>Остановка службу лицензирования RDS</h4>
+<p><code>Stop-Service TermServLicensing -Force</code>
+
+<h4>Запуск службу лицензирования RDS</h4>
+<p><code>Start-Service TermServLicensing</code>
+
+
+<h4>Сделать копию TLSLic.edb</h4>
+Остановка службы занимает 1–2 секунды и не рвет активные RDP-сессии пользователей, которые уже работают на сервере.
+<pre>
+Stop-Service TermServLicensing -Force
+Copy-Item -Path "C:\Windows\System32\LServer\TLSLic.edb" -Destination "C:\Windows\System32\LServer\TLSLic.edb.bak"
+Start-Service TermServLicensing
+</pre>
+
+<h4>Проверить текущий режим лицензирования RDS</h4>
+<p><code>(Get-WmiObject -Namespace "Root\CIMV2\TerminalServices" -Class Win32_TerminalServiceSetting).LicensingType</code>
+<pre>
+2	Per Device	Лизензия привязывается к железу/клиенту (вашему Mac).
+4	Per User	Лицензия привязывается к учетной записи пользователя.
+5	Not Configured	Режим не задан (работает Grace Period).
+</pre>
+<hr>
+<h3>Проблемы с сервером Лицензиррования</h3>
+
+<h4>Журнал сервера лицензирования (RD Licensing)</h4>
+<p><code>eventvwr.msc ->Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-Licensing -> OperationalТакже </code>
+
+<h4>Классический журнал System </h4>
+<p>(фильтр по источнику TerminalServices-Licensing
+<p>Ключевые Event ID, которые стоит искать:
+<ol>
+<li>Event ID 21: Ошибка выдачи временной/постоянной лицензии клиенту.
+<li>Event ID 1028 / 1029: Сервер лицензирования не смог обновить или предоставить RDS CAL для устройства.
+<li>Event ID 1043: Отказ в выдаче лицензии из-за отсутствия свободных CAL или истечения срока действия.
+</ol>
+
+
+<h4>Журнал RDP-хоста (RD Session Host)</h4>
+<p>На этом же сервере перейдите в журнал самого RDP-сервиса:
+<p><code>Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-RemoteConnectionManager -> OperationalКлючевые Event </code></p>
+<ol>
+<li>ID:Event ID 1004: Terminal Server не может выдать лицензию клиенту (в описании ошибки будет указан имя/MAC вашего Mac).
+<li>Event ID 1011: Ошибка проверки лицензии при установке соединения.
+</ol>
+
+<h4>Powershell</h4>
+<pre>
+Get-WinEvent -FilterHashtable @{
+    LogName = 'System', 'Microsoft-Windows-TerminalServices-Licensing/Operational', 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
+    Level = 2, 3 # Error и Warning
+} -MaxEvents 30 | Format-Table TimeCreated, Id, ProviderName, Message -AutoSize
+</pre>
+
+
+<h4>Зависший или поврежденный кэш лицензий на клиенте (macOS). Приложение  Windows App</h4>
+
+<p>Перед выполнением rm -rf выполните команду, которая ищет запущенный процесс
+<p><code>pgrep -i "Windows App"</code>
+<p>Если команда ничего не вывела — приложение полностью закрыто, можно сразу чистить кэш.
+<p>Если вывела цифры (PID процесса) — приложение работает в фоне.
+
+<p>Универсальное принудительное завершение
+<p><code>pkill -9 -f "com.microsoft.rdc"</code>
+<p>Проверка
+<p><code>pgrep -f "com.microsoft.rdc"</code>
+
+
+<p> Запускать эту команду нужно при полностью закрытом приложении Windows App.
+<p><code>rm -rf ~/Library/Containers/com.microsoft.rdc.moremac</code>
+<p>эта команда:
+<p>Удаляет кэш лицензий: Стирает все сохранённые локальные токены RDP (включая застрявшие SSL/CAL-сертификаты, вызвавшие 0xf06).
+<p>Сбрасывает конфигурацию: Приложение возвращается к состоянию «только что установлено» — удаляются сохранённые подключения, учетные данные и пользовательские настройки.
+
+<h5>Итоговый идеальный однострочник для Mac:</h5>
+<p><code>pkill -9 -f "com.microsoft.rdc"; rm -rf ~/Library/Containers/com.microsoft.rdc.moremac</code>
+
+
+
+
 </body>
   </html>
 
