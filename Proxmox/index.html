@@ -29,7 +29,27 @@
 <li><a href=Tasks.html>Скрипт выполения заданий</a>
 </ul>
 
+<h2>hetzner.com -> Rescue</h2>
+<p><code>zpool import -f -R /mnt rpool</code>
+<p>Если имя пула отличается от rpool, проверь его список командой zpool import
 
 
+<p>Критически важно: перед перезагрузкой нужно правильно отмонтировать и экспортировать ZFS-пул, иначе ядро при старте может отказаться его импортировать!
+
+<p> 1. Отмонтируй все датасеты
+<p>cd /
+<p><code>zfs unmount -a</code>
+
+<p>2. Экспортируй пул
+<p><code>zpool export rpool</code>
+
+<p> 3. Перезагружайся в штатную систему
+<p><code>reboot</code>
+
+<h3>KVM-консоль (BusyBox):</h3>
+<p>Принудительно импортируйте пул rpool:
+<p><code>zpool import -f rpool</code>
+<p>Завершите работу initramfs, чтобы система продолжна нормальную загрузку:
+<p><code>exit</code>
 </body>
   </html>
