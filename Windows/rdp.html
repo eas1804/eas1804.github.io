@@ -111,16 +111,19 @@ Windows App -> Settings... (или нажмите горячие клавиши 
 
 
 <p> Запускать эту команду нужно при полностью закрытом приложении Windows App.
-<p><code>rm -rf ~/Library/Containers/com.microsoft.rdc.moremac</code>
+
+<p><code>cd  ~/Library/Containers/com.microsoft.rdc.macos/Data/Library/Application Support/ </code>
+
+<p>Для более старых версий приложения путь может быть: ~/Library/Containers/com.microsoft.rdc.network-extension/Data/Library/Application Support/)
+
+<p>Найдите и удалите (или переместите на рабочий стол для бэкапа) папку com.microsoft.rdc.macos или содержимое папки Application Support/Microsoft Remote Desktop.
+
+
+<p><code>rm -rf com.microsoft.rdc.macos</code>
+
 <p>эта команда:
 <p>Удаляет кэш лицензий: Стирает все сохранённые локальные токены RDP (включая застрявшие SSL/CAL-сертификаты, вызвавшие 0xf06).
 <p>Сбрасывает конфигурацию: Приложение возвращается к состоянию «только что установлено» — удаляются сохранённые подключения, учетные данные и пользовательские настройки.
-
-<h5>Итоговый идеальный однострочник для Mac:</h5>
-<p><code>pkill -9 -f "com.microsoft.rdc"; rm -rf ~/Library/Containers/com.microsoft.rdc.moremac</code>
-
-
-
 
 </body>
   </html>
