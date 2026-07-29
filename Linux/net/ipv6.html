@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ipv6</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>ipv6</h2>
+
+ <h3>/etc/network/interfaces</h3>
+<p>Для Proxmox добавлять через веб интерфейс
+<p>Блок Ipv4</p>
+<pre>
+auto vmbr0
+iface vmbr0 inet static
+        address 168.11.21.10/26
+        gateway 168.11.21.1
+        bridge-ports enp5s0
+        bridge-stp off
+        bridge-fd 0
+</pre>
+<p>Блок Ipv4</p>
+<pre>
+iface vmbr0 inet6 static
+        address 2a01:4f8:211:1b50::1/64
+        gateway fe80::1
+</pre>
+
+
+
+<h3> /etc/nftables.conf </h3>
+
+<pre>
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+
+    # ---------------- МНОЖЕСТВА И ПЕРЕМЕННЫЕ ----------------
+
+    # Доверенные IPv4 адреса
+    set trusted_ips {
+        type ipv4_addr;
+        flags interval;
+        elements = {
+            193.123.36.107,      # oracle 1
+            129.151.237.120,     # oracle 2
+        }
+    }
+</pre>
+
+<pre>
+    # Доверенные IPv6 адреса
+    set trusted_ips_v6 {
+        type ipv6_addr;
+        flags interval;
+        elements = {
+            2a03:7380:254:58:7182:962f:73c9:c496   # Мой домашний IPv6
+        }
+    }
+</pre>
+
+<pre>
+    # ---------------- INPUT CHAIN ----------------
+    chain input {
+        type filter hook input priority filter; policy drop;
+
+        # 🔒 Базовая защита 
+        tcp flags & (fin|syn|rst|psh|ack|urg) == 0 counter drop comment "Drop malformed TCP packets"
+        ct state invalid counter drop comment "Drop invalid connections"
+        ct state established,related accept comment "Accept established connections"
+        iifname "lo" accept comment "Accept loopback"
+</pre>
+
+<pre>
+        # 🌐 ICMPv6 Core — только жизненно важные типы для всей сети (без echo-request)
+        icmpv6 type {
+            destination-unreachable,
+            packet-too-big,
+            time-exceeded,
+            parameter-problem,
+            nd-router-solicit,
+            nd-router-advert,
+            nd-neighbor-solicit,
+            nd-neighbor-advert
+        } accept comment "Allow ICMPv6 core & NDP"
+
+        # 🔌 Служебный DHCPv6 клиент
+        ip6 saddr fe80::/10 udp dport 546 accept comment "Allow DHCPv6 Client"
+</pre>
+<pre>
+        # 🔑 Доступ к хосту по IPv6 (SSH, Proxmox GUI) с доверенных IP
+        ip6 saddr @trusted_ips_v6 tcp dport { 22, 8006 } counter accept comment "Allow Admin IPv6"
+
+        # 📡 Ping/ICMPv6 (echo-request) ТОЛЬКО с доверенных IPv6
+        ip6 saddr @trusted_ips_v6 icmpv6 type { echo-request, echo-reply } counter accept comment "Allow Ping IPv6"
+
+        # ✅ Доступ к хосту по IPv4 с доверенных IP
+        ip saddr @trusted_ips tcp dport { 22, 8006 } counter accept comment "Allow Admin IPv4"
+        ip saddr @trusted_ips ip protocol icmp counter accept comment "Allow Ping IPv4"
+    }
+</pre>
+
+<pre>
+    # ---------------- FORWARD CHAIN ----------------
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+
+        # 🔒 Базовые проверки безопасности
+        tcp flags & (fin|syn|rst|psh|ack|urg) == 0 counter drop comment "Drop malformed TCP packets"
+        ct state invalid counter drop comment "Drop invalid connections"
+        ct state established,related accept comment "Accept established connections"
+
+        # Коррекция MSS для VPN/PPPoE туннелей
+        tcp flags syn tcp option maxseg size set rt mtu comment "Clamp MSS to PMTU"
+</pre>
+
+<pre>
+        # Системный ICMPv6 для транзитных пакетов (PMTU Discovery)
+        icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem } accept
+</pre>
+<pre>
+        # 🔄 Маршрутизация LAN -> WAN
+        iifname { "vmbr1", "vmbr2", "vmbr3", "vmbr4", "vmbr5" } oifname "vmbr0" accept comment "LAN Subnets -> WAN"
+    }
+}
+</pre>
+
+
+
+
+</body>
+  </html>
