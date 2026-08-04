@@ -9,6 +9,15 @@
   </head>
 
 <body>
+<h2> Скачиваю тестовый файл из интернета и сразу же удаляет его из памяти, не сохраняя на диск</h2>
+ <p><code>wget -O /dev/null https://hel1-speed.hetzner.com/100MB.bin </code>
+ <p><code>wget -O /dev/null http://speedtest.frankfurt.linode.com/100MB-frankfurt.bin</code>
+<p>Чтобы получить привычную скорость интернет-канала в Мегабитах в секунду (Mbit/s), умножьте результат на 8
+ <h2>Speedtest</h2>
+ <p><code>apt install -y speedtest-cli</code>
+ <p><code>speedtest-cli</code>
+
+
 <h2>Пример правильного написания скоростей передачи данных:</h2>
 <pre>
 - килобиты в секунду — кбит/с (kbps, kbit/s или kb/s)
