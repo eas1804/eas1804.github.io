@@ -65,6 +65,39 @@ c,		Целевой размер (Target),	"Размер, к которому ARC
 <h3>Просмотр списка всех запланированных заданий проверки (Verify Jobs)</h3>
 <p><code>proxmox-backup-manager verify-job list</code>
 
+<h3>Logs</h3>
+<p>web: Server Administration -> Tasks
+<h4>Основная команда (полный аналог веб-интерфейса)</h4>
+<p><code>proxmox-backup-manager task list --all --limit 20</code>
+
+<p>Быстрый отбор только ошибок (статус отличный от OK):
+<p><code>proxmox-backup-manager task list --all --limit 50 | grep -v "OK"</code>
+
+<p>Посмотреть детальный лог любой из этих задач прямо из вывода:
+<p>Просто скопируйте нужный UPID из третьей колонки:
+
+<p><code>proxmox-backup-manager task log <b>UPID:pbs2-vm:000002B2:00000978:00000930:6A7946BC:backup:ZVOL\x3avm-108:dtz_admin@pbs</b>:</code>
+
+<p>Посмотреть задачи конкретного клиента/VM (например, vm-108):
+<p><code>proxmox-backup-manager task list --all | grep "vm-108"</code>
+
+
+<p>Быстрое чтение лога конкретной задачи из этого списка
+<p><code>proxmox-backup-manager task log <b>UPID</b></code>
+<h4>Фильтрация по конкретному пользователю или хранилищу</h4>
+<p>Задачи конкретного пользователя:
+<p><code>proxmox-backup-manager task list --user dtz_admin@pbs</code>
+<p>Задачи только по датастору ZVOL:
+<p><code>proxmox-backup-manager task list --store ZVOL</code>
+<h4>journalctl</h4>
+<p><code>journalctl -u proxmox-backup-proxy -n 50 --no-pager</code>
+<p><code>journalctl -u proxmox-backup-proxy -e</code>
+<p><code>journalctl -u proxmox-backup.service -n 50 --no-pager</code>
+<p><code>journalctl -u proxmox-backup -e</code>
+ 
+<p>Файлы логов задач на диске: Все логи выполненных процессов хранятся в каталоге:
+<p><code>/var/log/proxmox-backup/tasks/</code>
+<p><code> ls -l /var/log/proxmox-backup/tasks/ | head -n 10</code>
 
 </body>
   </html>
