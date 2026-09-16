@@ -10,30 +10,36 @@
 
 <body>
 
-<h3>ВСЕГДА 3 раскладки клавиатры. Не добавлялись лишние раскладки </h3>
-<p>Классическая проблема RDP-сессий: Windows пытается быть «умной» и пробрасывает локальную раскладку на удаленный сервер, создавая дубликат.
-<p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
 
 <h3>Удаленный сеанс отключен, поскольку отсутствуют доступные серверы лицензирования удаленных рабочих столов, которые могли бы провести лицензирование.</h3>
-<p>Перейдите в 
+
+<p><code>reg delete "HKLM\SOFTWARE\Microsoft\MSLicensing" /f</code>
+<p>или Перейдите в 
 <p><code>HKEY_LOCAL_MACHINE\Software\Microsoft\MSLicensing</code>
 <p>Удалите подпапки 
 <p><code>HardwareID и Store</code>
-<p> или
+<p> или reg file
 <pre>
 Windows Registry Editor Version 5.00 
 
 [-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSLicensing]
 </pre>
-<p>Запустите подключение к удаленному столу (mstsc) обязательно от имени Администратора (это нужно один раз, чтобы Windows заново создала ключи в реестре).
 
 
+<p>Запустите подключение к удаленному столу (mstsc) обязательно от имени <b>Администратора</b> (это нужно один раз, чтобы Windows заново создала ключи в реестре).
 
+
+<h3>ВСЕГДА 3 раскладки клавиатры. Не добавлялись лишние раскладки </h3>
+<p>Классическая проблема RDP-сессий: Windows пытается быть «умной» и пробрасывает локальную раскладку на удаленный сервер, создавая дубликат.
+<p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
+
+<hr>
 <h4>Остановка службу лицензирования RDS</h4>
 <p><code>Stop-Service TermServLicensing -Force</code>
 
 <h4>Запуск службу лицензирования RDS</h4>
 <p><code>Start-Service TermServLicensing</code>
+
 
 
 <h4>Сделать копию TLSLic.edb</h4>

@@ -36,7 +36,37 @@ ln -s /usr/local/bin/restic /usr/bin/restic
 </pre></td></tr></table>
 
 <h2>Установка в Windows</h2>
-Если у вас ещё не установлен Scoop, выполните в PowerShell (от имени обычного пользователя, не администратора!):
+
+<table><tr><td><pre>
+# 1. Создаем целевую папку
+New-Item -ItemType Directory -Force -Path "C:\Tools\restic" | Out-Null
+
+# 2. Скачиваем официальный релиз
+Invoke-WebRequest -Uri "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_windows_amd64.zip" -OutFile "$env:TEMP\restic.zip"
+
+# 3. Распаковываем во временную папку
+Expand-Archive -Path "$env:TEMP\restic.zip" -DestinationPath "$env:TEMP\restic_temp" -Force
+
+# 4. Переносим exe-файл в C:\Tools\restic\restic.exe
+Move-Item -Path "$env:TEMP\restic_temp\restic_0.19.1_windows_amd64.exe" -Destination "C:\Tools\restic\restic.exe" -Force
+
+# 5. Добавляем C:\Tools\restic в пользовательскую переменную PATH
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if ($userPath -notlike "*C:\Tools\restic*") {
+    [Environment]::SetEnvironmentVariable("Path", "$userPath;C:\Tools\restic", "User")
+}
+
+# 6. Добавляем путь в текущую сессию PowerShell (чтобы работало без перезапуска)
+$env:Path += ";C:\Tools\restic"
+
+# 7. Очистка временных файлов
+Remove-Item "$env:TEMP\restic.zip", "$env:TEMP\restic_temp" -Recurse -Force
+
+Write-Host "Установка завершена!" -ForegroundColor Green
+</pre></td></tr></table>
+
+<p>Вариант 2 
+<p>Если у вас ещё не установлен Scoop, выполните в PowerShell (от имени обычного пользователя, не администратора!):
 <table><tr><td><pre>
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
