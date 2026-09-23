@@ -10,6 +10,12 @@
 
 <body>
 <ol>
+
+<li><h3>Credential Guard</h3>
+<p><img src="Credential.png">
+<p>Отключить Windows Defender Credential Guard
+<p><code>reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v LsaCfgFlags /t REG_DWORD /d 0 /f</code>
+
 <li><h3>Как зайти на сетевую шару  где нет  авторизаци</h3>
 <p><code>reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v AllowInsecureGuestAuth /t REG_DWORD /d 1</code></p>
 <p><code>net stop LanmanWorkstation && net start LanmanWorkstation</code></p>
@@ -17,8 +23,7 @@
 <li><h3>Ошибка RDP подключения: CredSSP encryption oracle remediation</h3>
 <p><code>REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters /v AllowEncryptionOracle /t REG_DWORD /d 2</code></p>
 
-<li><h3>Credential Guard будет отключен</h3>
-<p><code>REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v LsaCfgFlags /t REG_DWORD /d 0 /f</code></p>
+
 <li><h3>Этот сеанс будет прекращен из-за ошибки шифрования данных.</h3>
 <p>Ошибка при подключении по RDP
 <p>Это сообщение указывает на ошибку шифрования, часто связанную с проблемами TLS/SSL, настройками политики безопасности, различиями в протоколах RDP, или обновлениями безопасности.
@@ -31,8 +36,7 @@
 Безопасность→
 <P>Устанвоить уровень шифрования для клинских подключнеий→
 Совместимый с клиентом</code>
-<li><h3>Credential Guard в Защитнике Windows не разрешает использовать сохраненные учетные данные</h3>
-<p><code>New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\LSA" -Name "LsaCfgFlags" -PropertyType "DWORD" -Value 0 -Force</code>
+
 
 </ol>
 </body>
