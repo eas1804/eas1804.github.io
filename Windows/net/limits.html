@@ -12,10 +12,26 @@
 <ol>
 
 <li><h3>Credential Guard</h3>
-<p><img src="Credential.png">
-<p>Отключить Windows Defender Credential Guard
+<p><img src="Credential.png" border=1>
+<OL>
+<li>Отключить Windows Defender Credential Guard
 <p><code>reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v LsaCfgFlags /t REG_DWORD /d 0 /f</code>
 
+<li>reboot
+</OL>
+<h3><li>Принтеры и буфер обмена</h3>
+<p><img src="Clipboard_prn_on.png" border=1>
+<OL>
+<li>gpedit.msc
+<p><code> Конфигурация компьютера -> Административные шаблоны -> Компоненты Windows -> Службы удаленных рабочих столов -> Клиент подключения к удаленному рабочему столу.</code>
+<p>Найдите политику <b>Разрешить .rdp-файлы от неизвестных издателей</b> (Allow .rdp files from unknown publishers).
+<p> выберите Включено (Enabled) и нажмите ОК.
+<li> Использовать cmd файл
+<pre>
+@echo off
+start "" mstsc /v:dima.mlp.pp.ua /f
+</pre>
+</OL>
 <li><h3>Как зайти на сетевую шару  где нет  авторизаци</h3>
 <p><code>reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v AllowInsecureGuestAuth /t REG_DWORD /d 1</code></p>
 <p><code>net stop LanmanWorkstation && net start LanmanWorkstation</code></p>
