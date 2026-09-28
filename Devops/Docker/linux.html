@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Linux</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Linux</h2>
+<p>Alpineдистрибутив с настроенным графическим окружением
+<p><pre>docker run -d --name=webtop -e PUID=1000 -e PGID=1000 -e TZ=Europe/Kiev -e LC_ALL=ru_RU.UTF-8 -p 3030:3000 -p 3031:3001 -v ./config:/config --shm-size="1gb" --restart unless-stopped lscr.io/linuxserver/webtop:latest</pre>
+<p>для удаления клнтейнера webtop
+<p><code>docker rm webtop</code>
+
+<p>Запуск
+<p><code>https://172.16.72.4:3031/</code>
+</code>
+
+<p>или docker-compose.yaml
+<p><pre>version: "3.8"
+
+services:
+  webtop:
+    image: lscr.io/linuxserver/webtop:latest
+    container_name: webtop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Kiev
+      - LC_ALL=ru_RU.UTF-8
+    volumes:
+      - ./config:/config
+    ports:
+      - "3030:3000"
+      - "3031:3001"
+    shm_size: "1gb"
+    restart: unless-stopped
+	</pre>
+
+
+<p> для Debian
+<p><code>image: lscr.io/linuxserver/webtop:ubuntu-xfce</code>
+
+
+<h3>Anydesk</h3>
+<p><code>wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/anydesk.gpg</code>
+<p><code>echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk-stable.list</code>
+<p><code>sudo apt update && sudo apt install -y anydesk</code>
+<p>Через графическое меню внутри браузера: Приложения -> Интернет (или поиск по приложениям).
+<p>Либо прямо из терминала контейнера, просто введя: anydesk
+
+</body>
+  </html>
