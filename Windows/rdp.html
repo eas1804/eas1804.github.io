@@ -61,6 +61,7 @@ if (-not (Test-Path $sysProcsPath)) { New-Item -Path $sysProcsPath -Force }
 New-ItemProperty -Path $sysProcsPath -Name '1cv8.exe' -Value 0 -PropertyType DWord -Force
 New-ItemProperty -Path $sysProcsPath -Name '1cv8c.exe' -Value 0 -PropertyType DWord -Force
 New-ItemProperty -Path $sysProcsPath -Name 'splwow64.exe' -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path $sysProcsPath -Name 'ezvit.exe' -Value 0 -PropertyType DWord -Force
 </pre>
 <li>Применение изменений групповых политик:
 <p><code>gpupdate /force</code>
