@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DNS</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>DNS</h2>
+
+
+<p><code>apt update && apt install -y dnsutils</code></p>
+
+<p>Задаем домен
+<p><code>DOMEN=eas.pp.ua</code>
+
+<h3>NS record</h3>
+<p><code>dig $DOMEN NS +short </code></p>
+
+<h3>А record</h3>
+<p><code>dig $DOMEN  a +short</code></p>
+
+<h3>MX record</h3>
+<p><code>dig $DOMEN  mx   |  grep -v "^;"</code></p>
+
+<h3>SPF record</h3>
+<p><code>dig $DOMEN  txt    | grep -v "^;"</code></p>
+
+<h3>DMARC record</h3>
+<p><code> dig _dmarc.$DOMEN txt |   grep -v "^;"</code></p>
+<h3>Обратная зона - PTR record</h3>
+<p><code>dig -x 144.76.74.132 +short</code></p>
+
+
+
+
+</body>
+  </html>
