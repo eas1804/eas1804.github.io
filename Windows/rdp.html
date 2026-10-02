@@ -34,13 +34,44 @@ Windows Registry Editor Version 5.00
 <p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
 
 <hr>
+<h3>Ограничение времени сеансов</h3>
+<p>gpedit.msc
+<ol>
+<p>Конфигурация компьютера → Административные шаблоны → Компоненты Windows → Службы удаленных рабочих столов → Узел сеансов удаленных рабочих столов → Ограничение времени сеанса
+<li>Задать ограничение по времени для отключенных сеансов: Включено (Завершение отключенного сеанса: 1 час или 15–30 минут).
+<li>Задать ограничение времени для активных, но бездействующих сеансов: Включено (Ограничение бездействующего сеанса: 12 часов).
+<li>Завершать сеанс при достижении предела времени: Включено.
+</ol>
+
+<h3>Команды оптимизации реестра Windows </h3>
+<p>(PowerShell от имени Администратора)
+<ol>
+<ll>Настройка таймаутов освобождения ресурсов RDP:
+<p><code>Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name 'KeepAliveTimeout' -Value 1 -Type DWord</code>
+<p><code>New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name 'InactivityTimeout' -Value 1 -Type DWord -ErrorAction SilentlyContinue</code>
+<li>Включение авто-завершения зависших процессов для всех профилей пользователей (AutoEndTasks):
+<p><code>Set-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Desktop' -Name 'AutoEndTasks' -Value '1'</code>
+<p><code>Set-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Desktop' -Name 'WaitToKillAppTimeout' -Value '2000'</code>
+<p><code>Set-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Desktop' -Name 'HungAppTimeout' -Value '2000'</code>
+<li>Добавление 1С / BAF и службы печати в системный список для принудительной выгрузки (SysProcs):
+<pre>
+$sysProcsPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\SysProcs'
+if (-not (Test-Path $sysProcsPath)) { New-Item -Path $sysProcsPath -Force }
+
+New-ItemProperty -Path $sysProcsPath -Name '1cv8.exe' -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path $sysProcsPath -Name '1cv8c.exe' -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path $sysProcsPath -Name 'splwow64.exe' -Value 0 -PropertyType DWord -Force
+</pre>
+<li>Применение изменений групповых политик:
+<p><code>gpupdate /force</code>
+</oL>
+<hr>
+
 <h4>Остановка службу лицензирования RDS</h4>
 <p><code>Stop-Service TermServLicensing -Force</code>
 
 <h4>Запуск службу лицензирования RDS</h4>
 <p><code>Start-Service TermServLicensing</code>
-
-
 
 <h4>Сделать копию TLSLic.edb</h4>
 Остановка службы занимает 1–2 секунды и не рвет активные RDP-сессии пользователей, которые уже работают на сервере.
@@ -57,16 +88,6 @@ Start-Service TermServLicensing
 4	Per User	Лицензия привязывается к учетной записи пользователя.
 5	Not Configured	Режим не задан (работает Grace Period).
 </pre>
-
-<hr>
-<h3>Ограничение времени сеансов</h3>
-<p>gpedit.msc
-<ol>
-<p>Конфигурация компьютера → Административные шаблоны → Компоненты Windows → Службы удаленных рабочих столов → Узел сеансов удаленных рабочих столов → Ограничение времени сеанса
-<li>Задать ограничение по времени для отключенных сеансов: Включено (Завершение отключенного сеанса: 1 час или 15–30 минут).
-<li>Задать ограничение времени для активных, но бездействующих сеансов: Включено (Ограничение бездействующего сеанса: 12 часов).
-<li>Завершать сеанс при достижении предела времени: Включено.
-</ol>
 
 <hr>
 <h3>Проблемы с сервером Лицензиррования</h3>
