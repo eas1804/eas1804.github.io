@@ -41,6 +41,16 @@ Windows Registry Editor Version 5.00
 <li>Задать ограничение по времени для отключенных сеансов: Включено (Завершение отключенного сеанса: 1 час или 15–30 минут).
 <li>Задать ограничение времени для активных, но бездействующих сеансов: Включено (Ограничение бездействующего сеанса: 12 часов).
 <li>Завершать сеанс при достижении предела времени: Включено.
+
+</ol>
+<hr>
+<h3>Зависание RDP</h3>
+<ol>
+<li> Отключить блокировку завершения работы приложений (в GPO)
+<p>Конфигурация компьютера -> Административные шаблоны -> Система -> Параметры завершения работы.
+<p>Состояние: Перевести в <b>Отключено</b> (именно Отключено, чтобы система ПРИНУДИТЕЛЬНО гасила зависшие программы при Logoff).
+<li>Конфигурация компьютера -> Административные шаблоны -> Компоненты Windows -> Службы удаленных рабочих столов -> Узел сеансов удаленных рабочих столов -> Перенаправление принтеров
+<p>Использовать в первую очередь драйвер принтера удаленного рабочего стола Easy Print
 </ol>
 
 <h3>Команды оптимизации реестра Windows </h3>
@@ -63,6 +73,19 @@ New-ItemProperty -Path $sysProcsPath -Name '1cv8c.exe' -Value 0 -PropertyType DW
 New-ItemProperty -Path $sysProcsPath -Name 'splwow64.exe' -Value 0 -PropertyType DWord -Force
 New-ItemProperty -Path $sysProcsPath -Name 'ezvit.exe' -Value 0 -PropertyType DWord -Force
 </pre>
+
+<p>Чтобы система при закрытии сеанса завершала абсолютно все фоновые программы (не только занесенные в SysProcs), добавьте параметр HonorCurrentUserAppTimeout:   
+<p>Выполните в PowerShell от имени Администратора:PowerShell
+<p># 1. Принудительный учет AutoEndTasks при закрытии RDP-сеанса
+<p><code>Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name 'HonorCurrentUserAppTimeout' -Value 1 -Type DWord</code>
+<p># 2. Игнорирование заблокированных / не отвечающих приложений при Logoff
+<p><code>Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name 'PRNoPrompt' -Value 1 -Type DWord</code>
+<p># 3. Отключение автоматического сохранения состояния сеанса (сброс зависших профилей)
+<p><code>Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name 'fResetBroken' -Value 1 -Type DWord</code>
+
+
+
+
 <li>Применение изменений групповых политик:
 <p><code>gpupdate /force</code>
 </oL>
