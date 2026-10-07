@@ -90,6 +90,33 @@ New-ItemProperty -Path $sysProcsPath -Name 'ezvit.exe' -Value 0 -PropertyType DW
 <p><code>gpupdate /force</code>
 </oL>
 <hr>
+<h3>Проблемные обновления сентября 2026</h3>
+<h4>Проверить обновления</h4>
+<pre>
+Get-HotFix |
+    Sort-Object InstalledOn -Descending |
+    Select-Object -First 15 HotFixID, InstalledOn
+</pre>
+<h4>Windows 2019</h4>
+<p>Проблемное обновление <b>KB5122876</b>
+<p>Установленная сборка 17763.9245 и симптомы совпали с известной ошибкой Microsoft.
+<p>Исправление <b>KB5129238</b> сборка стала 17763.9247
+<p>Скачать отсюда: 
+https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129238
+
+<h4>Server 2016</h4>
+<p>Version 10.0.14393.  Windows Server Версия 1607 (Сборка ОС 14393.9512)
+<p>Проблкма:  установлено KB5123099, а сборка 14393.9512 соответствует обновлению Windows Server 2016, для которого Microsoft подтвердила сбои RDP и входа. 
+<p>Исправление — KB5129239, ожидаемая сборка после установки 14393.9514
+<p>Скачать 
+https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129239
+<p>Затем проверьте winver, наличие KB5129239 
+
+
+
+
+
+<hr>
 
 <h4>Остановка службу лицензирования RDS</h4>
 <p><code>Stop-Service TermServLicensing -Force</code>
