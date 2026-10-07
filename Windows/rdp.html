@@ -97,6 +97,13 @@ Get-HotFix |
     Sort-Object InstalledOn -Descending |
     Select-Object -First 15 HotFixID, InstalledOn
 </pre>
+<h4>Windows2025</h4>
+<p>Проблемное обновление <b>KB5122871</B>
+<p>Скачать: https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129235
+<p>Cкачайте оба файла x64, предлагаемые для KB5129235: windows11.0-kb5043080-x64.msu и windows11.0-kb5129235-x64.msu.
+<p>Сначала запустите KB5043080. Если Windows сообщит, что он уже установлен, переходите дальше. 
+<p>Затем запустите KB5129235 и перезагрузите сервер
+<p>Проверьте через winver сборку 26100.33451
 <h4>Windows 2019</h4>
 <p>Проблемное обновление <b>KB5122876</b>
 <p>Установленная сборка 17763.9245 и симптомы совпали с известной ошибкой Microsoft.
