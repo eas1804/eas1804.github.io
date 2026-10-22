@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MikroTik scripts</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+
+<body>
+<h2>Настройки MikroTik для мониторинга Zabbix</h2>
+<p>Исходные данные:
+<p>Zabbix Server: 65.21.73.59
+<p>SNMP: v2c
+<p>Порт: UDP/161
+<ol>
+<li> Создать отдельный список адресов:
+<p><code>/ip firewall address-list add \
+<br>    list=zabbix-snmp \
+<br>    address=65.21.73.59 \
+<br>    comment="Zabbix Server" </code>
+
+
+<li>Создать SNMP community только для чтения:
+<p><code>/snmp community add \
+   <br> name="<СЛУЧАЙНЫЙ_COMMUNITY>" \
+   <br> addresses=65.21.73.59/32 \
+   <br> security=none \
+   <br> read-access=yes \
+   <br> write-access=no</code>
+<li>Включить SNMP:
+<p><code>/snmp set enabled=yes contact="admin" location="Balzaka68"</code>
+<li> Разрешить SNMP в firewall перед общим правилом DROP:
+<p><code>/ip firewall filter add \
+  <br>  chain=input \
+  <br>  action=accept \
+  <br>  protocol=udp \
+  <br>  dst-port=161 \
+  <br>  src-address-list=zabbix-snmp \
+  <br>  comment="SNMP from Zabbix" \
+  <br>  place-before=[find where comment="other DROP!!!!"] </code>
+<li> Отключить стандартный community public:
+<p>/snmp community remove [find name="public"]
+<li>Проверить конфигурацию:
+<p><code>/snmp print</code>
+<p><code>/snmp community print></code>
+<p><code>/ip firewall address-list print where list=zabbix-snmp</code>
+<p><code>/ip firewall filter print</code>
+<p>Ожидаемое состояние:
+<pre>SNMP enabled: yes
+Community: отдельный, read-only
+Адрес community: 65.21.73.59/32
+Firewall: UDP/161 разрешён только от Zabbix Server
+Community public: отсутствует
+SSH-пользователь MikroTik для работы Zabbix не нужен. Zabbix подключается к маршрутизатору через SNMP.
+</pre>
+
+
+</body>
+  </html>
