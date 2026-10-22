@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>win-rm</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<p>WinRM (Windows Remote Management) — это служба Windows, которая позволяет удаленно управлять компьютерами через WS-Management (WSMan). 
+<p>Она основана на HTTP (порт 5985) и HTTPS (порт 5986) и используется для удаленного администрирования, например, через PowerShell Remoting.
+<p> Порт  5985 (wsman) открыт по умолчанию
+<p>По умолчанию WinRM работает только в локальной сети и требует настройки доверенных хостов или доменного окружения.
+<ol>
+
+<li>Включаем службу PSRemoting 
+<p>На удаленном компе от админа
+<p><code>Enable-PSRemoting -Force</code>
+<p>Если ошибка:Исключение брандмауэра WinRM не будет работать, поскольку одно из сетевых подключений, установленных для этого компь
+ютера, является общим. Измените тип сетевого подключения либо на доменное, либо на частное и повторите попытку.
+<p>Проверяем сетевые профили
+<p><code>Get-NetConnectionProfile |
+    Format-Table InterfaceAlias,InterfaceIndex,NetworkCategory,IPv4Connectivity -AutoSize</code>
+<p>получаем номер InterfaceIndex, например <b>16</b>
+
+<p>Исправляем
+<p><code>Set-NetConnectionProfile -InterfaceIndex <b>16</b> -NetworkCategory Private</code>
+
+<p>Повторяем
+<p><code>Enable-PSRemoting -Force</code>
+
+<li> Подключаемся с лкального на удалееный комп
+<p>Допутим IP удаленного компа 10.112.1.3
+
+<p><code>$IP = "10.112.1.3"</code>
+<p><code>Test-NetConnection -ComputerName $IP -Port 5985</code>
+<p> Если подключения нет нужно на целевом компе проверить файрвол, откуда идет подключение 
+<li>файрвол на целеовом компе
+<p>Выясняем IP адрес, откуда мы подключались
+<p><code>Get-Content "$env:windir\System32\LogFiles\Firewall\pfirewall.log" -Tail 100 | Select-String '5985'</code>
+<p>если ошибка
+<p><code>Get-NetFirewallProfile |
+    Select-Object Name, Enabled, LogFileName, LogBlocked, LogAllowed</code>
+	
+	<p>Для диагностики WinRM достаточно записывать заблокированные соединения:
+	<p><code>Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True</code>
+	
+	<p>Если нужно видеть также успешные соединения:
+	<p><code>Set-NetFirewallProfile -Profile Domain,Private,Public -LogAllowed True</code>
+	
+	
+	<p>Проверим расположение файла:
+	<p><code>Get-NetFirewallProfile |
+    Select-Object Name,LogFileName,LogBlocked,LogAllowed</code>
+<li> Добваить полученные IP адреса 
+
+<p><code>Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress '192.168.218.11'</code>
+<p><code>Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP-PUBLIC'  -RemoteAddress '192.168.218.11'</code>
+
+
+<p>Если ошибка, Набор правил брандмауэра может отличаться в зависимости от версии Windows и конфигурации системы.
+	<p>Проверим существующие правила WinRM
+<pre>Get-NetFirewallRule |
+    Where-Object {
+        $_.Name -like '*WINRM*'
+    } |
+    Select-Object Name,DisplayName,Enabled,Profile,Action |
+    Format-Table -AutoSize</pre>
+
+<p><a href="Win-rm_old.html">old info</a></p>
+
+</body>
+  </html>
+
