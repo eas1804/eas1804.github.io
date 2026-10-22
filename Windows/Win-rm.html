@@ -13,53 +13,63 @@
 <p>Она основана на HTTP (порт 5985) и HTTPS (порт 5986) и используется для удаленного администрирования, например, через PowerShell Remoting.
 <p> Порт  5985 (wsman) открыт по умолчанию
 <p>По умолчанию WinRM работает только в локальной сети и требует настройки доверенных хостов или доменного окружения.
-<p>Если хотите подключаться из другой сети, нужно включить WinRM через HTTPS (порт 5986).
-<H2>как настроить PSRemoting для удаленного подключения к компьютеру в рабочей группе</h2>
-допустим:
-Рабочая станция администратора — 192.168.18.100 |
-Компьютер пользователя — 192.168.18.222
-<p>Подключиться к клиенту локаьно или по RDP
 <ol>
-<li>Проверьте, что на компьютере запущена служба WinRM:
-<p><code>Get-Service -Name "*WinRM*" | select status</code>
-<li>Если служба не запущена, запустите ее:
-<p><code>Enable-PSRemoting</code>
-<li>Если для сетевого подключения на компьютере установлен тип сети Public (общедоступная), то при включении WinRM появится ошибка
-<p>нужно изменить тип сети на частную (private) 
-<p><code>Set-NetConnectionProfile -NetworkCategory Private</code>
-или использовать команду:
-<p><code>Enable-PSRemoting –SkipNetworkProfileCheck</code>
-<li>Откройте порт (TCP 5985) для подключения к WinRM в Windows Defender Firewall (например с 192.168.18.100)
-<p><code>Set-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)" -RemoteAddress 192.168.18.100
-Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"</code>
-</ol>
-<p> На компе админа
-<p>Чтобы работала Negotiate аутентификация через NTLM ваш компьютер должны доверять удаленному компьютеру. В домене это достигается с помощью Kerberos, а в рабочей группе придется добавить IP адреса компьютера в TrustedHosts
-<p>Добавьте компьютер пользователя в TrustedHosts на компьютере администратора
-<p><code>Set-Item wsman:\localhost\client\TrustedHosts -Value 192.168.18.222 -Force</code>
-<p>дополнительно
-<ul>
-<li>Вывести список компьютеров в TrustedHosts:
-<p><code>get-Item WSMan:\localhost\Client\TrustedHosts</code>
-<li>Чтобы очистить список TrustedHosts:
-<p><code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value "" –Force</code>
-<li>Чтобы добавить новый компьютер в список TrustedHosts, используйте параметр -Concatenate:
-<p><code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value 192.168.13.200 -Concatenate</code>
-</ul>
-link https://winitpro.ru/index.php/2022/01/11/psremoting-udalennoe-podklyuchenie-workgroup/
-<hr>
-<h2>Работает ли WinRM</h2>
-<p><code>Test-WsMan "SERVER_IP"</code><p>
-<h2>Подключиться удаленно через PowerShell Remoting</h2>
-<p><code>Enter-PSSession -ComputerName 172.16.181.27 -Credential Администратор</code><p>
-<p>Добавить USER1 в группу Remote Management Users  (Пользователи удаленного управления) на целевом сервере, тогда он сможет подключаться по WinRM
-<p><code>Add-LocalGroupMember -Group "Remote Management Users" -Member "USER1"</code><p>
-<hr>
-<h2>Аналог telnet</h2>
-<p><code>Test-NetConnection -ComputerName 172.16.181.27 -Port 5985</code><p>
-<p><code>Test-NetConnection -ComputerName pbs.mlp.pp.ua -DiagnoseRouting</code><p>
-<h2>Аналог Tracert</h2>
-<p><code>Test-NetConnection -ComputerName 8.8.8.8 -TraceRoute</code>
+
+<li>Включаем службу PSRemoting 
+<p>На удаленном компе от админа
+<p><code>Enable-PSRemoting -Force</code>
+<p>Если ошибка:Исключение брандмауэра WinRM не будет работать, поскольку одно из сетевых подключений, установленных для этого компь
+ютера, является общим. Измените тип сетевого подключения либо на доменное, либо на частное и повторите попытку.
+<p>Проверяем сетевые профили
+<p><code>Get-NetConnectionProfile |
+    Format-Table InterfaceAlias,InterfaceIndex,NetworkCategory,IPv4Connectivity -AutoSize</code>
+<p>получаем номер InterfaceIndex, например <b>16</b>
+
+<p>Исправляем
+<p><code>Set-NetConnectionProfile -InterfaceIndex <b>16</b> -NetworkCategory Private</code>
+
+<p>Повторяем
+<p><code>Enable-PSRemoting -Force</code>
+
+<li> Подключаемся с лкального на удалееный комп
+<p>Допутим IP удаленного компа 10.112.1.3
+
+<p><code>$IP = "10.112.1.3"</code>
+<p><code>Test-NetConnection -ComputerName $IP -Port 5985</code>
+<p> Если подключения нет нужно на целевом компе проверить файрвол, откуда идет подключение 
+<li>файрвол на целеовом компе
+<p>Выясняем IP адрес, откуда мы подключались
+<p><code>Get-Content "$env:windir\System32\LogFiles\Firewall\pfirewall.log" -Tail 100 | Select-String '5985'</code>
+<p>если ошибка
+<p><code>Get-NetFirewallProfile |
+    Select-Object Name, Enabled, LogFileName, LogBlocked, LogAllowed</code>
+	
+	<p>Для диагностики WinRM достаточно записывать заблокированные соединения:
+	<p><code>Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True</code>
+	
+	<p>Если нужно видеть также успешные соединения:
+	<p><code>Set-NetFirewallProfile -Profile Domain,Private,Public -LogAllowed True</code>
+	
+	
+	<p>Проверим расположение файла:
+	<p><code>Get-NetFirewallProfile |
+    Select-Object Name,LogFileName,LogBlocked,LogAllowed</code>
+<li> Добваить полученные IP адреса 
+
+<p><code>Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress '192.168.218.11'</code>
+<p><code>Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP-PUBLIC'  -RemoteAddress '192.168.218.11'</code>
+
+
+<p>Если ошибка, Набор правил брандмауэра может отличаться в зависимости от версии Windows и конфигурации системы.
+	<p>Проверим существующие правила WinRM
+<pre>Get-NetFirewallRule |
+    Where-Object {
+        $_.Name -like '*WINRM*'
+    } |
+    Select-Object Name,DisplayName,Enabled,Profile,Action |
+    Format-Table -AutoSize</pre>
+
+<p><a href="Win-rm_old.html">old info</a></p>
 
 </body>
   </html>
