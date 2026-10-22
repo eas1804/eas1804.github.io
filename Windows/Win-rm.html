@@ -69,8 +69,53 @@
     Select-Object Name,DisplayName,Enabled,Profile,Action |
     Format-Table -AutoSize</pre>
 
-<p><a href="Win-rm_old.html">old info</a></p>
 
+
+<p>Теперь порт WinRM доступен — сетевая часть настроена.
+<p><a href="Win-rm_old.html">old info</a></p>
+<hr>
+
+
+<p>Для следующего шага укажите имя целевого Windows-компьютера и имя административной учётной записи. 
+<p>На целевой машине их можно узнать командами:
+<p><code>hostname</code>
+<p><code>whoami</code>
+
+
+<p>На целевом
+<p><code>New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name LocalAccountTokenFilterPolicy -PropertyType DWord -Value 1 -Force</code>
+
+<p>Теперь на своём компьютере, где запущен Codex, откройте Windows PowerShell от имени администратора под своим пользователем
+
+<p><code>Start-Process powershell.exe -Verb RunAs</code>
+
+<p>Выполните по одной строке:
+<p><code>Start-Service WinRM</code>
+
+<p>Добавьте только адрес сервера в TrustedHosts, сохранив существующие записи:  (10.112.1.3 - Ip целевого сервера)
+
+<p><code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value '10.112.1.3' -Concatenate -Force</code>
+
+<p>Введите пароль учётной записи сервера в открывшемся окне:
+
+<p><code>$cred = Get-Credential -UserName 'srv\Username' -Message 'Доступ к серверу srv'</code>
+
+<p>Проверьте выполнение команд:
+
+<p><code>Invoke-Command -ComputerName 10.112.1.3 -Authentication Negotiate -Credential $cred -ScriptBlock { hostname; whoami }</code>
+
+<p><code>$cred | Export-Clixml -LiteralPath 'G:\Monero\srv.credential.xml'</code>
+
+<hr>
+<p>Открыть интерактивную сессию:
+<p><code>Enter-PSSession -ComputerName 10.112.1.3 -Authentication Negotiate -Credential $cred</code>
+<p>После этого команды выполняются на сервере srv. Например:
+<p><code>Get-Process xmrig</code>
+<p>Выйти обратно на свой компьютер:
+<p><code>Exit-PSSession</code>
+
+<p>Если вы закрыли окно с переменной $cred, сначала снова введите учётные данные:
+<p><code>$cred = Get-Credential -UserName 'srv\Username'</code>
 </body>
   </html>
 
