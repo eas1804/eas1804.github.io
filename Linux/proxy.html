@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Proxy</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+
+<body>
+<h2>Proxy</h2>
+<ol>
+<li>Установите Squid
+<p><code>apt update</code>
+<p><code>apt install -y squid apache2-utils curl -y	</code>
+
+<li>Создайте пользователя прокси
+<p><code>htpasswd -c /etc/squid/passwords <b>proxyuser</b></code>
+
+<li>Разрешите службе Squid читать файл:
+<p><code>chown root:proxy /etc/squid/passwords</code>
+<p><code>chmod 640 /etc/squid/passwords</code>
+
+<p>Пользователь proxyuser создается только для прокси — системная учетная запись Debian ему не нужна.
+<li>Настройте Squid
+	
+<li> /etc/squid/squid.conf 
+<p><code> rm /etc/squid/squid.conf </code>
+<p>Для отдельного сервера, предназначенного только для проксирования:
+<p><code>cat /etc/squid/squid.conf
+
+<pre>
+# Порт HTTP-прокси
+http_port 3128
+
+# Авторизация по имени пользователя и паролю
+auth_param basic program /usr/lib/squid/basic_ncsa_auth /etc/squid/passwords
+auth_param basic realm Proxy
+acl authenticated proxy_auth REQUIRED
+
+# Разрешенные порты назначения
+acl Safe_ports port 80
+acl Safe_ports port 443
+acl SSL_ports port 443
+acl CONNECT method CONNECT
+
+# Запрет доступа к служебным адресам сервера
+acl localhost_dst dst 127.0.0.0/8 ::1
+
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+http_access deny localhost_dst
+
+# Доступ только после авторизации
+http_access allow authenticated
+http_access deny all
+
+# Не кэшировать страницы
+cache deny all
+</pre>
+<p>Squid использует программу basic_ncsa_auth для проверки паролей из файла, созданного htpasswd.
+
+<li>Проверьте и запустите службу
+<p><code>squid -k parse</code>
+<p><code> ss -tlnp | grep 3128</code>
+<p>Если ошибок нет:
+<p><code>systemctl enable --now squid</code>
+<p><code>systemctl restart squid</code>
+<p><code>systemctl status squid --no-pager</code>
+<li>Проверьте работу прокси
+<p>На самом сервере:
+
+<pre>curl -x http://127.0.0.1:3128 \
+  -U proxyuser \
+  https://api.ipify.org
+</pre>
+<p>Введите пароль по запросу. В ответ должен отобразиться внешний IP-адрес прокси-сервера.
+<p>Для проверки с другого компьютера замените 127.0.0.1 на внешний IP сервера:
+
+<p>Если локально работает, а с другого компьютера нет, проверьте входящие правила брандмауэра Debian и панели VPS-провайдера для TCP-порта 3128.
+<p>Важно: при обычном HTTP-прокси логин и пароль между AdsPower и сервером передаются без шифрования. HTTPS-сайты при этом остаются защищены своим TLS-соединением. Если подключение идет через интернет, рекомендую ограничить доступ к порту 3128 по IP-адресу Windows Server или использовать VPN, например WireGuard.
+</body>
+  </html>
