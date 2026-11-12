@@ -44,6 +44,12 @@ down ip addr del 12.132.149.150/32 dev vmbr0
 <p><code>nft -c -f /etc/nftables.conf</code>
 <li>Применить
 <p><code>nft -c  /etc/nftables.conf</code>
+<li> Проверка конфига
+<p><code>grep -A 10 'iface vmbr0 inet static' /etc/network/interfaces</code>
+<p><code>nft -a list chain ip nat POSTROUTING</code>
+<p><code>grep -A 8 'chain POSTROUTING' /etc/nftables.conf</code>
+</ol>
+
 <body>
 
 
