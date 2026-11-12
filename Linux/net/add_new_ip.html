@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add new IP</title>
+    <link rel="stylesheet" href="../../style.css">
+  </head>
+<h3>Добавить дополнитенльный IP 12.132.149.150 </h3>
+<ol>
+<li>Убедитесь, что адрес не добавлен:
+<p><code>ip -4 addr show dev vmbr0</code>
+
+<li> Добавляем ВРЕМЕННО  адрес в 12.132.149.150  интерфейс vmbr0
+<p><code>ip addr add 12.132.149.150/32 dev vmbr0</code>
+<li>Проверьте выход через него:
+<p><code>curl -4 --interface 12.132.149.150 --connect-timeout 10 https://api.ipify.org</code>
+<p>Ожидаемый ответ:
+<p>12.132.149.150
+
+<li> Добавляем в  /etc/network/interfaces
+<p>В секцию iface vmbr0 inet static,
+<pre>
+iface vmbr0 inet static
+	address 12.132.149.175/26
+	gateway 12.132.149.129
+	bridge-ports eno1
+	bridge-stp off
+	bridge-fd 0
+	post-up /usr/sbin/ethtool -K  eno1 tso off gso off
+</pre>
+<p>Добавляем
+   <pre>
+up ip addr add 12.132.149.150/32 dev vmbr0
+down ip addr del 12.132.149.150/32 dev vmbr0
+</pre>
+<li>/etc/nftables.conf
+<p>Меняем 
+<p><code>oifname "vmbr0" ip saddr 10.11.11.0/24 masquerade </code>
+<p>на
+<p><code>oifname "vmbr0" ip saddr 10.11.11.0/24 snat to 12.132.149.150</code>
+<li>Проверьте синтаксис и сохранённые строки:
+<p><code>nft -c -f /etc/nftables.conf</code>
+<li>Применить
+<p><code>nft -c  /etc/nftables.conf</code>
+<body>
+
+
+</body>
+  </html>
