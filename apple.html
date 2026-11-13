@@ -24,7 +24,16 @@
 <p><code>mas upgrade</code>
 <p><code>brew install mas</code>
 </ol>
-
 <h2>Доступность порта tcp 25, 443</h2>
 <p><code> nc -vz 8.8.8.8  25 443 </code>
+<h2>Установка Homebrew</h2>
+<p><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+<p><code>brew --version</code>
+<h2>Полезное ПО</h2>
+<p><code>brew install knock</code>
+<p><code>brew --version</code>
+<p> для tcp
+<code>knock -v  IP_СЕРВЕРА 7000 8000 9000</code>
+<p>для udp
+<code>knock -v -u IP_СЕРВЕРА 7000 8000 9000</code>
   </html>
