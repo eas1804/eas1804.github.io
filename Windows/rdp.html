@@ -9,31 +9,18 @@
   </head>
 
 <body>
-
-
-<h3>Удаленный сеанс отключен, поскольку отсутствуют доступные серверы лицензирования удаленных рабочих столов, которые могли бы провести лицензирование.</h3>
-
-<p><code>reg delete "HKLM\SOFTWARE\Microsoft\MSLicensing" /f</code>
-<p>или Перейдите в 
-<p><code>HKEY_LOCAL_MACHINE\Software\Microsoft\MSLicensing</code>
-<p>Удалите подпапки 
-<p><code>HardwareID и Store</code>
-<p> или reg file
-<pre>
-Windows Registry Editor Version 5.00 
-
-[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSLicensing]
-</pre>
-
-
-<p>Запустите подключение к удаленному столу (mstsc) обязательно от имени <b>Администратора</b> (это нужно один раз, чтобы Windows заново создала ключи в реестре).
-
+<ul>
+<li><a href=rdp_update.html>Проблемные обновления RDP</a>
+<li><a href=rdp_licence.html>Проблемы лицензирования RDP </a>
+</ul>
 
 <h3>ВСЕГДА 3 раскладки клавиатры. Не добавлялись лишние раскладки </h3>
 <p>Классическая проблема RDP-сессий: Windows пытается быть «умной» и пробрасывает локальную раскладку на удаленный сервер, создавая дубликат.
 <p><code>New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "IgnoreRemoteKeyboardLayout" -PropertyType DWord -Value 1 -Force</code>
 
-<hr>
+
+
+
 <h3>Ограничение времени сеансов</h3>
 <p>gpedit.msc
 <ol>
@@ -43,7 +30,7 @@ Windows Registry Editor Version 5.00
 <li>Завершать сеанс при достижении предела времени: Включено.
 
 </ol>
-<hr>
+
 <h3>Зависание RDP</h3>
 <ol>
 <li> Отключить блокировку завершения работы приложений (в GPO)
@@ -89,95 +76,10 @@ New-ItemProperty -Path $sysProcsPath -Name 'ezvit.exe' -Value 0 -PropertyType DW
 <li>Применение изменений групповых политик:
 <p><code>gpupdate /force</code>
 </oL>
-<hr>
-<h3>Проблемные обновления сентября 2026</h3>
-<h4>Проверить обновления</h4>
-<pre>
-Get-HotFix |
-    Sort-Object InstalledOn -Descending |
-    Select-Object -First 15 HotFixID, InstalledOn
-</pre>
-<h4>Windows2025</h4>
-<p>Проблемное обновление <b>KB5122871</B>
-<p>Скачать: https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129235
-<p>Cкачайте оба файла x64, предлагаемые для KB5129235: windows11.0-kb5043080-x64.msu и windows11.0-kb5129235-x64.msu.
-<p>Сначала запустите KB5043080. Если Windows сообщит, что он уже установлен, переходите дальше. 
-<p>Затем запустите KB5129235 и перезагрузите сервер
-<p>Проверьте через winver сборку 26100.33451
-<h4>Windows 2019</h4>
-<p>Проблемное обновление <b>KB5122876</b>
-<p>Установленная сборка 17763.9245 и симптомы совпали с известной ошибкой Microsoft.
-<p>Исправление <b>KB5129238</b> сборка стала 17763.9247
-<p>Скачать отсюда: 
-https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129238
-
-<h4>Server 2016</h4>
-<p>Version 10.0.14393.  Windows Server Версия 1607 (Сборка ОС 14393.9512)
-<p>Проблкма:  установлено KB5123099, а сборка 14393.9512 соответствует обновлению Windows Server 2016, для которого Microsoft подтвердила сбои RDP и входа. 
-<p>Исправление — KB5129239, ожидаемая сборка после установки 14393.9514
-<p>Скачать 
-https://www.catalog.update.microsoft.com/Search.aspx?q=KB5129239
-<p>Затем проверьте winver, наличие KB5129239 
 
 
 
 
-
-<hr>
-
-<h4>Остановка службу лицензирования RDS</h4>
-<p><code>Stop-Service TermServLicensing -Force</code>
-
-<h4>Запуск службу лицензирования RDS</h4>
-<p><code>Start-Service TermServLicensing</code>
-
-<h4>Сделать копию TLSLic.edb</h4>
-Остановка службы занимает 1–2 секунды и не рвет активные RDP-сессии пользователей, которые уже работают на сервере.
-<pre>
-Stop-Service TermServLicensing -Force
-Copy-Item -Path "C:\Windows\System32\LServer\TLSLic.edb" -Destination "C:\Windows\System32\LServer\TLSLic.edb.bak"
-Start-Service TermServLicensing
-</pre>
-
-<h4>Проверить текущий режим лицензирования RDS</h4>
-<p><code>(Get-WmiObject -Namespace "Root\CIMV2\TerminalServices" -Class Win32_TerminalServiceSetting).LicensingType</code>
-<pre>
-2	Per Device	Лизензия привязывается к железу/клиенту (вашему Mac).
-4	Per User	Лицензия привязывается к учетной записи пользователя.
-5	Not Configured	Режим не задан (работает Grace Period).
-</pre>
-
-<hr>
-<h3>Проблемы с сервером Лицензиррования</h3>
-
-<h4>Журнал сервера лицензирования (RD Licensing)</h4>
-<p><code>eventvwr.msc ->Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-Licensing -> OperationalТакже </code>
-
-<h4>Классический журнал System </h4>
-<p>(фильтр по источнику TerminalServices-Licensing
-<p>Ключевые Event ID, которые стоит искать:
-<ol>
-<li>Event ID 21: Ошибка выдачи временной/постоянной лицензии клиенту.
-<li>Event ID 1028 / 1029: Сервер лицензирования не смог обновить или предоставить RDS CAL для устройства.
-<li>Event ID 1043: Отказ в выдаче лицензии из-за отсутствия свободных CAL или истечения срока действия.
-</ol>
-
-
-<h4>Журнал RDP-хоста (RD Session Host)</h4>
-<p>На этом же сервере перейдите в журнал самого RDP-сервиса:
-<p><code>Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-RemoteConnectionManager -> OperationalКлючевые Event </code></p>
-<ol>
-<li>ID:Event ID 1004: Terminal Server не может выдать лицензию клиенту (в описании ошибки будет указан имя/MAC вашего Mac).
-<li>Event ID 1011: Ошибка проверки лицензии при установке соединения.
-</ol>
-
-<h4>Powershell</h4>
-<pre>
-Get-WinEvent -FilterHashtable @{
-    LogName = 'System', 'Microsoft-Windows-TerminalServices-Licensing/Operational', 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
-    Level = 2, 3 # Error и Warning
-} -MaxEvents 30 | Format-Table TimeCreated, Id, ProviderName, Message -AutoSize
-</pre>
 
 
 

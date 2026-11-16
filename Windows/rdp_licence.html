@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RDP Лицензия</title>
+	  <link rel="stylesheet" href="../style.css">
+      </head>
+  
+  
+  <h2>Удаленный сеанс отключен, поскольку отсутствуют доступные серверы лицензирования удаленных рабочих столов, которые могли бы провести лицензирование.</h2>
+
+<p><code>reg delete "HKLM\SOFTWARE\Microsoft\MSLicensing" /f</code>
+<p>или Перейдите в 
+<p><code>HKEY_LOCAL_MACHINE\Software\Microsoft\MSLicensing</code>
+<p>Удалите подпапки 
+<p><code>HardwareID и Store</code>
+<p> или reg file
+<pre>
+Windows Registry Editor Version 5.00 
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSLicensing]
+</pre>
+
+
+<p>Запустите подключение к удаленному столу (mstsc) обязательно от имени <b>Администратора</b> (это нужно один раз, чтобы Windows заново создала ключи в реестре).
+
+
+
+  
+<h2>Ошибка лицензирования 0xf06 </h2>
+<pre>
+При попытке клиента подключиться, произошла ошибка лицензирования (лицензирование прервано по таймауту).
+Попытайтесь подключиться к удаленному компьютеру снова.
+
+Код ошибки: <b>0xf06</b>
+</pre>
+
+<ol>
+
+<li>Проверьте доступность сервера с компьютера пользователя:
+   <p><code>Test-NetConnection 10.10.18.3 -Port 3389</code>
+   <p>Если TcpTestSucceeded : False, сначала проверяйте VPN, маршрут и доступность RDP-порта. Если True — это подтверждает только установление TCP-соединения; продолжайте диагностику.
+<li>Проверьте прохождение крупных пакетов через VPN:
+   <p><code>ping 10.10.18.3 -f -l 1380 -n 4</code>
+   <p><code>ping 10.10.18.3 -f -l 1400 -n 4</code>
+   <p>В нашем случае пакеты с нагрузкой 1380 байт проходили, а 1400 — нет. Если картина повторится, можно проверить влияние MTU.
+<li>Определите индекс VPN-интерфейса и его текущий MTU:
+   
+   <p><code>Get-NetIPAddress -IPAddress 172.31.30.4 | Select-Object IPAddress, InterfaceIndex, InterfaceAlias</code>
+   <p><code>Get-NetIPInterface -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -like '*OpenVPN*' } |   Select-Object InterfaceIndex, InterfaceAlias, NlMtu, ConnectionState</code>
+   
+  <p>Индекс и адрес могут измениться после переподключения. Запишите исходное значение NlMtu, чтобы при необходимости восстановить его.
+<li>Временно уменьшите MTU нужного интерфейса до 1400. На этот раз его индекс был 8. В PowerShell от имени администратора:
+   <p><code>netsh interface ipv4 set subinterface 8 mtu=1400 store=active</code>
+   <p>Подставьте актуальный индекс. Если вы подключены к пользователю через тот же VPN, сеанс может прерваться — желательно, чтобы пользователь был рядом с компьютером.
+<li>Повторите подключение к 10.10.18.3. Если появится ошибка 0x808 с сообщением о невозможности создать хранилище лицензий, один раз запустите mstsc <b>от имени администратора</b> и подключитесь с обычной учётной записью пользователя сервера.
+<li>Проверьте обычный запуск RDP-клиента. В нашем случае после одного запуска с повышенными правами пользователь смог войти без них.
+<p>Если понадобится отменить временное изменение, восстановите записанное исходное значение. В этот раз оно было 1500:
+<p><code>netsh interface ipv4 set subinterface 8 mtu=1500 store=active</code>
+<p>Эта последовательность восстановила доступ в нашем случае. Влияние MTU остаётся вероятной причиной: окончательно подтвердить его можно, если после возврата к прежнему MTU ошибка снова появится, а при 1400 исчезнет. Изменение с store=active временное и может не сохраниться после перезагрузки или переподключения VPN.
+</ol>
+
+
+<h2>Проблемы с сервером Лицензиррования</h2>
+
+<h4>Журнал сервера лицензирования (RD Licensing)</h4>
+<p><code>eventvwr.msc ->Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-Licensing -> OperationalТакже </code>
+
+<h4>Классический журнал System </h4>
+<p>(фильтр по источнику TerminalServices-Licensing
+<p>Ключевые Event ID, которые стоит искать:
+<ol>
+<li>Event ID 21: Ошибка выдачи временной/постоянной лицензии клиенту.
+<li>Event ID 1028 / 1029: Сервер лицензирования не смог обновить или предоставить RDS CAL для устройства.
+<li>Event ID 1043: Отказ в выдаче лицензии из-за отсутствия свободных CAL или истечения срока действия.
+</ol>
+
+
+<h4>Журнал RDP-хоста (RD Session Host)</h4>
+<p>На этом же сервере перейдите в журнал самого RDP-сервиса:
+<p><code>Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-RemoteConnectionManager -> OperationalКлючевые Event </code></p>
+<ol>
+<li>ID:Event ID 1004: Terminal Server не может выдать лицензию клиенту (в описании ошибки будет указан имя/MAC вашего Mac).
+<li>Event ID 1011: Ошибка проверки лицензии при установке соединения.
+</ol>
+
+<h4>Powershell</h4>
+<pre>
+Get-WinEvent -FilterHashtable @{
+    LogName = 'System', 'Microsoft-Windows-TerminalServices-Licensing/Operational', 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
+    Level = 2, 3 # Error и Warning
+} -MaxEvents 30 | Format-Table TimeCreated, Id, ProviderName, Message -AutoSize
+</pre>
+
+<h4>Остановить службу лицензирования RDS</h4>
+<p><code>Stop-Service TermServLicensing -Force</code>
+
+<h4>Запуск службу лицензирования RDS</h4>
+<p><code>Start-Service TermServLicensing</code>
+
+<h4>Сделать копию TLSLic.edb</h4>
+Остановка службы занимает 1–2 секунды и не рвет активные RDP-сессии пользователей, которые уже работают на сервере.
+<pre>
+Stop-Service TermServLicensing -Force
+Copy-Item -Path "C:\Windows\System32\LServer\TLSLic.edb" -Destination "C:\Windows\System32\LServer\TLSLic.edb.bak"
+Start-Service TermServLicensing
+</pre>
+
+<h4>Проверить текущий режим лицензирования RDS</h4>
+<p><code>(Get-WmiObject -Namespace "Root\CIMV2\TerminalServices" -Class Win32_TerminalServiceSetting).LicensingType</code>
+<pre>
+2	Per Device	Лизензия привязывается к железу/клиенту (вашему Mac).
+4	Per User	Лицензия привязывается к учетной записи пользователя.
+5	Not Configured	Режим не задан (работает Grace Period).
+</pre>
+
+
+<body>
