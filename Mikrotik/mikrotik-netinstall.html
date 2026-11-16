@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Mikrotik восстановление</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{font:16px/1.65 system-ui,sans-serif;color:#202b38;background:#f2f5f8;margin:0}main{max-width:900px;margin:30px auto;background:white;padding:clamp(20px,4vw,48px);border-radius:12px}h1,h2{color:#163a58;line-height:1.25}h2{margin-top:2em;border-bottom:1px solid #dbe4ea;padding-bottom:.4em}pre{background:#eef3f7;padding:14px;overflow:auto;border-radius:6px}code{font-family:Consolas,monospace}table{border-collapse:collapse;width:100%}th,td{border:1px solid #cbd7df;padding:8px;text-align:left}.warning{background:#fff3df;border-left:4px solid #d78210;padding:12px}a{color:#075b9a}@media print{body{background:white}main{margin:0;padding:0;max-width:none}h2{break-after:avoid}pre{white-space:pre-wrap}}
+</style>
+</head>
+<body>
+<main lang="ru">
+<h1>Восстановление MikroTik hAP ac² через Netinstall</h1>
+<p>Шпаргалка для чистой установки RouterOS Stable с компьютера Windows. Архитектура роутера — <strong>ARM</strong>.</p>
+<p class="warning"><strong>Внимание:</strong> при описанной чистой установке текущая конфигурация и файлы на роутере удаляются. При необходимости заранее создайте копии <code>.backup</code> и <code>.rsc</code> и перенесите их на компьютер.</p>
+<h2>1. Скачать Netinstall и пакеты RouterOS</h2>
+<ol><li>Откройте <a href="https://mikrotik.com/download">официальную страницу MikroTik Downloads</a>.</li><li>В разделе RouterOS выберите архитектуру <strong>ARM</strong> и канал <strong>Stable</strong>.</li><li>Скачайте системный пакет <strong>RouterOS</strong>, дополнительный пакет <strong>wireless</strong> и утилиту <strong>Netinstall Win64</strong>. Выбирайте одинаковую версию пакетов и Netinstall.</li></ol>
+<pre><code>netinstall64-7.xx.x.zip
+routeros-7.xx.x-arm.npk
+wireless-7.xx.x-arm.npk</code></pre>
+<p>Для hAP ac² вместо <code>wireless</code> можно использовать <code>wifi-qcom-ac</code> (новое меню WiFi, WPA3); одновременно эти пакеты не работают. Для этой инструкции выбран <code>wireless</code>. <code>wifi-qcom</code> для встроенного Wi-Fi hAP ac² не подходит. Версия Wi-Fi пакета должна совпадать с версией RouterOS.</p>
+<h2>2. Подготовить папку</h2>
+<ol><li>Создайте, например, <code>C:\MikroTik\Netinstall</code>.</li><li>Распакуйте в папку архив Netinstall.</li><li>Скопируйте в неё оба файла <code>.npk</code>.</li></ol>
+<h2>3. Подключить роутер</h2>
+<ol><li>Соедините компьютер сетевым кабелем напрямую с портом <strong>ether1</strong> MikroTik.</li><li>При необходимости временно отключите другие сетевые интерфейсы и VPN, чтобы Netinstall выбрал правильное подключение. Интернет и активные соединения при этом могут прерваться.</li></ol>
+<p>На этом компьютере физический адаптер Intel используется внешним коммутатором Hyper-V <code>Hyper-lan</code>, а интерфейс Windows называется <code>vEthernet (Hyper-lan)</code>. Он уже использовался при успешной установке. Не удаляйте коммутатор: это может нарушить сеть виртуальных машин.</p>
+<h2>4. Назначить временный адрес компьютеру</h2>
+<p>Пример: адрес компьютера <code>192.168.1.10/24</code>, шлюз не нужен. Проверьте адрес:</p>
+<pre><code>Get-NetIPAddress -InterfaceAlias "vEthernet (Hyper-lan)" -AddressFamily IPv4 |
+    Format-Table IPAddress, PrefixLength, AddressState</code></pre>
+<p>Если адреса нет, откройте PowerShell от имени администратора и выполните:</p>
+<pre><code>New-NetIPAddress -InterfaceAlias "vEthernet (Hyper-lan)" `
+    -IPAddress 192.168.1.10 -PrefixLength 24</code></pre>
+<p>Через несколько секунд проверьте состояние адреса: оно должно быть <code>Preferred</code>. Не добавляйте адрес повторно, если он уже существует.</p>
+<h2>5. Настроить Netinstall</h2>
+<ol><li>Запустите <code>netinstall64.exe</code> от имени администратора.</li><li>Нажмите <strong>Net booting</strong> и включите <strong>Boot Server enabled</strong>.</li><li>Укажите <strong>Client IP address: 192.168.1.20</strong> и нажмите OK.</li></ol>
+<p>Адрес клиента должен отличаться от адреса компьютера, но находиться в той же подсети. При ошибке <em>Could not find network interface</em> проверьте активный адрес и подключение, затем при необходимости перезапустите Netinstall.</p>
+<h2>6. Запустить роутер в режиме Netinstall</h2>
+<ol><li>Отключите питание роутера.</li><li>Зажмите кнопку <strong>Reset</strong> и, удерживая её, подключите питание.</li><li>Продолжайте держать Reset: индикатор сначала мигает, затем горит постоянно, затем гаснет.</li><li>Когда индикатор погаснет, отпустите Reset и дождитесь появления роутера в Netinstall.</li></ol>
+<p>Это запуск через резервный загрузчик. Если отпустить кнопку во время мигания, будет выполнена другая операция.</p>
+<h2>7. Выбрать роутер и установить пакеты</h2>
+<ol><li>В списке <strong>Routers/Drives</strong> выберите строку <code>RB…</code> со статусом <code>Ready</code> и архитектурой <code>arm</code>. Сверьте MAC-адрес с наклейкой роутера.</li><li><strong>Не выбирайте диски компьютера</strong> — например, <code>E:\</code>, <code>G:\</code> или <code>S:\</code>.</li><li>Если пакетов не видно, нажмите <strong>Browse</strong> в разделе Packages и выберите папку с файлами <code>.npk</code>.</li><li>Отметьте оба пакета: <strong>routeros</strong> и <strong>wireless</strong>.</li><li>Для чистой установки снимите <strong>Keep old configuration</strong> и включите <strong>Apply default config</strong>.</li><li>В поле Key оставьте <code>&lt;use previous key&gt;</code>, если оно показано. Нажмите <strong>Install</strong>.</li></ol>
+<h2>8. Дождаться завершения</h2>
+<p>Не отключайте питание и кабель во время установки. Дождитесь сообщения <strong>Installation finished successfully</strong> и статуса <strong>Done</strong>. При выбранном <strong>Reboot after installation</strong> роутер перезагрузится автоматически; подождите несколько минут.</p>
+<h2>9. Подключиться после установки</h2>
+<ol><li>Переставьте кабель компьютера с ether1 на <strong>ether2</strong>.</li><li>Откройте <strong>WinBox → Neighbors</strong> и выберите роутер по MAC-адресу.</li><li>Войдите пользователем <code>admin</code>. Пароль проверьте на наклейке; если не указан, попробуйте пустой. Задайте новый пароль при первом входе.</li><li>Заводской адрес обычно <code>192.168.88.1</code>. При необходимости для подключения по IP временно назначьте компьютеру свободный адрес <code>192.168.88.10/24</code>.</li></ol>
+<h2>10. Проверить и завершить</h2>
+<p>В WinBox откройте <strong>System → Packages</strong> и проверьте версии <code>routeros</code> и <code>wireless</code>; в <strong>Wireless → Interfaces</strong> проверьте наличие радиоинтерфейсов. Команды в терминале RouterOS:</p>
+<pre><code>/system/package/print
+/interface/wireless/print
+/ip/address/print</code></pre>
+<p>Удалите временный адрес, если он больше не нужен, и включите отключённые адаптеры и VPN:</p>
+<pre><code>Remove-NetIPAddress -InterfaceAlias "vEthernet (Hyper-lan)" `
+    -IPAddress 192.168.1.10 -Confirm:$false</code></pre>
+<p>Документация: <a href="https://manual.mikrotik.com/docs/getting-started/installation-and-upgrade/netinstall/netinstall-windows/">Netinstall для Windows</a> · <a href="https://manual.mikrotik.com/hardware/hap-ac-2/">hAP ac²</a> · <a href="https://manual.mikrotik.com/docs/wireless/wifi-ac/">Пакеты Wi-Fi 5</a>.</p>
+</main>
+</body>
+</html>
