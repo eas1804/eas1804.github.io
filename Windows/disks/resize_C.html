@@ -43,7 +43,11 @@
 <li>Включите WinRE и обновите конфигурацию 
 <p><code>reagentc /enable</code></p>
 убедитесь, что WIM файл среды восстановления был пересоздан на диске C:
-<p><code>bcdedit /enum all | find "osdevice"</code></p>
+<p> cmd от Админа
+<p><code>bcdedit /enum all | findstr "osdevice"</code></p>
+<p> Powershell:
+<p><code> bcdedit /enum all | Select-String "osdevice"</code></p>
+
 Проверьте конфигурацию WinRE::
 <p><code>reagentc.exe /info</code></p>
 Теперь можно расширить системный диск:
