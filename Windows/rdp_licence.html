@@ -61,7 +61,13 @@ Windows Registry Editor Version 5.00
 <p><code>netsh interface ipv4 set subinterface 8 mtu=1500 store=active</code>
 <p>Эта последовательность восстановила доступ в нашем случае. Влияние MTU остаётся вероятной причиной: окончательно подтвердить его можно, если после возврата к прежнему MTU ошибка снова появится, а при 1400 исчезнет. Изменение с store=active временное и может не сохраниться после перезагрузки или переподключения VPN.
 </ol>
-
+<h3> Можно MTU задать сразу в файле .ovpn</h3>
+<pre>
+pull-filter ignore "tun-mtu "
+tun-mtu 1400
+</pre>
+<p>Проверить результат изменения MTU на 1400
+ <p><code>netsh interface ipv4 show subinterfaces | findstr OpenVPN</code>
 
 <h3> Для Mac OS</h3>
 <p>macOS это можно сделать через Терминал. У VPN-интерфейса вместо индекса обычно имя вида utun4 или utun5.
