@@ -19,4 +19,17 @@
 <li><a href="Add/snmp.html">SNMP. Настройка MikroTik для мониторинга Zabbix</a>
 <li><a href=mikrotik-netinstall.html>Восстановление MikroTik hAP ac² через Netinstall</a>
 </body>
+<h3>Доступ по SSH ключу</h3>
+<p>1. Создать ключ в Powershell 
+<p><code>ssh-keygen -t ed25519 -f "$env:USERPROFILE\.ssh\company.key" -C "company Mikrotik"</code>
+<p> для 6й версии нужен ключ rsa
+<p><code>ssh-keygen -t rsa -b 3072 -f "$env:USERPROFILE\.ssh\company.key_rsa" -C "company Mikrotik"</code>
+
+<p>2. Загрузите и импортируйте публичный ключ
+<p>Подключитесь к роутеру через WinBox и перетащите файл NAME.pub в окно Files, в корневой каталог. Затем в терминале RouterOS выполните:
+<p><code>/user ssh-keys import public-key-file=NAME.pub user=admin</code>
+
+<p>Проверьте, что ключ привязан к нужному пользователю:
+<p><code>/user ssh-keys print detail</code>
+<p>Важный момент: при стандартном значении password-authentication=yes-if-no-key после добавления ключа вход этого пользователя по паролю через SSH отключается. Поэтому до импорта оставьте открытой сессию WinBox или другой рабочий способ доступа. На вход через WinBox этот параметр SSH не распространяется.
   </html>
